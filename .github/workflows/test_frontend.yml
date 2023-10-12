@@ -1,0 +1,50 @@
+name: "Test frontend"
+
+on:
+  pull_request:
+    paths:
+      - "frontend/**"
+      - ".github/**"
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: "./frontend"
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v3
+
+      - name: "Install pnpm"
+        uses: pnpm/action-setup@v2
+        with:
+          version: "8.8.0"
+
+      - name: "Use Node.js 20"
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.x"
+
+      - name: "Install dependencies"
+        run: pnpm i
+
+      - name: "Run Prettier"
+        run: pnpm prettier
+
+      - name: "Run ESLint"
+        run: pnpm lint
+
+      - name: "Run tests"
+        run: pnpm test
+
+      - name: "Check code coverage"
+        uses: VeryGoodOpenSource/very_good_coverage@v2.1.0
+        with:
+          path: "./frontend/coverage/lcov.info"
+          min_coverage: 80
+
+      - name: "Build app"
+        run: pnpm build
