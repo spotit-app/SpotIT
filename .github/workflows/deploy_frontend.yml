@@ -6,6 +6,7 @@ on:
       - main
     paths: 
       - "frontend/**"
+      - ".github/**"
       
 env:
   REGISTRY: ghcr.io
@@ -55,3 +56,9 @@ jobs:
         with:
           webhook_url: ${{ secrets.FRONTEND_WEBHOOK }}
           webhook_secret: ${{ secrets.FRONTEND_WEBHOOK }}
+        
+      - name: "Trigger frontend deploy"
+        uses: fjogeleit/http-request-action@v1.14.1
+        with:
+          url: ${{ secrets.FRONTEND_WEBHOOK }}    
+          method: 'GET'
