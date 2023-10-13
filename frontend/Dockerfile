@@ -9,3 +9,4 @@ RUN pnpm build
 FROM nginx:1.25.2-alpine3.18-slim
 COPY nginx.conf /etc/nginx/templates/default.conf.template
 COPY --from=builder /app/dist/ /var/www/SpotIT/html/
+EXPOSE 80

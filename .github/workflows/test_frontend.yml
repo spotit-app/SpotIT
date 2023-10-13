@@ -1,7 +1,9 @@
 name: "Test frontend"
 
 on:
-  pull_request:
+  push:
+    branches: 
+      - "*"
     paths:
       - "frontend/**"
       - ".github/**"
