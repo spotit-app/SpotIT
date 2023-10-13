@@ -3,6 +3,6 @@ import { Home } from './Home';
 
 test('Renders SpotIT', () => {
   render(<Home />);
-  const header = screen.getByText('SpotIT');
+  const header = screen.getByText('Spot IT');
   expect(header).toBeInTheDocument();
 });
