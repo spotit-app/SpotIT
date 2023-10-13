@@ -50,12 +50,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-              
-      - name: "Trigger frontend deploy"
-        uses: distributhor/workflow-webhook@v3.0.5
-        with:
-          webhook_url: ${{ secrets.FRONTEND_WEBHOOK }}
-          webhook_secret: ${{ secrets.FRONTEND_WEBHOOK }}
         
       - name: "Trigger frontend deploy"
         uses: fjogeleit/http-request-action@v1.14.1
