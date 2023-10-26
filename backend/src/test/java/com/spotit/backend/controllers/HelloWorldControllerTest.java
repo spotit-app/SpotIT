@@ -1,6 +1,7 @@
 package com.spotit.backend.controllers;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -18,7 +19,7 @@ public class HelloWorldControllerTest {
 
     @Test
     public void shouldReturnHelloWorld() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/").with(jwt()))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Hello world!")));
     }

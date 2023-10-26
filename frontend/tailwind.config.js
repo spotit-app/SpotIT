@@ -8,6 +8,9 @@ export default {
   theme: {
     extend: {}
   },
+  daisyui: {
+    themes: ['corporate']
+  },
   // eslint-disable-next-line no-undef
   plugins: [require('daisyui'), require('flowbite/plugin')]
 };

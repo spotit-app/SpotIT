@@ -9,5 +9,11 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.{tsx,ts}', '!src/{App,main}.tsx', '!src/**/{index,vite-env.d}.ts']
+  collectCoverageFrom: [
+    'src/**/*.{tsx,ts}',
+    '!src/{App,main}.tsx',
+    '!src/**/{index,vite-env.d}.ts',
+    '!src/**/types.ts',
+    '!src/providers/**/*.{tsx,ts}'
+  ]
 };
