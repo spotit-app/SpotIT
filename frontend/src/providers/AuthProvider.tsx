@@ -5,8 +5,8 @@ import { PropsWithChildren } from 'react';
 function AuthProvider({ children }: PropsWithChildren) {
   return (
     <Auth0Provider
-      domain={process.env.VITE_AUTH0_DOMAIN!}
-      clientId={process.env.VITE_AUTH0_CLIENT_ID!}
+      domain="spot-it.eu.auth0.com"
+      clientId="X6Kfhqp6UuE93tVOfQeOtdbo92RUF3dh"
       authorizationParams={{
         redirect_uri: window.location.origin
       }}
@@ -15,6 +15,7 @@ function AuthProvider({ children }: PropsWithChildren) {
     </Auth0Provider>
   );
 }
+
 export { AuthProvider };
 
 AuthProvider.propTypes = {

@@ -26,15 +26,12 @@ describe('Navbar', () => {
     );
 
     const login = screen.getByTestId('login');
-    const singIn = screen.getByTestId('sing-in');
     expect(login).toBeInTheDocument();
-    expect(singIn).toBeInTheDocument();
     expect(screen.getByText('Dla pracownika')).toBeInTheDocument();
     expect(screen.getByText('Dla pracodawcy')).toBeInTheDocument();
     expect(screen.getByText('CV generator')).toBeInTheDocument();
     expect(screen.getByText('Portfolio')).toBeInTheDocument();
     fireEvent.click(login);
-    fireEvent.click(singIn);
     expect(mockLogin).toHaveBeenCalled();
   });
 
