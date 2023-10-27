@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - main
-    paths: 
+    paths:
       - "frontend/**"
       - ".github/**"
-      
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: "${{ github.repository }}-frontend"
@@ -46,13 +46,16 @@ jobs:
         with:
           context: "./frontend"
           push: true
+          build-args: |
+            VITE_AUTH0_DOMAIN: ${{ secrets.VITE_AUTH0_DOMAIN }}
+            VITE_AUTH0_CLIENT_ID: ${{ secrets.VITE_AUTH0_CLIENT_ID }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-        
+
       - name: "Trigger frontend deploy"
         uses: fjogeleit/http-request-action@v1.14.1
         with:
-          url: ${{ secrets.FRONTEND_WEBHOOK }}    
-          method: 'GET'
+          url: ${{ secrets.FRONTEND_WEBHOOK }}
+          method: "GET"
