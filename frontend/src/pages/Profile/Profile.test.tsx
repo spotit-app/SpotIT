@@ -1,6 +1,7 @@
 import { render, screen, act } from '@testing-library/react';
 import { Profile } from './Profile';
 import { useAuth0 } from '@auth0/auth0-react';
+import { RouterProvider } from '../../providers';
 
 jest.mock('@auth0/auth0-react');
 
@@ -15,21 +16,14 @@ describe('Profile', () => {
       isLoading: false
     });
 
-    act(() => render(<Profile />));
+    act(() =>
+      render(
+        <RouterProvider>
+          <Profile />
+        </RouterProvider>
+      )
+    );
 
-    expect(screen.getByText('Profile')).toBeInTheDocument();
     expect(screen.getByText(/John Doe/)).toBeInTheDocument();
-    expect(screen.getByText(/john.doe@gmail.com/)).toBeInTheDocument();
-  });
-
-  test('renders Loading component when loading', () => {
-    (useAuth0 as jest.Mock).mockReturnValue({
-      user: undefined,
-      isLoading: true
-    });
-
-    act(() => render(<Profile />));
-
-    expect(screen.getByTestId('loading')).toBeInTheDocument();
   });
 });

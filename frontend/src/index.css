@@ -6,3 +6,7 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+[data-theme='night'] .logo {
+  content: url('./assets/images/logo-dark.svg');
+}

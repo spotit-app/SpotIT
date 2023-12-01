@@ -1,14 +1,14 @@
 services:
-  mongodb:
-    image: 'mongo:7.0.2'
+  postgresql:
+    image: 'postgres:15.4-alpine'
     environment:
-      - 'MONGO_INITDB_DATABASE=maindb'
-      - 'MONGO_INITDB_ROOT_PASSWORD=secret'
-      - 'MONGO_INITDB_ROOT_USERNAME=root'
+      - 'POSTGRES_DB=maindb'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=root'
     ports:
-      - 27017:27017
+      - 5432:5432
     volumes:
-      - mongo_data:/data/db
+      - pg_data:/var/lib/postgresql/data
 
 volumes:
-  mongo_data:
+  pg_data:

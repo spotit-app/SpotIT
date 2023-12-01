@@ -9,7 +9,8 @@ export default {
     extend: {}
   },
   daisyui: {
-    themes: ['corporate']
+    themes: ['corporate', 'night'],
+    darkTheme: 'night'
   },
   // eslint-disable-next-line no-undef
   plugins: [require('daisyui'), require('flowbite/plugin')]

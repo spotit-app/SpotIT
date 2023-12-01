@@ -1,2 +1,13 @@
 export { Navbar } from './Navbar/Navbar';
-export { Loading } from './Loading/Loading';
+export { Loading } from './Loading';
+export { ThemeToggle } from './ThemeToggle';
+export { Sidebar } from './Sidebar';
+export { TextArea } from './TextArea';
+export { Input } from './Input';
+export { PopUp } from './PopUp';
+export { Button } from './Button';
+export { Select } from './Select';
+export { Rating } from './Rating';
+export { CheckBox } from './CheckBox';
+export { PopUpForm } from './PopUpForm';
+export { MainForm } from './MainForm';

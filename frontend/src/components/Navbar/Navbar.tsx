@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { AvatarMenu } from './AvatarMenu';
 import Logo from '../../assets/images/logo.svg';
+import { ThemeToggle } from '../ThemeToggle';
 
 function Navbar() {
-  const [state, setState] = useState(false);
+  const [menuOpened, setMenuOpened] = useState(false);
   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
 
   const navigation = [
@@ -18,28 +19,28 @@ function Navbar() {
   useEffect(() => {
     document.onclick = (e) => {
       const target = e.target as HTMLElement;
-      if (!target.closest('.menu-btn')) setState(false);
+      if (!target.closest('.menu-btn')) setMenuOpened(false);
     };
   }, []);
 
   return (
     <nav
-      className={`bg-white sticky border-b-2 border-primary w-full md:text-sm ${
-        state ? 'shadow-lg rounded-xl mt-2 md:shadow-none md:mx-2 md:mt-0' : ''
+      className={`sticky border-b-2 border-primary w-full md:text-sm ${
+        menuOpened ? 'shadow-lg rounded-xl mt-2 md:shadow-none md:mx-2 md:mt-0' : ''
       }`}
     >
       <div className="gap-x-14items-center max-w-screen-xl mx-auto px-4 md:flex md:px-8">
         <div className="flex items-center justify-between py-5 md:block px-3">
           <Link to="/">
-            <img src={Logo} width={120} height={50} alt="SpotIT logo" />
+            <img src={Logo} width={120} height={50} className="logo" alt="SpotIT logo" />
           </Link>
           <div className="md:hidden">
             <button
               data-testid="menu-btn"
-              className="menu-btn text-gray-500 hover:text-gray-800"
-              onClick={() => setState(!state)}
+              className="menu-btn text-primary focus:outline-none"
+              onClick={() => setMenuOpened(!menuOpened)}
             >
-              {state ? (
+              {menuOpened ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6"
@@ -72,12 +73,14 @@ function Navbar() {
           </div>
         </div>
         <div
-          className={`flex-1 items-center mx-2 mt-8 md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}
+          className={`flex-1 items-center mx-2 mt-8 md:mt-0 md:flex ${
+            menuOpened ? 'block' : 'hidden'
+          } `}
         >
           <ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
             {navigation.map((item, idx) => {
               return (
-                <li key={idx} className="text-gray-700 hover:text-gray-900">
+                <li key={idx} className="text-primary font-bold">
                   <Link to={item.path} className="block">
                     {item.title}
                   </Link>
@@ -91,7 +94,7 @@ function Navbar() {
                 <button
                   data-testid="login"
                   onClick={() => loginWithRedirect()}
-                  className="flex items-center justify-center gap-x-1 py-2 px-4 text-white font-medium bg-gray-800 hover:bg-gray-700 active:bg-gray-900 rounded-full md:inline-flex"
+                  className="btn btn-primary flex items-center"
                 >
                   Login
                   <svg
@@ -110,6 +113,7 @@ function Navbar() {
               </>
             )}
             {isAuthenticated && <AvatarMenu picture={user!.picture!} logout={logout} />}
+            <ThemeToggle />
           </div>
         </div>
       </div>

@@ -20,27 +20,39 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven(url = "https://jitpack.io")
 }
 
 dependencies {
+	implementation("com.github.imagekit-developer:imagekit-java:2.0.0")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.flywaydb:flyway-core")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
+	runtimeOnly("org.postgresql:postgresql")
 	compileOnly("org.projectlombok:lombok")
 	
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+	// Will be in use once bugs are fixed
+	// developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	
 	annotationProcessor("org.projectlombok:lombok")
-	
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:junit-jupiter")
-	testImplementation("org.testcontainers:mongodb")
+	testImplementation("org.testcontainers:postgresql")
 	testImplementation("org.springframework.security:spring-security-test")
+}
+
+tasks.withType<JavaCompile> {
+	val compilerArgs = options.compilerArgs
+	compilerArgs.add("-Amapstruct.defaultComponentModel=spring")
 }
 
 tasks.test {
@@ -59,7 +71,10 @@ tasks.jacocoTestReport {
 	classDirectories.setFrom(files(classDirectories.files.map {
 		fileTree(it) {
 			setExcludes(listOf(
-				"**/BackendApplication.class"
+				"**/BackendApplication.class",
+				"**/mapper/**/*.class",
+				"**/model/**/*.class",
+				"**/dto/**/*.class"
 			))
 		}
 	}))	
