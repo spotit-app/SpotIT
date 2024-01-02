@@ -1,6 +1,7 @@
 name: "Test backend"
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - "*"
