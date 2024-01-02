@@ -1,18 +1,23 @@
-import { FormikHelpers } from 'formik';
-import validationSchema from './SoftSkillsValidation';
-import { Button, PopUpForm, Input, Rating, Select } from '../../../components';
 import { ChangeEvent, useState } from 'react';
-
-interface SoftSkillsFormType {
-  softSkillName: string;
-  customSoftSkillName: string;
-  softSkillLevel: number;
-}
+import { FormikHelpers } from 'formik';
+import { ReadSoftSkillName, SoftSkillsFormType } from 'types/profile';
+import { Button, PopUpForm, Input, Rating, Select } from 'components';
+import validationSchema from './SoftSkillsValidation';
+import { useSoftSkills } from 'hooks/useSoftSkills';
+import { SelectOption } from 'types/shared';
+import { closeModal } from 'utils';
 
 function SoftSkillsForm() {
   const [selectedSoftSkillName, setSelectedSoftSkillName] = useState('');
 
-  const optionsToSelect = ['Umiejętność1', 'Umiejętność2', 'Inna'];
+  const { softSkillNames, createSoftSkill } = useSoftSkills();
+
+  const optionsToSelect: SelectOption[] | undefined = softSkillNames?.map(
+    (softSkillName: ReadSoftSkillName) => ({
+      value: softSkillName.name,
+      label: softSkillName.name
+    })
+  );
 
   const initialValues = {
     softSkillName: '',
@@ -20,14 +25,16 @@ function SoftSkillsForm() {
     softSkillLevel: 0
   };
 
-  const onSubmit = (
+  const onSubmit = async (
     values: SoftSkillsFormType,
-    { setSubmitting }: FormikHelpers<SoftSkillsFormType>
+    { setSubmitting, resetForm }: FormikHelpers<SoftSkillsFormType>
   ) => {
-    setTimeout(() => {
-      window.alert(JSON.stringify(values));
-      setSubmitting(false);
-    }, 400);
+    setSubmitting(true);
+    await createSoftSkill.mutateAsync(values);
+    setSubmitting(false);
+    resetForm();
+    setSelectedSoftSkillName('');
+    closeModal();
   };
 
   return (
@@ -41,7 +48,8 @@ function SoftSkillsForm() {
         name="softSkillName"
         id="softSkillName"
         placeholder="Wybierz umiejętność"
-        options={optionsToSelect}
+        data-testid="softSkillName-select"
+        options={[...(optionsToSelect || []), { value: 'Inna', label: 'Inna' }]}
         customOnChange={(e: ChangeEvent<HTMLSelectElement>) => {
           setSelectedSoftSkillName(e.target.value);
         }}
@@ -61,7 +69,9 @@ function SoftSkillsForm() {
         name="softSkillLevel"
         id="softSkillLevel"
       />
-      <Button type="submit">Zapisz</Button>
+      <Button disabled={createSoftSkill.isPending} type="submit">
+        Zapisz
+      </Button>
     </PopUpForm>
   );
 }

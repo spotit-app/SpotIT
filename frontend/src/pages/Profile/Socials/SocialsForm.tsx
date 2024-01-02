@@ -1,41 +1,57 @@
 import { FormikHelpers } from 'formik';
+import PropTypes from 'prop-types';
+import { ReadSocial, WriteSocial } from 'types/profile';
+import { Button, PopUpForm, Input } from 'components';
 import validationSchema from './SocialsValidation';
-import { Button, PopUpForm, Input } from '../../../components';
+import { useSocials } from 'hooks/useSocials';
+import { closeModal } from 'utils';
 
-interface SocialsFormType {
-  socialsName: string;
-  socialsLink: string;
+interface SocialsFormProps {
+  socialToEdit?: ReadSocial;
 }
 
-function SocialsForm() {
-  const initialValues = {
-    socialsName: '',
-    socialsLink: ''
+function SocialsForm({ socialToEdit }: SocialsFormProps) {
+  const { createSocial, updateSocial } = useSocials();
+
+  const initialValues: WriteSocial = {
+    name: socialToEdit?.name || '',
+    socialUrl: socialToEdit?.socialUrl || ''
   };
 
-  const onSubmit = (values: SocialsFormType, { setSubmitting }: FormikHelpers<SocialsFormType>) => {
-    setTimeout(() => {
-      window.alert(JSON.stringify(values));
-      setSubmitting(false);
-    }, 400);
+  const onSubmit = async (
+    values: WriteSocial,
+    { setSubmitting, resetForm }: FormikHelpers<WriteSocial>
+  ) => {
+    setSubmitting(true);
+
+    if (socialToEdit) {
+      await updateSocial.mutateAsync({ id: socialToEdit.id, ...values });
+    } else {
+      await createSocial.mutateAsync(values);
+    }
+
+    setSubmitting(false);
+    resetForm();
+    closeModal();
   };
 
   return (
-    <PopUpForm<SocialsFormType>
+    <PopUpForm<WriteSocial>
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      <Input
-        label="Nazwa konta społecznościowego"
-        name="socialsName"
-        id="socialsName"
-        type="text"
-      />
-      <Input label="Link do konta" name="socialsLink" id="socialsLink" type="text" />
-      <Button type="submit">Zapisz</Button>
+      <Input label="Nazwa konta społecznościowego" name="name" id="socialsName" type="text" />
+      <Input label="Link do konta" name="socialUrl" id="socialsLink" type="text" />
+      <Button disabled={createSocial.isPending || updateSocial.isPending} type="submit">
+        Zapisz
+      </Button>
     </PopUpForm>
   );
 }
 
 export { SocialsForm };
+
+SocialsForm.propTypes = {
+  socialToEdit: PropTypes.object
+};

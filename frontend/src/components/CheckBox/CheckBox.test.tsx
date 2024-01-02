@@ -1,5 +1,5 @@
 import { render, screen, act, fireEvent, cleanup, waitFor } from '@testing-library/react';
-import { CheckBox } from './';
+import { CheckBox } from '.';
 import { useField } from 'formik';
 
 jest.mock('formik');

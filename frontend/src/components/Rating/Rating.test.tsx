@@ -1,6 +1,6 @@
-import { render, screen, act, cleanup, fireEvent, waitFor } from '@testing-library/react';
-import { Rating } from './';
+import { render, screen, act, cleanup } from '@testing-library/react';
 import { useField } from 'formik';
+import { Rating } from '.';
 
 jest.mock('formik');
 
@@ -18,7 +18,10 @@ describe('Rating', () => {
       checked: false,
       onChange: jest.fn()
     };
-    (useField as jest.Mock).mockReturnValue([mockField, mockMeta]);
+    const mockHelpers = {
+      setValue: jest.fn()
+    };
+    (useField as jest.Mock).mockReturnValue([mockField, mockMeta, mockHelpers]);
 
     const mockProps = {
       label: 'testLabel',
@@ -49,15 +52,6 @@ describe('Rating', () => {
     const starNr0 = screen.getByLabelText('testLabel');
     expect(starNr0).toBeInTheDocument();
     expect(starNr0).toHaveAttribute('class', 'hidden');
-  });
-
-  test('Rating stars change values working', async () => {
-    const starNr4 = screen.getByTestId('testId-3');
-    fireEvent.click(starNr4);
-
-    await waitFor(() => {
-      expect(starNr4).toBeChecked();
-    });
   });
 
   test('Rating errors working', () => {

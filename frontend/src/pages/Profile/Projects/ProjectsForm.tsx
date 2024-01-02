@@ -1,42 +1,59 @@
 import { FormikHelpers } from 'formik';
+import PropTypes from 'prop-types';
+import { Button, PopUpForm, Input, TextArea } from 'components';
+import { ReadProject, WriteProject } from 'types/profile';
 import validationSchema from './ProjectsValidation';
-import { Button, PopUpForm, Input, TextArea } from '../../../components';
+import { useProjects } from 'hooks/useProjects';
+import { closeModal } from 'utils';
 
-interface ProjectsFormTypes {
-  projectName: string;
-  description: string;
-  projectUrl: string;
+interface ProjectsFormProps {
+  projectToEdit?: ReadProject;
 }
 
-function ProjectsForm() {
+function ProjectsForm({ projectToEdit }: ProjectsFormProps) {
+  const { createProject, updateProject } = useProjects();
+
   const initialValues = {
-    projectName: '',
-    description: '',
-    projectUrl: ''
+    name: projectToEdit?.name || '',
+    description: projectToEdit?.description || '',
+    projectUrl: projectToEdit?.projectUrl || ''
   };
 
-  const onSubmit = (
-    values: ProjectsFormTypes,
-    { setSubmitting }: FormikHelpers<ProjectsFormTypes>
+  const onSubmit = async (
+    values: WriteProject,
+    { setSubmitting, resetForm }: FormikHelpers<WriteProject>
   ) => {
-    setTimeout(() => {
-      window.alert(JSON.stringify(values));
-      setSubmitting(false);
-    }, 400);
+    setSubmitting(true);
+
+    if (projectToEdit) {
+      await updateProject.mutateAsync({ id: projectToEdit.id, ...values });
+    } else {
+      await createProject.mutateAsync(values);
+    }
+
+    setSubmitting(false);
+    resetForm();
+    closeModal();
   };
 
   return (
-    <PopUpForm<ProjectsFormTypes>
+    <PopUpForm<WriteProject>
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      <Input label="Nazwa projektu" name="projectName" id="projectName" type="text" />
+      <Input label="Nazwa projektu" name="name" id="projectName" type="text" />
       <TextArea label="Opis" name="description" id="description" rows={4} />
       <Input label="Link do projektu" name="projectUrl" id="projectUrl" type="text" />
-      <Button type="submit">Zapisz</Button>
+      <Button type="submit" disabled={createProject.isPending || updateProject.isPending}>
+        Zapisz
+      </Button>
     </PopUpForm>
   );
 }
 
 export { ProjectsForm };
+
+ProjectsForm.propTypes = {
+  projectToEdit: PropTypes.object
+};

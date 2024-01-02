@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FiSun } from 'react-icons/fi';
 import { FiMoon } from 'react-icons/fi';
-import { LIGHT_THEME, DARK_THEME } from '../../constants';
+import { LIGHT_THEME, DARK_THEME } from 'appConstants';
 
 function ThemeToggle() {
   !localStorage.getItem('theme') && localStorage.setItem('theme', LIGHT_THEME);

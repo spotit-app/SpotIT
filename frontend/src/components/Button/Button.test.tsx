@@ -1,5 +1,5 @@
 import { render, screen, act, cleanup } from '@testing-library/react';
-import { Button } from './';
+import { Button } from '.';
 
 describe('Button', () => {
   beforeEach(() => {

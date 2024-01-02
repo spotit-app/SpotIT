@@ -1,9 +1,8 @@
 import { render, fireEvent, act, cleanup, screen, waitFor } from '@testing-library/react';
 import { FormikHelpers } from 'formik';
-import { MainForm } from './';
 import * as Yup from 'yup';
-import { Button } from '../Button';
-import { Input } from '../Input';
+import { Button, Input } from 'components';
+import { MainForm } from '.';
 
 describe('MainForm', () => {
   const mockFn = jest.fn((x) => x);

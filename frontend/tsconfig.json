@@ -1,9 +1,21 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*", "dist/*"],
+      "assets/*": ["src/assets/*"],
+      "components": ["src/components"],
+      "appConstants": ["src/constants"],
+      "hooks/*": ["src/hooks/*"],
+      "pages": ["src/pages"],
+      "providers": ["src/providers"],
+      "types/*": ["src/types/*"],
+      "utils": ["src/utils"]
+    },
     "esModuleInterop": true,
-    "target": "ES2020",
+    "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
 
@@ -23,6 +35,6 @@
 
     "types": ["node", "jest", "@testing-library/jest-dom"]
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

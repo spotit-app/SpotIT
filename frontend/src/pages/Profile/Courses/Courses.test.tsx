@@ -1,35 +1,85 @@
 import { render, fireEvent, act, screen, waitFor, cleanup } from '@testing-library/react';
-import { Courses } from './Courses';
-import { showModal } from '../../../utils';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useAuth0 } from '@auth0/auth0-react';
+import nock from 'nock';
+import { showModal, slugifyAuth0Id } from 'utils';
+import Courses from '.';
 
-jest.mock('../../../utils/showModal', () => ({
+jest.mock('../../../utils/modal', () => ({
   showModal: jest.fn()
 }));
 
-const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
+jest.mock('@auth0/auth0-react');
 
-describe('Courses Page Components', () => {
+(useAuth0 as jest.Mock).mockReturnValue({
+  isAuthenticated: true,
+  user: {
+    sub: 'auth0|1234567890'
+  },
+  getAccessTokenSilently: async () => 'testToken'
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 30000
+    }
+  }
+});
+
+describe('Courses Page Component', () => {
   beforeEach(() => {
-    act(() => render(<Courses />));
+    nock('http://localhost:80')
+      .get(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/course`)
+      .reply(200, [{ id: 1, name: 'testCourse1', finishDate: '2023-01-01' }]);
+
+    nock('http://localhost:80')
+      .post(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/course`)
+      .reply(200, { id: 2, name: 'testCourse2', finishDate: '2023-01-01' });
+
+    nock('http://localhost:80')
+      .put(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/course/1`)
+      .reply(200, {
+        id: 1,
+        name: 'updatedTestCourse1',
+        finishDate: '2023-01-01'
+      });
+
+    nock('http://localhost:80')
+      .delete(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/course/1`)
+      .reply(200, { id: 1 });
+
+    act(() =>
+      render(
+        <QueryClientProvider client={queryClient}>
+          <Courses />
+        </QueryClientProvider>
+      )
+    );
   });
 
   afterEach(() => {
+    queryClient.clear();
     cleanup();
   });
 
-  test('Courses Page renders correctly', () => {
+  test('renders correctly', async () => {
     const pageTitle = screen.getByText('Kursy');
     expect(pageTitle).toBeInTheDocument();
 
     const addButton = screen.getByRole('button');
     expect(addButton).toBeInTheDocument();
 
-    const coursesList = screen.getByRole('list');
-    expect(coursesList).toBeInTheDocument();
+    await waitFor(() => {
+      const testCourse = screen.getByText('testCourse1');
+      expect(testCourse).toBeInTheDocument();
+    });
   });
 
-  test('Button triggers formToggle function', async () => {
-    const addButton = screen.getByRole('button');
+  test('button triggers formToggle function', async () => {
+    const addButton = screen.getByTestId('add-button');
     fireEvent.click(addButton);
 
     await waitFor(() => {
@@ -37,33 +87,70 @@ describe('Courses Page Components', () => {
     });
   });
 
-  test('Courses Form submits with bad data', async () => {
-    const courseNameInput = screen.getByLabelText('Nazwa kursu');
-    const courseEndDateInput = screen.getByLabelText('Data ukończenia');
-
-    fireEvent.change(courseNameInput, { target: { value: '' } });
-    fireEvent.change(courseEndDateInput, { target: { value: 'BadData' } });
+  test('form submits with bad data', async () => {
+    const courseName = screen.getByLabelText('Nazwa kursu');
+    fireEvent.change(courseName, { target: { value: 'test' } });
 
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(alertMock).not.toHaveBeenCalled();
+      const errors = screen.getByText('Obowiązkowe');
+      expect(errors).toBeInTheDocument();
     });
   });
 
-  test('Courses Form submits with valid data', async () => {
-    const courseNameInput = screen.getByLabelText('Nazwa kursu');
-    const courseEndDateInput = screen.getByLabelText('Data ukończenia');
+  test('form submits with valid data', async () => {
+    const courseName = screen.getByLabelText('Nazwa kursu');
+    fireEvent.change(courseName, { target: { value: 'testCourse2' } });
 
-    fireEvent.change(courseNameInput, { target: { value: 'Example Course' } });
-    fireEvent.change(courseEndDateInput, { target: { value: '2023-12-31' } });
+    const courseFinishDate = screen.getByLabelText('Data ukończenia');
+    fireEvent.change(courseFinishDate, { target: { value: '2023-01-01' } });
 
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(alertMock).toHaveBeenCalled();
+      const newTestCourse = screen.getByText('testCourse2');
+      expect(newTestCourse).toBeInTheDocument();
+    });
+  });
+
+  test('course update works correctly', async () => {
+    await waitFor(() => {
+      const editButton = screen.getByText('Edytuj');
+      fireEvent.click(editButton);
+    });
+
+    const courseName = screen.getByLabelText('Nazwa kursu');
+    fireEvent.change(courseName, { target: { value: 'updatedTestCourse1' } });
+
+    const submitButton = screen.getByText('Zapisz');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      const updatedTestCourse = screen.getByText('updatedTestCourse1');
+      expect(updatedTestCourse).toBeInTheDocument();
+    });
+  });
+
+  test('course delete works correctly', async () => {
+    await waitFor(() => {
+      const testCourse = screen.queryByText('testCourse1');
+      expect(testCourse).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const deleteButton = screen.getByText('Usuń');
+      fireEvent.click(deleteButton);
+    });
+
+    const testCourse = screen.queryByText('testCourse1');
+    expect(testCourse).not.toBeInTheDocument();
+
+    await waitFor(() => {
+      const noContent = screen.getByTestId('no-content');
+      expect(noContent).toBeInTheDocument();
     });
   });
 });

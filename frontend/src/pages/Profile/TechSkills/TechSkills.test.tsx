@@ -1,35 +1,91 @@
 import { render, fireEvent, act, screen, waitFor, cleanup } from '@testing-library/react';
-import { TechSkills } from './TechSkills';
-import { showModal } from '../../../utils';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import userEvent from '@testing-library/user-event';
+import { useAuth0 } from '@auth0/auth0-react';
+import nock from 'nock';
+import { showModal, slugifyAuth0Id } from 'utils';
+import TechSkills from '.';
 
-jest.mock('../../../utils/showModal', () => ({
+jest.mock('../../../utils/modal', () => ({
   showModal: jest.fn()
 }));
 
-const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
+jest.mock('@auth0/auth0-react');
+
+(useAuth0 as jest.Mock).mockReturnValue({
+  isAuthenticated: true,
+  user: {
+    sub: 'auth0|1234567890'
+  },
+  getAccessTokenSilently: async () => 'testToken'
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 30000
+    }
+  }
+});
 
 describe('TechSkills Page Component', () => {
   beforeEach(() => {
-    act(() => render(<TechSkills />));
+    nock('http://localhost:80')
+      .get(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/techSkill`)
+      .reply(200, [
+        { id: 1, techSkillName: 'testTechSkill1', skillLevel: 2, logoUrl: 'testLogoUrl1' }
+      ]);
+
+    nock('http://localhost:80')
+      .post(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/techSkill`)
+      .reply(200, {
+        id: 2,
+        techSkillName: 'testTechSkill2',
+        skillLevel: 2
+      });
+
+    nock('http://localhost:80')
+      .delete(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/techSkill/1`)
+      .reply(200, { id: 1 });
+
+    nock('http://localhost:80')
+      .get('/api/techSkillName')
+      .reply(200, [
+        { id: 1, name: 'testTechSkill1', logoUrl: 'testLogoUrl1' },
+        { id: 2, name: 'testTechSkill2', logoUrl: 'testLogoUrl2' }
+      ]);
+
+    act(() =>
+      render(
+        <QueryClientProvider client={queryClient}>
+          <TechSkills />
+        </QueryClientProvider>
+      )
+    );
   });
 
   afterEach(() => {
+    queryClient.clear();
     cleanup();
   });
 
-  test('TechSkills Page renders correctly', () => {
+  test('renders correctly', async () => {
     const pageTitle = screen.getByText('Umiejętności techniczne');
     expect(pageTitle).toBeInTheDocument();
 
     const addButton = screen.getByRole('button');
     expect(addButton).toBeInTheDocument();
 
-    const techSkillList = screen.getByRole('list');
-    expect(techSkillList).toBeInTheDocument();
+    await waitFor(() => {
+      const testTechSkill = screen.getAllByText('testTechSkill1');
+      expect(testTechSkill.length).toBe(2);
+    });
   });
 
-  test('Button triggers formToggle function', async () => {
-    const addButton = screen.getByRole('button');
+  test('button triggers formToggle function', async () => {
+    const addButton = screen.getByTestId('add-button');
     fireEvent.click(addButton);
 
     await waitFor(() => {
@@ -37,48 +93,70 @@ describe('TechSkills Page Component', () => {
     });
   });
 
-  test('Input customName appears after certain selected option', async () => {
+  test('form submits with bad data', async () => {
+    await waitFor(() => {
+      expect(screen.queryByText('testTechSkill2')).toBeInTheDocument();
+    });
+    const techSkillName = screen.getByLabelText('Nazwa');
+    await userEvent.selectOptions(techSkillName, 'testTechSkill1');
+
+    const submitButton = screen.getByText('Zapisz');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      const errors = screen.getByText('Obowiązkowe');
+      expect(errors).toBeInTheDocument();
+    });
+  });
+
+  test('form submits with valid data', async () => {
+    await waitFor(() => {
+      expect(screen.queryByText('testTechSkill2')).toBeInTheDocument();
+    });
+
+    const techSkillName = screen.getByLabelText('Nazwa');
+    await userEvent.selectOptions(techSkillName, 'testTechSkill2');
+
+    const techSkillLevel = screen.getByTestId('techSkillLevel-2');
+    fireEvent.click(techSkillLevel);
+
+    const myTechSkill = screen.queryByText('Podaj swoją wartość');
+    expect(myTechSkill).not.toBeInTheDocument();
+
+    const submitButton = screen.getByText('Zapisz');
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      const newTestTechSkill = screen.queryAllByText('testTechSkill2');
+      expect(newTestTechSkill.length).toBe(2);
+    });
+  });
+
+  test('different techSkillLevel renders correctly', async () => {
     const techSkillName = screen.getByLabelText('Nazwa');
     fireEvent.change(techSkillName, { target: { value: 'Inna' } });
 
-    await waitFor(() => {
-      expect(screen.getByLabelText('Podaj swoją wartość')).toBeInTheDocument();
-    });
+    const myTechSkill = screen.getByText('Podaj swoją wartość');
+    expect(myTechSkill).toBeInTheDocument();
   });
 
-  test('Input customName is on default not visible', async () => {
-    const techSkillName = screen.getByLabelText('Nazwa');
-    fireEvent.change(techSkillName, { target: { value: 'Umiejętność1' } });
-
+  test('techSkill delete works correctly', async () => {
     await waitFor(() => {
-      expect(screen.queryByLabelText('Podaj swoją wartość')).not.toBeInTheDocument();
+      const testTechSkill = screen.queryAllByText('testTechSkill1');
+      expect(testTechSkill.length).toBe(2);
     });
-  });
-
-  test('TechSkills Form submits with bad data', async () => {
-    const techSkillName = screen.getByLabelText('Nazwa');
-    fireEvent.change(techSkillName, { target: { value: '' } });
-
-    const submitButton = screen.getByText('Zapisz');
-    fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(alertMock).not.toHaveBeenCalled();
+      const deleteButton = screen.getByText('Usuń');
+      fireEvent.click(deleteButton);
     });
-  });
 
-  test('TechSkills Form submits with valid data', async () => {
-    const techSkillName = screen.getByLabelText('Nazwa');
-    const starNr4 = screen.getByTestId('techSkillLevel-3');
-
-    fireEvent.change(techSkillName, { target: { value: 'Umiejętność1' } });
-    fireEvent.click(starNr4);
-
-    const submitButton = screen.getByText('Zapisz');
-    fireEvent.click(submitButton);
+    const testTechSkill = screen.queryAllByText('testTechSkill1');
+    expect(testTechSkill.length).toBe(1);
 
     await waitFor(() => {
-      expect(alertMock).toHaveBeenCalled();
+      const noContent = screen.getByTestId('no-content');
+      expect(noContent).toBeInTheDocument();
     });
   });
 });

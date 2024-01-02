@@ -1,7 +1,7 @@
 import { render, screen, act } from '@testing-library/react';
-import { RouterProvider } from '../../providers';
-import { ProtectedPage } from './ProtectedPage';
 import { useAuth0 } from '@auth0/auth0-react';
+import { RouterProvider } from 'providers';
+import ProtectedPage from '.';
 
 jest.mock('@auth0/auth0-react');
 

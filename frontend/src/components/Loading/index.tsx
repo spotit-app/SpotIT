@@ -1,5 +1,10 @@
 function Loading() {
-  return <div data-testid="loading">Loading...</div>;
+  return (
+    <span
+      data-testid="loading"
+      className="loading loading-spinner loading-lg text-primary center"
+    />
+  );
 }
 
 export { Loading };

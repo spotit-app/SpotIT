@@ -1,51 +1,54 @@
 import { Route, Routes } from 'react-router-dom';
+import { Loading, Navbar } from 'components';
+import { Suspense } from 'react';
 import {
   Home,
   ProtectedPage,
-  Profile,
   PageNotFound,
   PersonalData,
   Courses,
   Education,
   Experience,
-  ForeignLang,
+  ForeignLanguages,
   Interests,
   Other,
   Projects,
   Socials,
   SoftSkills,
-  TechSkills
-} from './pages';
-import { Navbar } from './components';
+  TechSkills,
+  Profile
+} from 'pages';
 
 function App() {
   return (
     <>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedPage>
-              <Profile />
-            </ProtectedPage>
-          }
-        >
-          <Route path="dane-osobowe" element={<PersonalData />} />
-          <Route path="konta-spolecznosciowe" element={<Socials />} />
-          <Route path="edukacja" element={<Education />} />
-          <Route path="doswiadczenie" element={<Experience />} />
-          <Route path="umiejetnosci-techniczne" element={<TechSkills />} />
-          <Route path="umiejetnosci-miekkie" element={<SoftSkills />} />
-          <Route path="jezyki-obce" element={<ForeignLang />} />
-          <Route path="projekty" element={<Projects />} />
-          <Route path="zainteresowania" element={<Interests />} />
-          <Route path="kursy" element={<Courses />} />
-          <Route path="inne" element={<Other />} />
-        </Route>
-        <Route path="*" element={<PageNotFound />} />
-      </Routes>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/profil"
+            element={
+              <ProtectedPage>
+                <Profile />
+              </ProtectedPage>
+            }
+          >
+            <Route path="dane-osobowe" element={<PersonalData />} />
+            <Route path="konta-spolecznosciowe" element={<Socials />} />
+            <Route path="edukacja" element={<Education />} />
+            <Route path="doswiadczenie" element={<Experience />} />
+            <Route path="umiejetnosci-techniczne" element={<TechSkills />} />
+            <Route path="umiejetnosci-miekkie" element={<SoftSkills />} />
+            <Route path="jezyki-obce" element={<ForeignLanguages />} />
+            <Route path="projekty" element={<Projects />} />
+            <Route path="zainteresowania" element={<Interests />} />
+            <Route path="kursy" element={<Courses />} />
+            <Route path="inne" element={<Other />} />
+          </Route>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Suspense>
     </>
   );
 }

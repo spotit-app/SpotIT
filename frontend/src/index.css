@@ -10,3 +10,24 @@
 [data-theme='night'] .logo {
   content: url('./assets/images/logo-dark.svg');
 }
+
+.star {
+  background-image: none !important;
+}
+
+.modal {
+  margin: 0 !important;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.sidebar-toggle {
+  left: 0px;
+  top: 100px;
+  border-radius: 0px 15px 15px 0px;
+}

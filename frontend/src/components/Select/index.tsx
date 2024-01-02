@@ -1,10 +1,11 @@
+import { ClassAttributes, SelectHTMLAttributes } from 'react';
 import { FieldHookConfig, useField } from 'formik';
 import PropTypes from 'prop-types';
-import { ClassAttributes, SelectHTMLAttributes } from 'react';
+import { SelectOption } from 'types/shared';
 
 interface SelectProps {
   label: string;
-  options: string[];
+  options: SelectOption[];
   placeholder: string;
   customOnChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -22,37 +23,35 @@ function Select({
 }: SelectFieldProps & SelectElementProps) {
   const [field, meta] = useField(props);
 
-  const selectOptions = options.map((option, index) => (
-    <option key={index} className="bg-base-100">
-      {option}
+  const selectOptions = options.map((option: SelectOption, index) => (
+    <option key={index} value={option.value} className="bg-base-100">
+      {option.label}
     </option>
   ));
 
   return (
-    <div className="sm:col-span-4">
-      <label htmlFor={props.id} className="block text-sm font-medium leading-6">
+    <div>
+      <label htmlFor={props.id} className="block text-sm font-medium leading-6 mb-1">
         {label}
       </label>
-      <div className="mt-2">
-        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-          <select
-            {...field}
-            {...props}
-            onChange={(e) => {
-              customOnChange && customOnChange(e);
-              field.onChange(e);
-            }}
-            className="select select-bordered block flex-1 border-0 bg-transparent py-1.5 pl-1 focus:ring-0 sm:text-sm sm:leading-6"
-          >
-            <option disabled hidden value="">
-              {placeholder}
-            </option>
-            {selectOptions}
-          </select>
-        </div>
-        <div className="text-red-500 h-6">
-          {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
-        </div>
+
+      <select
+        {...field}
+        {...props}
+        onChange={(e) => {
+          customOnChange && customOnChange(e);
+          field.onChange(e);
+        }}
+        className="select select-bordered w-full"
+      >
+        <option disabled hidden value="">
+          {placeholder}
+        </option>
+        {selectOptions}
+      </select>
+
+      <div className="text-red-500 h-6">
+        {meta.touched && meta.error ? <div className="error">{meta.error}</div> : null}
       </div>
     </div>
   );
@@ -61,7 +60,7 @@ function Select({
 Select.propTypes = {
   label: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  options: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  options: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   placeholder: PropTypes.string,
   customOnChange: PropTypes.func
 };

@@ -1,5 +1,5 @@
-import { PropsWithChildren } from 'react';
 import { Formik, Form, FormikHelpers, FormikValues } from 'formik';
+import { PropsWithChildren } from 'react';
 import PropTypes from 'prop-types';
 
 interface PopUpFormProps<FormValues> extends PropsWithChildren {
@@ -19,13 +19,10 @@ function PopUpForm<FormValues extends FormikValues>({
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      enableReinitialize={true}
     >
       <Form>
-        <div className="flex text-base justify-center mt-3 space-y-12">
-          <div className="w-full border-b border-gray-900/10 pb-8">
-            <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-5">{children}</div>
-          </div>
-        </div>
+        <div className="flex flex-col text-base justify-center mt-3">{children}</div>
       </Form>
     </Formik>
   );

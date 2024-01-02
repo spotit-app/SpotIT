@@ -16,8 +16,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.github.dockerjava.api.exception.BadRequestException;
-import com.spotit.backend.storage.exception.ErrorDeletingFileException;
-import com.spotit.backend.storage.exception.ErrorUploadingFileException;
+import com.spotit.backend.storage.ErrorDeletingFileException;
+import com.spotit.backend.storage.ErrorUploadingFileException;
+import com.spotit.backend.storage.StorageServiceImpl;
 
 import io.imagekit.sdk.ImageKit;
 import io.imagekit.sdk.models.BaseFile;
@@ -130,5 +131,22 @@ class StorageServiceTest {
         verify(imageKit, times(1)).deleteFile("fileID");
 
         assertEquals("Error while deleting file '" + filename + "'!", result.getMessage());
+    }
+
+    @Test
+    void shouldReturnWhenFileNotFound() throws Exception {
+        // given
+        var filename = "filename";
+        var mockedResultList = new ResultList();
+        mockedResultList.setResults(List.of());
+
+        when(imageKit.getFileList(any())).thenReturn(mockedResultList);
+
+        // when
+        storageServiceImpl.deleteFile(filename);
+
+        // then
+        verify(imageKit, times(1)).getFileList(any());
+        verify(imageKit, times(0)).deleteFile("fileID");
     }
 }

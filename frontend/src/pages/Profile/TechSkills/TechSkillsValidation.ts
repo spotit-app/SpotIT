@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { REQUIRED_MESSAGE } from '../../../constants';
+import { REQUIRED_MESSAGE } from 'appConstants';
 
 const techSkillsValidationSchema = Yup.object({
   techSkillName: Yup.string().required(REQUIRED_MESSAGE),

@@ -1,39 +1,58 @@
+import { ChangeEvent, useEffect, useState } from 'react';
 import { FormikHelpers } from 'formik';
+import PropTypes from 'prop-types';
+import { Button, CheckBox, PopUpForm, Input } from 'components';
+import { ReadExperience, WriteExperience } from 'types/profile';
+import { useExperiences } from 'hooks/useExperiences';
 import validationSchema from './ExperienceValidation';
-import { Button, CheckBox, PopUpForm, Input } from '../../../components';
-import { ChangeEvent, useState } from 'react';
+import { closeModal } from 'utils';
 
-interface ExperienceFormType {
-  companyName: string;
-  position: string;
-  startDate: string;
-  isChecked: boolean;
-  endDate: string;
+interface ExperienceFormProps {
+  experienceToEdit?: ReadExperience;
 }
 
-function ExperienceForm() {
+function ExperienceForm({ experienceToEdit }: ExperienceFormProps) {
+  const { createExperience, updateExperience } = useExperiences();
+
   const [isChecked, setIsChecked] = useState(false);
 
+  useEffect(() => {
+    if (experienceToEdit) {
+      setIsChecked(experienceToEdit.endDate !== null);
+    }
+  }, [experienceToEdit]);
+
   const initialValues = {
-    companyName: '',
-    position: '',
-    startDate: '',
-    isChecked: false,
-    endDate: ''
+    companyName: experienceToEdit?.companyName || '',
+    position: experienceToEdit?.position || '',
+    startDate: experienceToEdit?.startDate || '',
+    isChecked: experienceToEdit ? experienceToEdit?.endDate !== null : false,
+    endDate: experienceToEdit
+      ? experienceToEdit.endDate !== null
+        ? experienceToEdit.endDate
+        : ''
+      : ''
   };
 
-  const onSubmit = (
-    values: ExperienceFormType,
-    { setSubmitting }: FormikHelpers<ExperienceFormType>
+  const onSubmit = async (
+    values: WriteExperience,
+    { setSubmitting, resetForm }: FormikHelpers<WriteExperience>
   ) => {
-    setTimeout(() => {
-      window.alert(JSON.stringify(values));
-      setSubmitting(false);
-    }, 400);
+    setSubmitting(true);
+
+    if (experienceToEdit) {
+      await updateExperience.mutateAsync({ id: experienceToEdit.id, ...values });
+    } else {
+      await createExperience.mutateAsync(values);
+    }
+
+    setSubmitting(false);
+    resetForm();
+    closeModal();
   };
 
   return (
-    <PopUpForm<ExperienceFormType>
+    <PopUpForm<WriteExperience>
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
@@ -51,9 +70,15 @@ function ExperienceForm() {
         }}
       />
       {isChecked && <Input label="Data ukończenia" name="endDate" id="endDate" type="date" />}
-      <Button type="submit">Zapisz</Button>
+      <Button type="submit" disabled={createExperience.isPending || updateExperience.isPending}>
+        Zapisz
+      </Button>
     </PopUpForm>
   );
 }
 
 export { ExperienceForm };
+
+ExperienceForm.propTypes = {
+  experienceToEdit: PropTypes.object
+};

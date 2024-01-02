@@ -1,6 +1,6 @@
 import { screen, render, fireEvent } from '@testing-library/react';
-import { ThemeToggle } from './';
-import { LIGHT_THEME, DARK_THEME } from '../../constants';
+import { LIGHT_THEME, DARK_THEME } from 'appConstants';
+import { ThemeToggle } from '.';
 
 describe('ThemeToggle', () => {
   test('renders ThemeToggle component', () => {

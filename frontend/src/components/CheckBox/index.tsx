@@ -1,6 +1,6 @@
 import { ClassAttributes, InputHTMLAttributes } from 'react';
-import PropTypes from 'prop-types';
 import { FieldHookConfig, useField } from 'formik';
+import PropTypes from 'prop-types';
 
 interface CheckBoxProps {
   label: string;
@@ -20,8 +20,8 @@ function CheckBox({
   const [field] = useField(props);
 
   return (
-    <div className="sm:col-span-4">
-      <label htmlFor={props.id} className="text-sm font-medium leading-6 mr-2">
+    <div className="flex justify-between items-center input input-bordered p-2 my-2">
+      <label htmlFor={props.id} className="text-sm font-medium leading-6 w-full cursor-pointer">
         {label}
       </label>
       <input
@@ -33,7 +33,7 @@ function CheckBox({
           customOnChange && customOnChange(e);
           field.onChange(e);
         }}
-        className="checkbox checkbox-primary"
+        className="checkbox checkbox-primary bg-base-100 focus:ring-offset-0"
       />
     </div>
   );

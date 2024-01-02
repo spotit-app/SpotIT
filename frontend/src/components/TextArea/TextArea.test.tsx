@@ -1,6 +1,6 @@
 import { render, screen, act, fireEvent, cleanup, waitFor } from '@testing-library/react';
-import { TextArea } from './';
 import { useField } from 'formik';
+import { TextArea } from '.';
 
 jest.mock('formik');
 

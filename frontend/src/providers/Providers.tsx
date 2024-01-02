@@ -1,12 +1,15 @@
-import { RouterProvider } from './RouterProvider';
-import { AuthProvider } from './AuthProvider';
-import PropTypes from 'prop-types';
 import { PropsWithChildren } from 'react';
+import PropTypes from 'prop-types';
+import { RouterProvider, AuthProvider, QueryProvider, UserProvider } from '.';
 
 function Providers({ children }: PropsWithChildren) {
   return (
     <AuthProvider>
-      <RouterProvider>{children}</RouterProvider>
+      <RouterProvider>
+        <QueryProvider>
+          <UserProvider>{children}</UserProvider>
+        </QueryProvider>
+      </RouterProvider>
     </AuthProvider>
   );
 }

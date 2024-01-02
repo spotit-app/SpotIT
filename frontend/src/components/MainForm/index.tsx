@@ -1,5 +1,5 @@
-import { PropsWithChildren } from 'react';
 import { Formik, Form, FormikHelpers, FormikValues } from 'formik';
+import { PropsWithChildren } from 'react';
 import PropTypes from 'prop-types';
 
 interface MainFormProps<FormValues> extends PropsWithChildren {
@@ -21,14 +21,11 @@ function MainForm<FormValues extends FormikValues>({
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
+      enableReinitialize={true}
     >
-      <Form className="w-9/12" data-testid="form">
-        <div className="flex text-base justify-center mt-3 space-y-12">
-          <div className="w-9/12 border-b border-gray-900/10 pb-12">
-            <h1 className="flex justify-center text-lg font-bold leading-7">{title}</h1>
-            <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">{children}</div>
-          </div>
-        </div>
+      <Form className="w-full p-5" data-testid="form">
+        <h1 className="text-center text-xl font-bold leading-7 my-3">{title}</h1>
+        {children}
       </Form>
     </Formik>
   );

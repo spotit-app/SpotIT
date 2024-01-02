@@ -1,7 +1,7 @@
 FROM gradle:8.3.0-jdk17-alpine AS builder
 WORKDIR /app
 COPY . .
-RUN gradle build -x test
+RUN gradle build -x test --no-daemon
 
 FROM eclipse-temurin:17-alpine
 WORKDIR /app

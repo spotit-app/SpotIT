@@ -1,6 +1,6 @@
 import { render, screen, act, cleanup, fireEvent, waitFor } from '@testing-library/react';
-import { Select } from './';
 import { useField } from 'formik';
+import { Select } from '.';
 
 jest.mock('formik');
 
@@ -25,7 +25,10 @@ describe('Select', () => {
       id: 'testId',
       name: 'testName',
       placeholder: 'testPlaceholder',
-      options: ['testOption1', 'testOption2']
+      options: [
+        { value: 'testOption1', label: 'testOption1' },
+        { value: 'testOption2', label: 'testOption2' }
+      ]
     };
 
     act(() => render(<Select {...mockProps} />));

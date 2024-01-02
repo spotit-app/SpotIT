@@ -1,24 +1,29 @@
-import { FormikHelpers } from 'formik';
-import validationSchema from './EducationValidation';
-import { Input, Select, Button, CheckBox } from '../../../components';
 import { ChangeEvent, useState } from 'react';
-import { PopUpForm } from '../../../components';
-
-interface EducationFormType {
-  educationLevel: string;
-  customEducationLevel: string;
-  schoolName: string;
-  faculty: string;
-  startDate: string;
-  isChecked: boolean;
-  endDate: string;
-}
+import { FormikHelpers } from 'formik';
+import { Input, Select, Button, CheckBox, PopUpForm } from 'components';
+import { EducationFormType, ReadEducationLevel } from 'types/profile';
+import validationSchema from './EducationValidation';
+import { useEducations } from 'hooks/useEducations';
+import { SelectOption } from 'types/shared';
+import { closeModal } from 'utils';
 
 function EducationForm() {
   const [selectedEducationLevel, setSelectedEducationLevel] = useState('');
   const [isChecked, setIsChecked] = useState(false);
 
-  const optionsToSelect = ['Stopień1', 'Stopień2', 'Inny'];
+  const { educationLevels, createEducation } = useEducations();
+  const educationLevelsToSelect: string[] | undefined = educationLevels?.map(
+    (educationLevel: ReadEducationLevel) => educationLevel.name
+  );
+
+  const optionsToSelect: SelectOption[] = [...(educationLevelsToSelect || []), 'Inny'].map(
+    (option: string) => {
+      return {
+        value: option,
+        label: option
+      };
+    }
+  );
 
   const initialValues = {
     educationLevel: '',
@@ -30,14 +35,17 @@ function EducationForm() {
     endDate: ''
   };
 
-  const onSubmit = (
+  const onSubmit = async (
     values: EducationFormType,
-    { setSubmitting }: FormikHelpers<EducationFormType>
+    { setSubmitting, resetForm }: FormikHelpers<EducationFormType>
   ) => {
-    setTimeout(() => {
-      window.alert(JSON.stringify(values));
-      setSubmitting(false);
-    }, 400);
+    setSubmitting(true);
+    await createEducation.mutateAsync(values);
+    setSubmitting(false);
+    resetForm();
+    setSelectedEducationLevel('');
+    setIsChecked(false);
+    closeModal();
   };
 
   return (

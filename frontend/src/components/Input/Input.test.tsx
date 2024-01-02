@@ -1,6 +1,6 @@
 import { render, screen, act, fireEvent, cleanup, waitFor } from '@testing-library/react';
-import { Input } from './';
 import { useField } from 'formik';
+import { Input } from '.';
 
 jest.mock('formik');
 

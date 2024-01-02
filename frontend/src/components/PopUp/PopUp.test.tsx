@@ -1,5 +1,5 @@
 import { render, screen, act, cleanup } from '@testing-library/react';
-import { PopUp } from './';
+import { PopUp } from '.';
 
 describe('PopUp', () => {
   beforeEach(() => {

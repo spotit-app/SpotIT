@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 const otherValidationSchema = Yup.object({
-  otherDescription: Yup.string(),
+  description: Yup.string(),
   cvClause: Yup.string()
 });
 

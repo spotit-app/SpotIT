@@ -1,35 +1,103 @@
 import { render, fireEvent, act, screen, waitFor, cleanup } from '@testing-library/react';
-import { Education } from './Education';
-import { showModal } from '../../../utils';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import userEvent from '@testing-library/user-event';
+import { useAuth0 } from '@auth0/auth0-react';
+import nock from 'nock';
+import { showModal, slugifyAuth0Id } from 'utils';
+import Education from '.';
 
-jest.mock('../../../utils/showModal', () => ({
+jest.mock('../../../utils/modal', () => ({
   showModal: jest.fn()
 }));
 
-const alertMock = jest.spyOn(window, 'alert').mockImplementation(() => {});
+jest.mock('@auth0/auth0-react');
 
-describe('Education Page Component', () => {
+(useAuth0 as jest.Mock).mockReturnValue({
+  isAuthenticated: true,
+  user: {
+    sub: 'auth0|1234567890'
+  },
+  getAccessTokenSilently: async () => 'testToken'
+});
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 30000
+    }
+  }
+});
+
+describe('Educations Page Component', () => {
   beforeEach(() => {
-    act(() => render(<Education />));
+    nock('http://localhost:80')
+      .get(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/education`)
+      .reply(200, [
+        {
+          id: 1,
+          schoolName: 'testEducation1',
+          educationLevel: 'testEducationLevel',
+          faculty: 'testFaculty',
+          startDate: '2022-01-01',
+          endDate: '2023-01-01'
+        }
+      ]);
+
+    nock('http://localhost:80')
+      .post(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/education`)
+      .reply(200, {
+        id: 2,
+        schoolName: 'testEducation2',
+        educationLevel: 'testEducationLevel',
+        faculty: 'testFaculty',
+        startDate: '2022-01-01',
+        endDate: null
+      });
+
+    nock('http://localhost:80')
+      .delete(`/api/userAccount/${slugifyAuth0Id('auth0|1234567890')}/education/1`)
+      .reply(200, { id: 1 });
+
+    nock('http://localhost:80')
+      .get('/api/educationLevel')
+      .reply(200, [
+        {
+          id: 1,
+          name: 'testEducationLevel'
+        }
+      ]);
+
+    act(() =>
+      render(
+        <QueryClientProvider client={queryClient}>
+          <Education />
+        </QueryClientProvider>
+      )
+    );
   });
 
   afterEach(() => {
+    queryClient.clear();
     cleanup();
   });
 
-  test('Education Page renders correctly', () => {
+  test('renders correctly', async () => {
     const pageTitle = screen.getByText('Edukacja');
     expect(pageTitle).toBeInTheDocument();
 
     const addButton = screen.getByRole('button');
     expect(addButton).toBeInTheDocument();
 
-    const educationList = screen.getByRole('list');
-    expect(educationList).toBeInTheDocument();
+    await waitFor(() => {
+      const testEducation = screen.getByText('testEducation1 - testEducationLevel');
+      expect(testEducation).toBeInTheDocument();
+    });
   });
 
-  test('Button triggers formToggle function', async () => {
-    const addButton = screen.getByRole('button');
+  test('button triggers formToggle function', async () => {
+    const addButton = screen.getByTestId('add-button');
     fireEvent.click(addButton);
 
     await waitFor(() => {
@@ -37,80 +105,72 @@ describe('Education Page Component', () => {
     });
   });
 
-  test('Input customName appears after certain selected option', async () => {
-    const educationNameInput = screen.getByLabelText('Stopień edukacji');
-    fireEvent.change(educationNameInput, { target: { value: 'Inny' } });
-
+  test('form submits with bad data', async () => {
     await waitFor(() => {
-      expect(screen.getByLabelText('Podaj swoją wartość')).toBeInTheDocument();
+      screen.getByText('testEducationLevel');
     });
-  });
 
-  test('Input customName is on default not visible', async () => {
-    const educationNameInput = screen.getByLabelText('Stopień edukacji');
-    fireEvent.change(educationNameInput, { target: { value: 'Stopień1' } });
-
-    await waitFor(() => {
-      expect(screen.queryByLabelText('Podaj swoją wartość')).not.toBeInTheDocument();
-    });
-  });
-
-  test('Education endDate showing up', async () => {
-    const checkbox = screen.getByLabelText('Ukończono?');
-    fireEvent.click(checkbox);
-
-    const educationEndDate = screen.getByLabelText('Data ukończenia');
-
-    await waitFor(() => {
-      expect(educationEndDate).toBeInTheDocument();
-    });
-  });
-
-  test('Education endDate hidden on default', async () => {
-    const educationEndDate = screen.queryByLabelText('Data ukończenia');
-    expect(educationEndDate).not.toBeInTheDocument();
-  });
-
-  test('Education Form submits with bad data', async () => {
     const educationSchoolName = screen.getByLabelText('Nazwa szkoły');
-    const educationNameInput = screen.getByLabelText('Stopień edukacji');
-    const educationFaculty = screen.getByLabelText('Kierunek');
-    const educationStartDate = screen.getByLabelText('Data rozpoczęcia');
+    fireEvent.change(educationSchoolName, { target: { value: 'testEducation2' } });
 
-    fireEvent.change(educationSchoolName, { target: { value: '' } });
-    fireEvent.change(educationNameInput, { target: { value: '' } });
-    fireEvent.change(educationFaculty, { target: { value: '' } });
-    fireEvent.change(educationStartDate, { target: { value: 'BadData' } });
+    const educationLevel = screen.getByLabelText('Stopień edukacji');
+    await userEvent.selectOptions(educationLevel, ['testEducationLevel']);
+
+    const faculty = screen.getByLabelText('Kierunek');
+    fireEvent.change(faculty, { target: { value: 'testFaculty' } });
 
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(alertMock).not.toHaveBeenCalled();
+      const errors = screen.getByText('Obowiązkowe');
+      expect(errors).toBeInTheDocument();
     });
   });
 
-  test('Education Form submits with valid data', async () => {
-    const educationChecked = screen.getByLabelText('Ukończono?');
-    fireEvent.click(educationChecked);
+  test('form submits with valid data', async () => {
+    await waitFor(() => {
+      screen.getByText('testEducationLevel');
+    });
 
     const educationSchoolName = screen.getByLabelText('Nazwa szkoły');
-    const educationNameInput = screen.getByLabelText('Stopień edukacji');
-    const educationFaculty = screen.getByLabelText('Kierunek');
-    const educationStartDate = screen.getByLabelText('Data rozpoczęcia');
-    const educationEndDate = screen.getByLabelText('Data ukończenia');
+    fireEvent.change(educationSchoolName, { target: { value: 'testEducation2' } });
 
-    fireEvent.change(educationSchoolName, { target: { value: 'testEducation' } });
-    fireEvent.change(educationNameInput, { target: { value: 'Stopień1' } });
-    fireEvent.change(educationFaculty, { target: { value: 'testFaculty' } });
-    fireEvent.change(educationStartDate, { target: { value: '2023-12-30' } });
-    fireEvent.change(educationEndDate, { target: { value: '2023-12-31' } });
+    const educationLevel = screen.getByLabelText('Stopień edukacji');
+    await userEvent.selectOptions(educationLevel, ['testEducationLevel']);
+
+    const faculty = screen.getByLabelText('Kierunek');
+    fireEvent.change(faculty, { target: { value: 'testFaculty' } });
+
+    const startDate = screen.getByLabelText('Data rozpoczęcia');
+    fireEvent.change(startDate, { target: { value: '2022-01-01' } });
 
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(alertMock).toHaveBeenCalled();
+      const newTestEducation = screen.getByText('testEducation2 - testEducationLevel');
+      expect(newTestEducation).toBeInTheDocument();
+    });
+  });
+
+  test('education delete works correctly', async () => {
+    await waitFor(() => {
+      const testEducation = screen.queryByText('testEducation1 - testEducationLevel');
+      expect(testEducation).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const deleteButton = screen.getByText('Usuń');
+      fireEvent.click(deleteButton);
+    });
+
+    const testEducation = screen.queryByText('testEducation1 - testEducationLevel');
+    expect(testEducation).not.toBeInTheDocument();
+
+    await waitFor(() => {
+      const noContent = screen.getByTestId('no-content');
+      expect(noContent).toBeInTheDocument();
     });
   });
 });

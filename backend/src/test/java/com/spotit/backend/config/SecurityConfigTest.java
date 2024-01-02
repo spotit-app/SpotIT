@@ -10,9 +10,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.spotit.backend.abstraction.IntegrationTest;
+
+import jakarta.transaction.Transactional;
+
 @SpringBootTest
+@Transactional
 @AutoConfigureMockMvc
-class SecurityConfigTest {
+class SecurityConfigTest extends IntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
