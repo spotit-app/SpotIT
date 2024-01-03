@@ -2,6 +2,7 @@ package com.spotit.backend.employee.userDetails.education;
 
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import com.spotit.backend.employee.referenceData.educationLevel.EducationLevel;
 import com.spotit.backend.employee.referenceData.educationLevel.EducationLevelService;
 import com.spotit.backend.employee.userDetails.abstraction.AbstractUserDetailController;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/userAccount/{auth0Id}/education")
 public class EducationController extends

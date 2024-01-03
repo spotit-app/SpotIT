@@ -1,5 +1,6 @@
 package com.spotit.backend.employee.userDetails.foreignLanguage;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import com.spotit.backend.employee.referenceData.foreignLanguageName.ForeignLang
 import com.spotit.backend.employee.referenceData.foreignLanguageName.ForeignLanguageNameService;
 import com.spotit.backend.employee.userDetails.abstraction.AbstractUserDetailController;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/userAccount/{auth0Id}/foreignLanguage")
 public class ForeignLanguageController extends

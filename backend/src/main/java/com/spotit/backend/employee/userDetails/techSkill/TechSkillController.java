@@ -2,6 +2,7 @@ package com.spotit.backend.employee.userDetails.techSkill;
 
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import com.spotit.backend.employee.referenceData.techSkillName.TechSkillName;
 import com.spotit.backend.employee.referenceData.techSkillName.TechSkillNameService;
 import com.spotit.backend.employee.userDetails.abstraction.AbstractUserDetailController;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/userAccount/{auth0Id}/techSkill")
 public class TechSkillController
