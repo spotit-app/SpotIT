@@ -18,8 +18,6 @@ FROM eclipse-temurin:17-alpine
 WORKDIR /app
 COPY --from=backend-builder /app/build/libs/backend-0.0.1-SNAPSHOT.jar app.jar
 
-EXPOSE 8080
-
 HEALTHCHECK --interval=30s --timeout=3s \ 
     CMD wget -qO- http://localhost:8080/actuator/health || exit 1
 
