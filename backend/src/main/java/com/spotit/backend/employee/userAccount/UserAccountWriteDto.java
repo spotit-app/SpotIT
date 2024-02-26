@@ -13,5 +13,6 @@ public record UserAccountWriteDto(
         String phoneNumber,
         String position,
         String description,
-        String cvClause) implements WriteDto {
+        String cvClause,
+        Boolean isOpen) implements WriteDto {
 }

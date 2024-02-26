@@ -11,7 +11,7 @@ function UserProvider({ children }: PropsWithChildren) {
       const newUser: CreateUser = {
         auth0Id: user!.sub!,
         email: user!.email!,
-        profilePicture: user!.picture!
+        profilePictureUrl: user!.picture!
       };
 
       try {

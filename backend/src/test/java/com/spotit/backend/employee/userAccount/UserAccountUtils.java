@@ -16,6 +16,7 @@ public interface UserAccountUtils {
                 .position("Position " + id)
                 .description("Description " + id)
                 .cvClause("CV clause " + id)
+                .isOpen(false)
                 .build();
     }
 
@@ -31,6 +32,7 @@ public interface UserAccountUtils {
                 .position("Position " + id)
                 .description("Description " + id)
                 .cvClause("CV clause " + id)
+                .isOpen(false)
                 .build();
     }
 
@@ -44,6 +46,7 @@ public interface UserAccountUtils {
                 .position("Position " + id)
                 .description("Description " + id)
                 .cvClause("CV clause " + id)
+                .isOpen(false)
                 .build();
     }
 
@@ -58,6 +61,7 @@ public interface UserAccountUtils {
                 .description("Description " + id)
                 .cvClause("CV clause " + id)
                 .profilePictureUrl("http://profilePicture.url")
+                .isOpen(false)
                 .build();
     }
 

@@ -60,7 +60,8 @@ function useUser() {
     email: userData?.email,
     phoneNumber: userData?.phoneNumber,
     profilePictureUrl: userData?.profilePictureUrl,
-    position: userData?.position
+    position: userData?.position,
+    isOpen: userData?.isOpen
   };
 
   const userProfileData = {

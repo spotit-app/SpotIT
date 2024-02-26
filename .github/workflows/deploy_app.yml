@@ -5,13 +5,10 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "frontend/**"
-      - ".github/**"
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: "${{ github.repository }}-frontend"
+  IMAGE_NAME: "${{ github.repository }}-app"
 
 jobs:
   deploy:
@@ -45,15 +42,15 @@ jobs:
       - name: "Build and push Docker image"
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09
         with:
-          context: "./frontend"
+          context: "."
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: "Trigger frontend deploy"
+      - name: "Trigger app deploy"
         uses: fjogeleit/http-request-action@v1.14.1
         with:
-          url: ${{ secrets.FRONTEND_WEBHOOK }}
+          url: ${{ secrets.DEPLOY_WEBHOOK }}
           method: "GET"

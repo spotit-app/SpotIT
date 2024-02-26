@@ -1,7 +1,12 @@
 package com.spotit.backend.employee.portfolio;
 
+import java.util.function.Supplier;
+
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.spotit.backend.employee.abstraction.EntityNotFoundException;
@@ -75,6 +80,14 @@ public class PortfolioServiceImpl implements PortfolioService {
         portfolio.setPortfolioUrl(newPortfolioUrl);
 
         return create(portfolio);
+    }
+
+    @Override
+    // @Cacheable(key = "#bookSearchCriteria?.toString() + #pageable?.toString()")
+    public Page<Portfolio> findByCriteria(
+            Supplier<Specification<Portfolio>> portfolioSearchCriteria,
+            Pageable pageable) {
+        return portfolioRepository.findAll(portfolioSearchCriteria.get(), pageable);
     }
 
     private boolean isUserInValid(UserAccount userAccount) {

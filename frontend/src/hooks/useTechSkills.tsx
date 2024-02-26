@@ -86,7 +86,7 @@ function useTechSkills() {
   } = useQuery({
     queryKey: ['techSkillNames'],
     queryFn: useCallback(async (): Promise<ReadTechSkillName[]> => {
-      return await axios.get(`/api/techSkillName`, await axiosOptions()).then((res) => res.data);
+      return await axios.get(`/api/techSkillName`).then((res) => res.data);
     }, [])
   });
 

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
 interface SocialCardProps {
-  children: ReactNode;
+  children?: ReactNode;
   name: string;
   socialUrl: string;
 }
@@ -29,7 +29,7 @@ function SocialCard({ children, name, socialUrl }: SocialCardProps) {
 export { SocialCard };
 
 SocialCard.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   name: PropTypes.string.isRequired,
   socialUrl: PropTypes.string.isRequired
 };

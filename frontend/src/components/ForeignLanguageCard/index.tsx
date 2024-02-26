@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
 interface ForeignLanguageCardProps {
-  children: ReactNode;
+  children?: ReactNode;
   name: string;
   flagUrl: string;
 }
@@ -24,7 +24,7 @@ function ForeignLanguageCard({ children, name, flagUrl }: ForeignLanguageCardPro
 export { ForeignLanguageCard };
 
 ForeignLanguageCard.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   name: PropTypes.string.isRequired,
   flagUrl: PropTypes.string.isRequired
 };

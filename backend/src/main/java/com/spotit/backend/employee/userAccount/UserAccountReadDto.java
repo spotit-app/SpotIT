@@ -15,5 +15,6 @@ public record UserAccountReadDto(
         String profilePictureUrl,
         String position,
         String description,
-        String cvClause) implements ReadDto {
+        String cvClause,
+        Boolean isOpen) implements ReadDto {
 }

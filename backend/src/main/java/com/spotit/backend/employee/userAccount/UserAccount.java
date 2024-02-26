@@ -5,6 +5,7 @@ import com.spotit.backend.employee.abstraction.AbstractEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -45,6 +46,10 @@ public class UserAccount extends AbstractEntity {
     @Column
     private String cvClause;
 
+    @Column
+    @Builder.Default
+    private Boolean isOpen = false;
+
     @Override
     public void update(AbstractEntity otherEntity) {
         if (otherEntity instanceof UserAccount o) {
@@ -78,6 +83,10 @@ public class UserAccount extends AbstractEntity {
 
             if (o.cvClause != null) {
                 cvClause = o.cvClause;
+            }
+
+            if (o.isOpen != null) {
+                isOpen = o.isOpen;
             }
         }
     }

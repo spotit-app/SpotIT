@@ -8,6 +8,7 @@ import {
   PersonalData,
   Courses,
   Education,
+  Employees,
   Experience,
   ForeignLanguages,
   Interests,
@@ -16,7 +17,9 @@ import {
   Socials,
   SoftSkills,
   TechSkills,
-  Profile
+  Profile,
+  Portfolio,
+  WelcomePage
 } from 'pages';
 
 function App() {
@@ -26,6 +29,8 @@ function App() {
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/portfolio/:portfolioUrl" element={<Portfolio />} />
+          <Route path="/pracownicy" element={<Employees />} />
           <Route
             path="/profil"
             element={
@@ -34,6 +39,7 @@ function App() {
               </ProtectedPage>
             }
           >
+            <Route path="" element={<WelcomePage />} />
             <Route path="dane-osobowe" element={<PersonalData />} />
             <Route path="konta-spolecznosciowe" element={<Socials />} />
             <Route path="edukacja" element={<Education />} />

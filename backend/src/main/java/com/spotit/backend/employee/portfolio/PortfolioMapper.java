@@ -30,5 +30,8 @@ public interface PortfolioMapper {
 
     @Mapping(target = "userData", source = "userAccount")
     PortfolioReadDto toReadDto(Portfolio portfolio);
+
+    @Mapping(target = "userData", source = "userAccount")
+    PortfolioListReadDto toListReadDto(Portfolio portfolio);
 }
 

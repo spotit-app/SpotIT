@@ -17,23 +17,14 @@ services:
     ports: 
       - 6379:6379    
 
-  backend:
-    build: ./backend
-    entrypoint: [ "java", "-jar", "-Dspring.profiles.active=compose", "app.jar" ]
-    ports:
+  app:
+   build: .
+   entrypoint: [ "java", "-jar", "-Dspring.profiles.active=compose", "app.jar" ]
+   ports:
       - 8080:8080
-    depends_on: 
+   depends_on: 
       - postgresql
       - redis
-
-  frontend:
-    build: ./frontend
-    environment:
-      - API_URL=http://backend:8080
-    ports:
-      - 5173:80
-    depends_on:
-      - backend
       
 volumes:
   pg_data:

@@ -1,5 +1,8 @@
 package com.spotit.backend.employee.portfolio;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +29,15 @@ public class PortfolioController {
     @GetMapping("/portfolio/{portfolioUrl}")
     public PortfolioReadDto getPortfolioByUrl(@PathVariable String portfolioUrl) {
         return portfolioMapper.toReadDto(portfolioService.getByUrl(portfolioUrl));
+    }
+
+    @GetMapping("/portfolios")
+    public Page<PortfolioListReadDto> getPortfolios(
+            @PageableDefault(size = 20) Pageable pageable,
+            PortfolioSearchCriteria portfolioSearchCriteria) {
+
+        return portfolioService.findByCriteria(portfolioSearchCriteria, pageable)
+                .map(portfolioMapper::toListReadDto);
     }
 
     @GetMapping("/userAccount/{auth0Id}/portfolio")

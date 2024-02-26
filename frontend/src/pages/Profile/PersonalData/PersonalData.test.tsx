@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import nock from 'nock';
 import { slugifyAuth0Id } from 'utils';
 import PersonalData from '.';
+import { RouterProvider } from '@/providers';
 
 jest.mock('@auth0/auth0-react');
 
@@ -53,9 +54,11 @@ describe('PersonalDatas Page Component', () => {
 
     act(() =>
       render(
-        <QueryClientProvider client={queryClient}>
-          <PersonalData />
-        </QueryClientProvider>
+        <RouterProvider>
+          <QueryClientProvider client={queryClient}>
+            <PersonalData />
+          </QueryClientProvider>
+        </RouterProvider>
       )
     );
   });

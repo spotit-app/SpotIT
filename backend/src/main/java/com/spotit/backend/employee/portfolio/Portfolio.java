@@ -43,39 +43,39 @@ public class Portfolio extends AbstractEntity {
     private UserAccount userAccount;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<Course> courses;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<Education> educations;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<Experience> experiences;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<ForeignLanguage> foreignLanguages;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<Interest> interests;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<Project> projects;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<Social> socials;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<SoftSkill> softSkills;
 
     @OneToMany(fetch = EAGER)
-    @JoinColumn(name = "user_account_id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "user_account_id")
     private List<TechSkill> techSkills;
 
     @Override

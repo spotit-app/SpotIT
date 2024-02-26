@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
 interface CourseCardProps {
-  children: ReactNode;
+  children?: ReactNode;
   name: string;
   finishDate: string;
 }
@@ -22,7 +22,7 @@ function CourseCard({ children, name, finishDate }: CourseCardProps) {
 export { CourseCard };
 
 CourseCard.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   name: PropTypes.string.isRequired,
   finishDate: PropTypes.string.isRequired
 };

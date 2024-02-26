@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
 interface InterestCardProps {
-  children: ReactNode;
+  children?: ReactNode;
   name: string;
 }
 
@@ -20,6 +20,6 @@ function InterestCard({ children, name }: InterestCardProps) {
 export { InterestCard };
 
 InterestCard.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   name: PropTypes.string.isRequired
 };

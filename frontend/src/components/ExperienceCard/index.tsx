@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
 interface ExperienceCardProps {
-  children: ReactNode;
+  children?: ReactNode;
   companyName: string;
   position: string;
   startDate: string;
@@ -35,7 +35,7 @@ function ExperienceCard({
 export { ExperienceCard };
 
 ExperienceCard.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   companyName: PropTypes.string.isRequired,
   position: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,

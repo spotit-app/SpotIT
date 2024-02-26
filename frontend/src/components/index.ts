@@ -1,7 +1,10 @@
+export { PortfolioListElement } from './PortfolioListElement';
 export { ForeignLanguageCard } from './ForeignLanguageCard';
 export { ProfileContainer } from './ProfileContainer';
 export { ExperienceCard } from './ExperienceCard';
+export { FilterSidebar } from './FilterSidebar';
 export { EducationCard } from './EducationCard';
+export { FilterButton } from './FilterButton';
 export { InterestCard } from './InterestCard';
 export { ThemeToggle } from './ThemeToggle';
 export { ProjectCard } from './ProjectCard';

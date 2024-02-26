@@ -14,5 +14,6 @@ public record UserAccountCreateDto(
         String position,
         String description,
         String cvClause,
-        String profilePictureUrl) implements WriteDto {
+        String profilePictureUrl,
+        Boolean isOpen) implements WriteDto {
 }

@@ -12,10 +12,20 @@ function Navbar() {
 
   const navigation = [
     { title: 'Dla pracownika', path: '#' },
-    { title: 'Dla pracodawcy', path: '#' },
+    { title: 'Dla pracodawcy', path: '/pracownicy' },
     { title: 'CV generator', path: '#' },
     { title: 'Portfolio', path: '#' }
   ];
+
+  const navigationElements = navigation.map((item, idx) => {
+    return (
+      <li key={idx} className="text-primary font-bold">
+        <Link to={item.path} className="block">
+          {item.title}
+        </Link>
+      </li>
+    );
+  });
 
   useEffect(() => {
     document.onclick = (e) => {
@@ -79,15 +89,7 @@ function Navbar() {
           } `}
         >
           <ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
-            {navigation.map((item, idx) => {
-              return (
-                <li key={idx} className="text-primary font-bold">
-                  <Link to={item.path} className="block">
-                    {item.title}
-                  </Link>
-                </li>
-              );
-            })}
+            {navigationElements}
           </ul>
           <div className="flex-1 gap-x-6 items-center justify-end my-6 space-y-6 md:flex md:space-y-0 md:my-0">
             {!isAuthenticated && (

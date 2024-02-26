@@ -9,6 +9,7 @@ import { VscEmptyWindow } from 'react-icons/vsc';
 import { AiOutlineClose } from 'react-icons/ai';
 import { HiMenuAlt2 } from 'react-icons/hi';
 import { GiTalk } from 'react-icons/gi';
+import { IoInformationCircleSharp } from 'react-icons/io5';
 
 const icons = {
   BsFillPersonFill,
@@ -28,7 +29,8 @@ const icons = {
   IoMdStarOutline,
   VscEmptyWindow,
   HiMenuAlt2,
-  AiOutlineClose
+  AiOutlineClose,
+  IoInformationCircleSharp
 };
 
 export default icons;

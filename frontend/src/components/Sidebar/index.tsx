@@ -91,12 +91,19 @@ function Sidebar() {
           <label htmlFor="my-drawer-2" className="text-primary drawer-button lg:hidden">
             <icons.AiOutlineClose size="30" />
           </label>
-          <div className="w-full flex items-center gap-x-4">
-            <img src={userPicture} alt="Profile Picture" className="w-20 h-20 rounded-full" />
-            <div>
-              <span className="text-base font-semibold block">{userName}</span>
+          <Link to="/profil">
+            <div className="w-full flex items-center gap-x-4">
+              <img
+                src={userPicture}
+                referrerPolicy="no-referrer"
+                alt="Profile Picture"
+                className="w-20 h-20 rounded-full"
+              />
+              <div>
+                <span className="text-base font-semibold block">{userName}</span>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
         <div className="w-full overflow-auto pt-2 mt-4 border-t-2 border-primary">
           <ul className="text-sm font-medium flex-1">{navigationList}</ul>

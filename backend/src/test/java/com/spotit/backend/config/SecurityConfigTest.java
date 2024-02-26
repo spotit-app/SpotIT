@@ -25,7 +25,7 @@ class SecurityConfigTest extends IntegrationTest {
     @Test
     void shouldReturnOkOnMainRoute() throws Exception {
         // given
-        var path = "/";
+        var path = "/api";
 
         // when
         var result = mockMvc.perform(get(path));

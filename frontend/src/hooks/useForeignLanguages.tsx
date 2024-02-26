@@ -81,9 +81,7 @@ function useForeignLanguages() {
   } = useQuery({
     queryKey: ['foreignLanguageNames'],
     queryFn: useCallback(async (): Promise<ReadForeignLanguageName[]> => {
-      return await axios
-        .get(`/api/foreignLanguageName`, await axiosOptions())
-        .then((res) => res.data);
+      return await axios.get(`/api/foreignLanguageName`).then((res) => res.data);
     }, [])
   });
 

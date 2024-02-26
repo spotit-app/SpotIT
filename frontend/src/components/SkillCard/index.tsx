@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import icons from 'assets/icons';
 
 interface SkillCardProps {
-  children: ReactNode;
+  children?: ReactNode;
   name: string;
   level: number;
   logo?: string;
@@ -36,7 +36,7 @@ function SkillCard({ children, name, level, logo }: SkillCardProps) {
 export { SkillCard };
 
 SkillCard.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   name: PropTypes.string.isRequired,
   level: PropTypes.number.isRequired,
   logo: PropTypes.string

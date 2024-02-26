@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 export const ForeignLanguages = lazy(() => import('./Profile/ForeignLanguages'));
 export const PersonalData = lazy(() => import('./Profile/PersonalData'));
+export const WelcomePage = lazy(() => import('./Profile/WelcomePage'));
 export const Experience = lazy(() => import('./Profile/Experience'));
 export const SoftSkills = lazy(() => import('./Profile/SoftSkills'));
 export const TechSkills = lazy(() => import('./Profile/TechSkills'));
@@ -11,6 +12,8 @@ export const PageNotFound = lazy(() => import('./PageNotFound'));
 export const Projects = lazy(() => import('./Profile/Projects'));
 export const Courses = lazy(() => import('./Profile/Courses'));
 export const Socials = lazy(() => import('./Profile/Socials'));
+export const Employees = lazy(() => import('./Employees'));
+export const Portfolio = lazy(() => import('./Portfolio'));
 export const Other = lazy(() => import('./Profile/Other'));
 export const Profile = lazy(() => import('./Profile'));
 export const Home = lazy(() => import('./Home'));

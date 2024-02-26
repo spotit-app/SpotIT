@@ -1,6 +1,5 @@
 package com.spotit.backend;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,17 +12,17 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.spotit.backend.config.SecurityConfig;
 
-@WebMvcTest(MainContoller.class)
+@WebMvcTest(MainRestContoller.class)
 @Import(SecurityConfig.class)
-public class MainControllerTest {
+class MainRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     public void shouldReturnHelloWorld() throws Exception {
-        mockMvc.perform(get("/"))
+        mockMvc.perform(get("/api"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("SpotIT API v1.0")));
+                .andExpect(content().json("{ \"message\": \"SpotIT API v1.0\" }"));
     }
 }
