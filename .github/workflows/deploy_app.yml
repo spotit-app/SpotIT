@@ -1,4 +1,4 @@
-name: "Deploy frontend"
+name: "Deploy app"
 
 on:
   workflow_dispatch:
@@ -49,8 +49,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: "Trigger app deploy"
-        uses: fjogeleit/http-request-action@v1.14.1
-        with:
-          url: ${{ secrets.DEPLOY_WEBHOOK }}
-          method: "GET"
+    #   TODO: set up triggering deployment
+    #   - name: "Trigger app deploy"
+    #     uses: fjogeleit/http-request-action@v1.14.1
+    #     with:
+    #       url: ${{ secrets.DEPLOY_WEBHOOK }}
+    #       method: "GET"

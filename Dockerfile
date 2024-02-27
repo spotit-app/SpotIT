@@ -24,4 +24,6 @@ HEALTHCHECK --interval=30s --timeout=3s \
 RUN adduser -D app
 USER app
 
+EXPOSE 8080
+
 ENTRYPOINT [ "java", "-jar", "-Dspring.profiles.active=prod", "app.jar" ]
