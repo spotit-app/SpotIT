@@ -1,5 +1,5 @@
 import { SkillCard, Loading, Button, NoContent, PopUp, ProfileContainer } from 'components';
-import { useSoftSkills } from 'hooks/useSoftSkills';
+import { useSoftSkills } from 'hooks';
 import { SoftSkillsForm } from './SoftSkillsForm';
 import { ReadSoftSkill } from 'types/profile';
 

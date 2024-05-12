@@ -1,5 +1,5 @@
 import { Button, Loading, NoContent, PopUp, ProfileContainer, SkillCard } from 'components';
-import { useTechSkills } from 'hooks/useTechSkills';
+import { useTechSkills } from 'hooks';
 import { TechSkillsForm } from './TechSkillsForm';
 import { ReadTechSkill } from 'types/profile';
 

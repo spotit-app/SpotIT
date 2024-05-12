@@ -1,4 +1,4 @@
-import { useForeignLanguages } from 'hooks/useForeignLanguages';
+import { useForeignLanguages } from 'hooks';
 import { ForeignLanguageForm } from './ForeignLanguageForm';
 import { ReadForeignLanguage } from 'types/profile';
 import {
@@ -18,6 +18,7 @@ function ForeignLanguages() {
       key={foreignLanguage.id}
       name={foreignLanguage.foreignLanguageName}
       flagUrl={foreignLanguage.flagUrl}
+      level={foreignLanguage.languageLevel}
     >
       <Button onClick={() => deleteForeignLanguage.mutate(foreignLanguage.id)}>Usuń</Button>
     </ForeignLanguageCard>

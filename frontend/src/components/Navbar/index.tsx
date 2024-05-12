@@ -1,9 +1,10 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AvatarMenu, ThemeToggle } from 'components';
+import { AvatarMenu } from '../AvatarMenu';
+import { ThemeToggle } from '../ThemeToggle';
 import Logo from 'assets/images/logo.svg';
-import { useUser } from 'hooks/useUser';
+import { useUser } from 'hooks';
 
 function Navbar() {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -11,10 +12,8 @@ function Navbar() {
   const { userPicture } = useUser();
 
   const navigation = [
-    { title: 'Dla pracownika', path: '#' },
-    { title: 'Dla pracodawcy', path: '/pracownicy' },
-    { title: 'CV generator', path: '#' },
-    { title: 'Portfolio', path: '#' }
+    { title: 'Dla pracownika', path: '/oferty-pracy' },
+    { title: 'Dla pracodawcy', path: '/pracownicy' }
   ];
 
   const navigationElements = navigation.map((item, idx) => {

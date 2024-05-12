@@ -21,7 +21,10 @@ function CheckBox({
 
   return (
     <div className="flex justify-between items-center input input-bordered p-2 my-2">
-      <label htmlFor={props.id} className="text-sm font-medium leading-6 w-full cursor-pointer">
+      <label
+        htmlFor={props.id}
+        className="text-sm font-medium leading-6 w-full cursor-pointer mr-2"
+      >
         {label}
       </label>
       <input

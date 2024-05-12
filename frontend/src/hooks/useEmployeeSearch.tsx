@@ -1,4 +1,4 @@
-import { PortfolioPage, PortfoliosQueryParams } from '@/types/profile';
+import { PortfolioPage, PortfoliosQueryParams } from 'types/profile';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useCallback, useState } from 'react';

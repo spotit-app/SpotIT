@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Loading, NoContent, PopUp, ProfileContainer, ExperienceCard } from 'components';
-import { useExperiences } from 'hooks/useExperiences';
+import { useExperiences } from 'hooks';
 import { ExperienceForm } from './ExperienceForm';
 import { ReadExperience } from 'types/profile';
 import { showModal } from 'utils';

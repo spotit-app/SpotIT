@@ -46,7 +46,8 @@ describe('Navbar', () => {
         name: 'John Doe'
       },
       loginWithRedirect: mockLogin,
-      logout: mockLogout
+      logout: mockLogout,
+      getIdTokenClaims: async () => ({ 'spotit/roles': [] })
     });
 
     act(() =>
@@ -63,8 +64,6 @@ describe('Navbar', () => {
     expect(login).toBeInTheDocument();
     expect(screen.getByText('Dla pracownika')).toBeInTheDocument();
     expect(screen.getByText('Dla pracodawcy')).toBeInTheDocument();
-    expect(screen.getByText('CV generator')).toBeInTheDocument();
-    expect(screen.getByText('Portfolio')).toBeInTheDocument();
     fireEvent.click(login);
     expect(mockLogin).toHaveBeenCalled();
   });
@@ -82,7 +81,8 @@ describe('Navbar', () => {
         email: 'john.doe@gmail.com'
       },
       loginWithRedirect: mockLogin,
-      logout: mockLogout
+      logout: mockLogout,
+      getIdTokenClaims: async () => ({ 'spotit/roles': [] })
     });
 
     act(() =>

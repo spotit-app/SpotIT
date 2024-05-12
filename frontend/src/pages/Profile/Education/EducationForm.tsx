@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from 'react';
 import { FormikHelpers } from 'formik';
-import { Input, Select, Button, CheckBox, PopUpForm } from 'components';
+import { Input, Button, CheckBox, PopUpForm, FormikReactSelect } from 'components';
 import { EducationFormType, ReadEducationLevel } from 'types/profile';
 import validationSchema from './EducationValidation';
-import { useEducations } from 'hooks/useEducations';
+import { useEducations } from 'hooks';
 import { SelectOption } from 'types/shared';
 import { closeModal } from 'utils';
 
@@ -54,14 +54,12 @@ function EducationForm() {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      <Select
+      <FormikReactSelect
         label="Stopień edukacji"
         name="educationLevel"
-        id="educationLevel"
-        placeholder="Wybierz stopień edukacji"
         options={optionsToSelect}
-        customOnChange={(e: ChangeEvent<HTMLSelectElement>) => {
-          setSelectedEducationLevel(e.target.value);
+        customOnChange={(value) => {
+          setSelectedEducationLevel(value as string);
         }}
       />
       {selectedEducationLevel === 'Inny' && (

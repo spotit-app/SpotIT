@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Loading, NoContent, PopUp, ProfileContainer, ProjectCard } from 'components';
-import { useProjects } from 'hooks/useProjects';
+import { useProjects } from 'hooks';
 import { ProjectsForm } from './ProjectsForm';
 import { ReadProject } from 'types/profile';
 import { showModal } from 'utils';

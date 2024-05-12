@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.2.1"
+	id("org.springframework.boot") version "3.2.5"
 	id("io.spring.dependency-management") version "1.1.3"
 	jacoco
 }
@@ -70,10 +70,11 @@ tasks.jacocoTestReport {
 	classDirectories.setFrom(files(classDirectories.files.map {
 		fileTree(it) {
 			setIncludes(listOf(
+                "**/ControllerAdvisor.class",
 				"**/*ServiceImpl.class",
 				"**/*Controller.class",
 				"**/utils/*.class",
-				"**/config/*.class"
+				"**/config/**/*.class"
 			))
 		}
 	}))	

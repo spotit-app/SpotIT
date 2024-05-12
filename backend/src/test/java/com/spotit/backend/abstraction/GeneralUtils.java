@@ -1,6 +1,11 @@
 package com.spotit.backend.abstraction;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
+
 import java.util.Map;
+
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
 
 public interface GeneralUtils {
 
@@ -12,15 +17,19 @@ public interface GeneralUtils {
         return "Error when creating new entity!";
     }
 
-    static String getDeletedUserMessage(String userAuth0Id) {
-        return "User with auth0Id '" + userAuth0Id + "' deleted.";
-    }
-
     static Map<String, Integer> getDeletedEntityResponse(int id) {
         return Map.of("id", id);
     }
 
     static String getInvalidUserMessage() {
         return "User account lacks necessary data!";
+    }
+
+    static JwtRequestPostProcessor createMockJwt(String userAuth0Id) {
+        return jwt().jwt(jwt -> jwt.claim("sub", userAuth0Id));
+    }
+
+    static JwtRequestPostProcessor createAdminMockJwt() {
+        return jwt().authorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
 }

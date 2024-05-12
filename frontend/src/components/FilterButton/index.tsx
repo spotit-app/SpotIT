@@ -1,8 +1,9 @@
-import { ReadForeignLanguageName, ReadTechSkillName } from '@/types/profile';
+import { ReadExperience, ReadForeignLanguageName, ReadTechSkillName } from 'types/profile';
+import { ReadWorkMode } from 'types/company';
 import PropTypes from 'prop-types';
 
 interface FilterButtonProps {
-  entity: ReadTechSkillName | ReadForeignLanguageName;
+  entity: ReadTechSkillName | ReadForeignLanguageName | ReadExperience | ReadWorkMode;
   onChange: () => void;
   isChecked: boolean;
 }
@@ -12,26 +13,43 @@ function FilterButton({ entity, onChange, isChecked }: FilterButtonProps) {
     entity: ReadTechSkillName | ReadForeignLanguageName
   ): entity is ReadTechSkillName => 'logoUrl' in entity;
 
+  const isReadTechSkillNameOrForeignLanguageName = (
+    entity: ReadTechSkillName | ReadForeignLanguageName | ReadExperience | ReadWorkMode
+  ): entity is ReadTechSkillName | ReadForeignLanguageName =>
+    'logoUrl' in entity || 'flagUrl' in entity;
+
+  const getEntityName = (
+    entity: ReadTechSkillName | ReadForeignLanguageName | ReadExperience | ReadWorkMode
+  ): string => {
+    if ('name' in entity) {
+      return entity.name;
+    } else {
+      return entity.companyName;
+    }
+  };
+
   return (
     <li key={entity.id} className="p-0.5">
       <input
         type="checkbox"
-        id={entity.name}
+        id={getEntityName(entity)}
         value=""
         className="hidden peer"
         onChange={onChange}
         checked={isChecked}
       />
       <label
-        htmlFor={entity.name}
+        htmlFor={getEntityName(entity)}
         className="text-gray-500 bg-base-100 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-primary"
       >
-        <img
-          src={isReadTechSkillName(entity) ? entity.logoUrl : entity.flagUrl}
-          width="20"
-          height="20"
-        />
-        <span className="text-lg font-semibold">{entity.name}</span>
+        {isReadTechSkillNameOrForeignLanguageName(entity) && (
+          <img
+            src={isReadTechSkillName(entity) ? entity.logoUrl : entity.flagUrl}
+            width="20"
+            height="20"
+          />
+        )}
+        <span className="text-lg font-semibold">{getEntityName(entity)}</span>
       </label>
     </li>
   );

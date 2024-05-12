@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { FormikHelpers } from 'formik';
 import { ReadSoftSkillName, SoftSkillsFormType } from 'types/profile';
-import { Button, PopUpForm, Input, Rating, Select } from 'components';
+import { Button, PopUpForm, Input, Rating, FormikReactSelect } from 'components';
 import validationSchema from './SoftSkillsValidation';
-import { useSoftSkills } from 'hooks/useSoftSkills';
+import { useSoftSkills } from 'hooks';
 import { SelectOption } from 'types/shared';
 import { closeModal } from 'utils';
 
@@ -43,15 +43,12 @@ function SoftSkillsForm() {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      <Select
+      <FormikReactSelect
         label="Nazwa"
         name="softSkillName"
-        id="softSkillName"
-        placeholder="Wybierz umiejętność"
-        data-testid="softSkillName-select"
         options={[...(optionsToSelect || []), { value: 'Inna', label: 'Inna' }]}
-        customOnChange={(e: ChangeEvent<HTMLSelectElement>) => {
-          setSelectedSoftSkillName(e.target.value);
+        customOnChange={(value) => {
+          setSelectedSoftSkillName(value as string);
         }}
       />
       {selectedSoftSkillName === 'Inna' && (

@@ -10,9 +10,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.spotit.backend.config.SecurityConfig;
+import com.spotit.backend.config.security.SecurityConfig;
 
-@WebMvcTest(MainRestContoller.class)
+@WebMvcTest(MainRestController.class)
 @Import(SecurityConfig.class)
 class MainRestControllerTest {
 

@@ -106,6 +106,27 @@ function useSoftSkills() {
       ])
   });
 
+  const updateSoftSkillName = useMutation({
+    mutationFn: useCallback(
+      async (updatedSoftSkillName: ReadSoftSkillName): Promise<ReadSoftSkillName> => {
+        return await axios
+          .put(
+            `/api/softSkillName/${updatedSoftSkillName.id}`,
+            updatedSoftSkillName,
+            await axiosOptions()
+          )
+          .then((res) => res.data);
+      },
+      []
+    ),
+    onSuccess: (updatedSoftSkillName: ReadSoftSkillName) =>
+      queryClient.setQueryData(['softSkillNames'], (prev: ReadSoftSkillName[]) => [
+        ...prev.map((softSkillName) =>
+          softSkillName.id === updatedSoftSkillName.id ? updatedSoftSkillName : softSkillName
+        )
+      ])
+  });
+
   const deleteSoftSkillName = useMutation({
     mutationFn: useCallback(async (id: number): Promise<DeleteResponse> => {
       return await axios
@@ -128,6 +149,7 @@ function useSoftSkills() {
     softSkillNamesIsPending,
     createSoftSkill,
     createSoftSkillName,
+    updateSoftSkillName,
     deleteSoftSkill,
     deleteSoftSkillName
   };

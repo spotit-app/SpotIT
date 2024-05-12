@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
-import { Button } from 'components';
+import { Button } from '../Button';
 import { showModal } from 'utils';
 import icons from 'assets/icons';
 
@@ -18,7 +18,7 @@ function ProfileContainer({ children, title, addText, onAdd }: ProfileContainerP
   };
 
   return (
-    <div className="flex flex-col w-full p-5 relative h-screen">
+    <div className="flex flex-col w-full p-5 relative min-h-screen">
       <h1 className="text-center text-xl font-bold leading-7 my-3">{title}</h1>
       <div className="flex items-center mb-7">
         <h2 className="text-lg font-bold mr-2">{addText}</h2>

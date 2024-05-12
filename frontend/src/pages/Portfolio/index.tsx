@@ -8,8 +8,8 @@ import {
   ProjectCard,
   SkillCard,
   SocialCard
-} from '@/components';
-import { usePortfolioPage } from '@/hooks/usePortfolioPage';
+} from 'components';
+import { usePortfolioPage } from 'hooks';
 import {
   ReadCourse,
   ReadEducation,
@@ -20,7 +20,7 @@ import {
   ReadSocial,
   ReadSoftSkill,
   ReadTechSkill
-} from '@/types/profile';
+} from 'types/profile';
 import { useParams } from 'react-router-dom';
 
 function Portfolio() {
@@ -58,6 +58,7 @@ function Portfolio() {
         key={foreignLanguage.id}
         name={foreignLanguage.foreignLanguageName}
         flagUrl={foreignLanguage.flagUrl}
+        level={foreignLanguage.languageLevel}
       />
     )
   );

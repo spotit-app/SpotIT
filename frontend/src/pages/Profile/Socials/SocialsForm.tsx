@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ReadSocial, WriteSocial } from 'types/profile';
 import { Button, PopUpForm, Input } from 'components';
 import validationSchema from './SocialsValidation';
-import { useSocials } from 'hooks/useSocials';
+import { useSocials } from 'hooks';
 import { closeModal } from 'utils';
 
 interface SocialsFormProps {

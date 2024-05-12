@@ -1,7 +1,7 @@
 import { FormikHelpers } from 'formik';
 import { TextArea, Button, MainForm, Loading } from 'components';
 import validationSchema from './OtherValidation';
-import { useUser } from 'hooks/useUser';
+import { useUser } from 'hooks';
 
 interface OtherFormTypes {
   description: string;

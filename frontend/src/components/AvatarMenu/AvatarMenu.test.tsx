@@ -1,6 +1,17 @@
 import { render, screen, act, fireEvent } from '@testing-library/react';
 import { AvatarMenu } from '.';
 import { RouterProvider } from 'providers';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 30000
+    }
+  }
+});
 
 describe('AvatarMenu', () => {
   test('renders AvatarMenu component', () => {
@@ -10,7 +21,9 @@ describe('AvatarMenu', () => {
     act(() =>
       render(
         <RouterProvider>
-          <AvatarMenu picture={mockPicture} logout={mockFn} />
+          <QueryClientProvider client={queryClient}>
+            <AvatarMenu picture={mockPicture} logout={mockFn} />
+          </QueryClientProvider>
         </RouterProvider>
       )
     );
@@ -26,7 +39,9 @@ describe('AvatarMenu', () => {
     act(() =>
       render(
         <RouterProvider>
-          <AvatarMenu picture={mockPicture} logout={mockFn} />
+          <QueryClientProvider client={queryClient}>
+            <AvatarMenu picture={mockPicture} logout={mockFn} />
+          </QueryClientProvider>
         </RouterProvider>
       )
     );

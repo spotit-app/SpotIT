@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, InterestCard, Loading, NoContent, PopUp, ProfileContainer } from 'components';
-import { useInterests } from 'hooks/useInterests';
+import { useInterests } from 'hooks';
 import { InterestsForm } from './InterestsForm';
 import { ReadInterest } from 'types/profile';
 import { showModal } from 'utils';

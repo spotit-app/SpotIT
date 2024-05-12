@@ -1,10 +1,10 @@
 import { render, fireEvent, act, screen, waitFor, cleanup } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import userEvent from '@testing-library/user-event';
 import { useAuth0 } from '@auth0/auth0-react';
 import nock from 'nock';
 import { showModal, slugifyAuth0Id } from 'utils';
 import Education from '.';
+import selectEvent from 'react-select-event';
 
 jest.mock('../../../utils/modal', () => ({
   showModal: jest.fn()
@@ -106,15 +106,12 @@ describe('Educations Page Component', () => {
   });
 
   test('form submits with bad data', async () => {
-    await waitFor(() => {
-      screen.getByText('testEducationLevel');
-    });
+    await selectEvent.select(screen.getByLabelText('Stopień edukacji'), 'testEducationLevel');
 
     const educationSchoolName = screen.getByLabelText('Nazwa szkoły');
     fireEvent.change(educationSchoolName, { target: { value: 'testEducation2' } });
 
-    const educationLevel = screen.getByLabelText('Stopień edukacji');
-    await userEvent.selectOptions(educationLevel, ['testEducationLevel']);
+    fireEvent.click(screen.getByText('testEducationLevel'));
 
     const faculty = screen.getByLabelText('Kierunek');
     fireEvent.change(faculty, { target: { value: 'testFaculty' } });
@@ -129,15 +126,10 @@ describe('Educations Page Component', () => {
   });
 
   test('form submits with valid data', async () => {
-    await waitFor(() => {
-      screen.getByText('testEducationLevel');
-    });
+    await selectEvent.select(screen.getByLabelText('Stopień edukacji'), 'testEducationLevel');
 
     const educationSchoolName = screen.getByLabelText('Nazwa szkoły');
     fireEvent.change(educationSchoolName, { target: { value: 'testEducation2' } });
-
-    const educationLevel = screen.getByLabelText('Stopień edukacji');
-    await userEvent.selectOptions(educationLevel, ['testEducationLevel']);
 
     const faculty = screen.getByLabelText('Kierunek');
     fireEvent.change(faculty, { target: { value: 'testFaculty' } });

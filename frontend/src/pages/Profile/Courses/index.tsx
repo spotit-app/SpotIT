@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Loading, NoContent, PopUp, ProfileContainer, CourseCard } from 'components';
-import { useCourses } from 'hooks/useCourses';
+import { useCourses } from 'hooks';
 import { CoursesForm } from './CoursesForm';
 import { ReadCourse } from 'types/profile';
 import { showModal } from 'utils';

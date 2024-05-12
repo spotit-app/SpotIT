@@ -15,7 +15,8 @@ jest.mock('@auth0/auth0-react');
     name: 'John Doe',
     email: 'john.doe@gmail.com'
   },
-  isLoading: false
+  isLoading: false,
+  getIdTokenClaims: async () => ({ 'spotit/roles': [] })
 });
 
 const queryClient = new QueryClient({

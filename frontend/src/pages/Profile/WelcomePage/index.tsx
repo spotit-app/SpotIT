@@ -1,8 +1,7 @@
-import { useUser } from '@/hooks/useUser';
-import { Portfolio } from '@/types/profile';
-import { usePortfolio } from '@/hooks/usePortfolio';
+import { Portfolio } from 'types/profile';
+import { useUser, usePortfolio } from 'hooks';
 import { useNavigate } from 'react-router-dom';
-import { Button, Loading } from '@/components';
+import { Button, Loading } from 'components';
 
 function WelcomePage() {
   const { userName } = useUser();
@@ -23,12 +22,14 @@ function WelcomePage() {
     <Loading />
   ) : (
     <div className="w-full flex flex-col items-center">
-      <h1 className="text-5xl font-semibold pt-16 pb-20">Witaj, {userName.split(' ')[0]}!</h1>
-      <div className="flex flex-wrap pl-5 pr-5">
+      <h1 className="text-2xl lg:text-5xl font-semibold text-center my-16">
+        Witaj, {userName.split(' ')[0]}!
+      </h1>
+      <div className="flex flex-wrap px-2 lg:px-5">
         <div className="w-full lg:w-1/2 p-3">
           <div className="h-auto lg:h-72 flex flex-col justify-between border-2 rounded-lg border-primary p-5">
-            <h2 className="text-3xl font-medium">Informacje profilowe</h2>
-            <p className="text-lg font-normal">
+            <h2 className="text-xl lg:text-3xl font-bold">Informacje profilowe</h2>
+            <p className="text-lg font-normal my-2">
               Edytuj swoje dane osobowe, dołączaj projekty, kursy, umiejętności i wiele innych.
             </p>
             <div className="text-primary text-lg uppercase">
@@ -40,8 +41,8 @@ function WelcomePage() {
         </div>
         <div className="w-full lg:w-1/2  p-3">
           <div className="h-auto lg:h-72 flex flex-col justify-between border-2 rounded-lg  border-primary p-5">
-            <h2 className="text-3xl font-medium">Porfolio</h2>
-            <p className="text-lg font-normal">
+            <h2 className="text-xl lg:text-3xl font-bold">Porfolio</h2>
+            <p className="text-lg font-normal my-2">
               Wygeneruj portfolio zawierające wszystkie wypełnione przez ciebie dane, którym możesz
               podzielić się z całym światem.
             </p>

@@ -5,3 +5,5 @@ interface LogoutParams {
 export interface LogoutArguments {
   logoutParams: LogoutParams;
 }
+
+export type Role = 'ADMIN';

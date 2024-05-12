@@ -12,7 +12,8 @@ jest.mock('@auth0/auth0-react');
   user: {
     sub: 'auth0|1234567890'
   },
-  getAccessTokenSilently: async () => 'testToken'
+  getAccessTokenSilently: async () => 'testToken',
+  getIdTokenClaims: async () => ({ 'spotit/roles': [] })
 });
 
 const queryClient = new QueryClient({

@@ -109,6 +109,23 @@ function useEducations() {
       ])
   });
 
+  const updateEducationLevel = useMutation({
+    mutationFn: useCallback(
+      async (educationLevel: ReadEducationLevel): Promise<ReadEducationLevel> => {
+        return await axios
+          .put(`/api/educationLevel/${educationLevel.id}`, educationLevel, await axiosOptions())
+          .then((res) => res.data);
+      },
+      []
+    ),
+    onSuccess: (updatedEducationLevel: ReadEducationLevel) =>
+      queryClient.setQueryData(['educationLevel'], (prev: ReadEducationLevel[]) => [
+        ...prev.map((educationLevel) =>
+          educationLevel.id === updatedEducationLevel.id ? updatedEducationLevel : educationLevel
+        )
+      ])
+  });
+
   const deleteEducationLevel = useMutation({
     mutationFn: useCallback(async (id: number): Promise<DeleteResponse> => {
       return await axios
@@ -132,6 +149,7 @@ function useEducations() {
     educationLevelsError,
     educationLevelsIsPending,
     createEducationLevel,
+    updateEducationLevel,
     deleteEducationLevel
   };
 }

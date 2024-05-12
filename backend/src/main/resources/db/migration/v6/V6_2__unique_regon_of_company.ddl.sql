@@ -1,0 +1,1 @@
+ALTER TABLE company ADD CONSTRAINT UK_company_regon UNIQUE (regon);

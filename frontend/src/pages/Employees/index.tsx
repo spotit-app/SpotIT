@@ -1,9 +1,9 @@
 import { useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { FilterSidebar, Loading, PortfolioListElement } from '@/components';
-import { useEmployeeSearch } from '@/hooks/useEmployeeSearch';
-import { ReadPortfolioPageDto } from '@/types/profile';
-import icons from '@/assets/icons';
+import { EmployeeFilterSidebar, Loading, Pagination, PortfolioListElement } from 'components';
+import { useEmployeeSearch } from 'hooks';
+import { ReadPortfolioPageDto } from 'types/profile';
+import icons from 'assets/icons';
 
 function Employees() {
   const [params, setParams] = useSearchParams();
@@ -29,7 +29,10 @@ function Employees() {
   }, [portfolios]);
 
   const changePage = (value: number) => {
-    setParams((prev) => ({ ...prev, page: (page + value).toString() }));
+    setParams((params) => {
+      params.set('page', (page + value).toString());
+      return params;
+    });
   };
 
   const mappedPortfolios = portfolios?.content.map((portfolio: ReadPortfolioPageDto) => (
@@ -47,15 +50,7 @@ function Employees() {
             <div className="flex flex-col w-full items-center p-5">
               <span className="p-5 text-2xl font-semibold">Wyszukani pracownicy:</span>
               {mappedPortfolios}
-              <div className="join mt-10 justify-center">
-                <button className="join-item btn" disabled={isFirst} onClick={() => changePage(-1)}>
-                  «
-                </button>
-                <button className="join-item btn">Strona {page}</button>
-                <button className="join-item btn" disabled={isLast} onClick={() => changePage(1)}>
-                  »
-                </button>
-              </div>
+              <Pagination page={page} isFirst={isFirst} isLast={isLast} changePage={changePage} />
             </div>
             <label
               htmlFor="my-drawer-2"
@@ -68,7 +63,7 @@ function Employees() {
         <div className="drawer-side">
           <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay" />
           <ul className="menu p-4 min-h-full bg-base-200 text-base-content">
-            <FilterSidebar />
+            <EmployeeFilterSidebar />
           </ul>
         </div>
       </div>

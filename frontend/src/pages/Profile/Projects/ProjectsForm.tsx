@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, PopUpForm, Input, TextArea } from 'components';
 import { ReadProject, WriteProject } from 'types/profile';
 import validationSchema from './ProjectsValidation';
-import { useProjects } from 'hooks/useProjects';
+import { useProjects } from 'hooks';
 import { closeModal } from 'utils';
 
 interface ProjectsFormProps {

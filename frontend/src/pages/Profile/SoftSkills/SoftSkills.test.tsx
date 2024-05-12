@@ -1,10 +1,10 @@
 import { render, fireEvent, act, screen, waitFor, cleanup } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import userEvent from '@testing-library/user-event';
 import { useAuth0 } from '@auth0/auth0-react';
 import nock from 'nock';
 import { showModal, slugifyAuth0Id } from 'utils';
 import SoftSkills from '.';
+import selectEvent from 'react-select-event';
 
 jest.mock('../../../utils/modal', () => ({
   showModal: jest.fn()
@@ -76,9 +76,11 @@ describe('SoftSkills Page Component', () => {
     const addButton = screen.getByRole('button');
     expect(addButton).toBeInTheDocument();
 
+    fireEvent.click(screen.getByText('Wybierz...'));
+
     await waitFor(() => {
       const testSoftSkill = screen.getAllByText('testSoftSkill1');
-      expect(testSoftSkill.length).toBe(2);
+      expect(testSoftSkill.length).toBe(1);
     });
   });
 
@@ -92,14 +94,9 @@ describe('SoftSkills Page Component', () => {
   });
 
   test('form submits with bad data', async () => {
-    await waitFor(() => {
-      expect(screen.queryByText('testSoftSkill2')).toBeInTheDocument();
-    });
-    const softSkillName = screen.getByLabelText('Nazwa');
-    await userEvent.selectOptions(softSkillName, 'testSoftSkill1');
+    await selectEvent.select(screen.getByLabelText('Nazwa'), 'testSoftSkill1');
 
-    const submitButton = screen.getByText('Zapisz');
-    fireEvent.click(submitButton);
+    fireEvent.click(screen.getByText('Zapisz'));
 
     await waitFor(() => {
       const errors = screen.getByText('Obowiązkowe');
@@ -108,12 +105,7 @@ describe('SoftSkills Page Component', () => {
   });
 
   test('form submits with valid data', async () => {
-    await waitFor(() => {
-      expect(screen.queryByText('testSoftSkill2')).toBeInTheDocument();
-    });
-
-    const softSkillName = screen.getByLabelText('Nazwa');
-    await userEvent.selectOptions(softSkillName, 'testSoftSkill2');
+    await selectEvent.select(screen.getByLabelText('Nazwa'), 'testSoftSkill2');
 
     const softSkillLevel = screen.getByTestId('softSkillLevel-2');
     fireEvent.click(softSkillLevel);
@@ -126,13 +118,12 @@ describe('SoftSkills Page Component', () => {
 
     await waitFor(() => {
       const newTestSoftSkill = screen.queryAllByText('testSoftSkill2');
-      expect(newTestSoftSkill.length).toBe(2);
+      expect(newTestSoftSkill.length).toBe(1);
     });
   });
 
   test('different softSkillLevel renders correctly', async () => {
-    const softSkillName = screen.getByLabelText('Nazwa');
-    fireEvent.change(softSkillName, { target: { value: 'Inna' } });
+    await selectEvent.select(screen.getByLabelText('Nazwa'), 'Inna');
 
     const mySoftSkill = screen.getByText('Podaj swoją wartość');
     expect(mySoftSkill).toBeInTheDocument();
@@ -141,7 +132,7 @@ describe('SoftSkills Page Component', () => {
   test('softSkill delete works correctly', async () => {
     await waitFor(() => {
       const testSoftSkill = screen.queryAllByText('testSoftSkill1');
-      expect(testSoftSkill.length).toBe(2);
+      expect(testSoftSkill.length).toBe(1);
     });
 
     await waitFor(() => {
@@ -150,7 +141,7 @@ describe('SoftSkills Page Component', () => {
     });
 
     const testSoftSkill = screen.queryAllByText('testSoftSkill1');
-    expect(testSoftSkill.length).toBe(1);
+    expect(testSoftSkill.length).toBe(0);
 
     await waitFor(() => {
       const noContent = screen.getByTestId('no-content');

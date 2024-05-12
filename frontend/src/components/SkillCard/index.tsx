@@ -21,8 +21,8 @@ function SkillCard({ children, name, level, logo }: SkillCardProps) {
   return (
     <div className="flex justify-between border-b-2 border-l-2 border-primary my-4 p-3">
       <div className="block md:flex items-center w-full">
-        <div className="text-xl w-full md:w-1/5 font-bold">
-          {logo && <img src={logo} alt="Skill Logo" className="w-5" />}
+        <div className="text-xl w-full md:w-1/4 font-bold flex items-center">
+          {logo && <img src={logo} alt="Skill Logo" className="w-12 h-12 mr-3" />}
           <div>{name}</div>
         </div>
 

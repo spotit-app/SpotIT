@@ -2,8 +2,19 @@ import { render, screen, act } from '@testing-library/react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { RouterProvider } from 'providers';
 import ProtectedPage from '.';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('@auth0/auth0-react');
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: 30000
+    }
+  }
+});
 
 describe('ProtectedPage', () => {
   test('renders ProtectedPage component when logged in', () => {
@@ -23,9 +34,11 @@ describe('ProtectedPage', () => {
     act(() =>
       render(
         <RouterProvider>
-          <ProtectedPage>
-            <div>test</div>
-          </ProtectedPage>
+          <QueryClientProvider client={queryClient}>
+            <ProtectedPage>
+              <div>test</div>
+            </ProtectedPage>
+          </QueryClientProvider>
         </RouterProvider>
       )
     );
@@ -45,9 +58,11 @@ describe('ProtectedPage', () => {
     act(() =>
       render(
         <RouterProvider>
-          <ProtectedPage>
-            <div>test</div>
-          </ProtectedPage>
+          <QueryClientProvider client={queryClient}>
+            <ProtectedPage>
+              <div>test</div>
+            </ProtectedPage>
+          </QueryClientProvider>
         </RouterProvider>
       )
     );
@@ -67,9 +82,11 @@ describe('ProtectedPage', () => {
     act(() =>
       render(
         <RouterProvider>
-          <ProtectedPage>
-            <div>test</div>
-          </ProtectedPage>
+          <QueryClientProvider client={queryClient}>
+            <ProtectedPage>
+              <div>test</div>
+            </ProtectedPage>
+          </QueryClientProvider>
         </RouterProvider>
       )
     );

@@ -8,8 +8,7 @@ import {
   ReadTechSkill,
   ReadTechSkillName,
   TechSkillsFormType,
-  WriteTechSkill,
-  WriteTechSkillName
+  WriteTechSkill
 } from 'types/profile';
 
 function useTechSkills() {
@@ -91,19 +90,34 @@ function useTechSkills() {
   });
 
   const createTechSkillName = useMutation({
-    mutationFn: useCallback(
-      async (techSkillName: WriteTechSkillName): Promise<ReadTechSkillName> => {
-        return await axios
-          .post(`/api/techSkillName`, techSkillName, await axiosOptions())
-          .then((res) => res.data);
-      },
-      []
-    ),
+    mutationFn: useCallback(async (techSkillName: FormData): Promise<ReadTechSkillName> => {
+      return await axios
+        .post(`/api/techSkillName`, techSkillName, await axiosOptions())
+        .then((res) => res.data);
+    }, []),
     onSuccess: (createdTechSkillName: ReadTechSkillName) =>
       queryClient.setQueryData(['techSkillNames'], (prev: ReadTechSkillName[]) => [
         ...prev,
         createdTechSkillName
       ])
+  });
+
+  const updateTechSkillName = useMutation({
+    mutationFn: useCallback(
+      async (data: { id: number; formData: FormData }): Promise<ReadTechSkillName> => {
+        return await axios
+          .put(`/api/techSkillName/${data.id}`, data.formData, await axiosOptions())
+          .then((res) => res.data);
+      },
+      []
+    ),
+    onSuccess: (updatedTechSkillName: ReadTechSkillName) => {
+      queryClient.setQueryData(['techSkillNames'], (prev: ReadTechSkillName[]) => [
+        ...prev.map((techSkillName) =>
+          techSkillName.id === updatedTechSkillName.id ? updatedTechSkillName : techSkillName
+        )
+      ]);
+    }
   });
 
   const deleteTechSkillName = useMutation({
@@ -129,7 +143,8 @@ function useTechSkills() {
     createTechSkill,
     createTechSkillName,
     deleteTechSkill,
-    deleteTechSkillName
+    deleteTechSkillName,
+    updateTechSkillName
   };
 }
 

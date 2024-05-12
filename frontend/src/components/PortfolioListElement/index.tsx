@@ -1,38 +1,42 @@
-import { ReadPortfolioPageDto } from '@/types/profile';
+import { ReadPortfolioPageDto } from 'types/profile';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { ReactNode } from 'react';
 
 interface PortfolioListElementProps {
   portfolio: ReadPortfolioPageDto;
+  children?: ReactNode;
 }
 
-function PortfolioListElement({ portfolio }: PortfolioListElementProps) {
+function PortfolioListElement({ portfolio, children }: PortfolioListElementProps) {
   return (
-    <div key={portfolio.portfolioUrl} className="w-full my-2">
-      <div className="card border-2 border-primary rounded-lg place-items-center">
-        <div className="w-full p-4 flex items-center gap-x-4">
-          <img
-            src={portfolio.userData.profilePictureUrl}
-            referrerPolicy="no-referrer"
-            alt="Profile Picture"
-            className="w-20 h-20 rounded-full"
-          />
-          <div className="flex flex-col pl-10 pr-20">
-            <span className="text-2xl font-bold">
-              {portfolio.userData.firstName} {portfolio.userData.lastName}
-            </span>
-            <span className="text-primary">
-              <Link to={`/portfolio/${portfolio.portfolioUrl}`}>{portfolio.portfolioUrl}</Link>
-            </span>
+    <Link
+      to={`/portfolio/${portfolio.portfolioUrl}`}
+      key={portfolio.portfolioUrl}
+      className="w-full flex items-center p-4 border-2 border-primary rounded-lg my-3"
+    >
+      <img
+        src={portfolio.userData.profilePictureUrl}
+        referrerPolicy="no-referrer"
+        alt="Profile Picture"
+        className="w-20 h-20 rounded-full"
+      />
+      <div className="ml-3 flex flex-col sm:flex-row justify-between w-full">
+        <div>
+          <div className="text-2xl font-bold">
+            {portfolio.userData.firstName} {portfolio.userData.lastName}
           </div>
+          <span className="text-primary">{portfolio.portfolioUrl}</span>
         </div>
+        <div className="space-x-2">{children}</div>
       </div>
-    </div>
+    </Link>
   );
 }
 
 PortfolioListElement.propTypes = {
-  portfolio: PropTypes.object.isRequired
+  portfolio: PropTypes.object.isRequired,
+  children: PropTypes.node
 };
 
 export { PortfolioListElement };

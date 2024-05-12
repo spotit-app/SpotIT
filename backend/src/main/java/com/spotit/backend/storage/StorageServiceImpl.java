@@ -32,6 +32,8 @@ public class StorageServiceImpl implements StorageService {
 
             return result.getUrl();
         } catch (Exception e) {
+            e.printStackTrace();
+
             throw new ErrorUploadingFileException(filename);
         }
     }
@@ -51,6 +53,8 @@ public class StorageServiceImpl implements StorageService {
 
             imageKit.deleteFile(fileID);
         } catch (Exception e) {
+            e.printStackTrace();
+
             throw new ErrorDeletingFileException(filename);
         }
     }

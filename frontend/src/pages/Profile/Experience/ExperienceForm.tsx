@@ -3,7 +3,7 @@ import { FormikHelpers } from 'formik';
 import PropTypes from 'prop-types';
 import { Button, CheckBox, PopUpForm, Input } from 'components';
 import { ReadExperience, WriteExperience } from 'types/profile';
-import { useExperiences } from 'hooks/useExperiences';
+import { useExperiences } from 'hooks';
 import validationSchema from './ExperienceValidation';
 import { closeModal } from 'utils';
 

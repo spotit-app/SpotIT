@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useUser } from 'hooks/useUser';
+import { useUser } from 'hooks';
 import icons from 'assets/icons';
 import { toSlug } from 'utils';
 

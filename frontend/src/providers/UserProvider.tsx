@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CreateUser } from 'types/profile';
-import { useUser } from 'hooks/useUser';
+import { useUser } from 'hooks';
 
 function UserProvider({ children }: PropsWithChildren) {
   const { user, userDataError, createUser } = useUser();

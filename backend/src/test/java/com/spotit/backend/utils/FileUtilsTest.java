@@ -1,6 +1,7 @@
 package com.spotit.backend.utils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -41,6 +42,6 @@ class FileUtilsTest {
         var result = FileUtils.getBytesFromFile(file);
 
         // then
-        assertEquals(null, result);
+        assertNull(result);
     }
 }

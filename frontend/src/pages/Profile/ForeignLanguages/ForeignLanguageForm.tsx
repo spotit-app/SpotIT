@@ -1,8 +1,8 @@
 import { FormikHelpers } from 'formik';
 import { ReadForeignLanguageName, WriteForeignLanguage } from 'types/profile';
-import { useForeignLanguages } from 'hooks/useForeignLanguages';
+import { useForeignLanguages } from 'hooks';
 import validationSchema from './ForeignLanguageValidation';
-import { Button, PopUpForm, Select } from 'components';
+import { Button, FormikReactSelect, PopUpForm } from 'components';
 import { SelectOption } from 'types/shared';
 import { closeModal } from 'utils';
 
@@ -15,7 +15,7 @@ interface ForeignLanguageForm {
 function ForeignLanguageForm() {
   const { foreignLanguageNames, createForeignLanguage } = useForeignLanguages();
 
-  const levelToSelect = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'NATIVE'].map((level: string) => ({
+  const levelToSelect = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'OJCZYSTY'].map((level: string) => ({
     value: level,
     label: level
   }));
@@ -49,20 +49,12 @@ function ForeignLanguageForm() {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      <Select
+      <FormikReactSelect
         label="Nazwa języka"
         name="foreignLanguageNameId"
-        id="langName"
-        placeholder="Wybierz język:"
         options={[...(foreignLanguageNamesToSelect || [])]}
       />
-      <Select
-        label="Poziom"
-        name="languageLevel"
-        id="langLevel"
-        placeholder="Wybierz poziom:"
-        options={levelToSelect}
-      />
+      <FormikReactSelect label="Poziom" name="languageLevel" options={levelToSelect} />
       <Button type="submit" disabled={createForeignLanguage.isPending}>
         Zapisz
       </Button>

@@ -19,7 +19,22 @@ import {
   TechSkills,
   Profile,
   Portfolio,
-  WelcomePage
+  WelcomePage,
+  Admin,
+  AdminEducation,
+  AdminForeignLanguages,
+  AdminSoftSkills,
+  AdminTechSkills,
+  MyCompanies,
+  MyCompany,
+  JobOffer,
+  JobOffers,
+  Company,
+  AdminWorkExperiences,
+  AdminWorkModes,
+  MyJobApplications,
+  JobOfferApplications,
+  AdminWelcomePage
 } from 'pages';
 
 function App() {
@@ -31,6 +46,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/portfolio/:portfolioUrl" element={<Portfolio />} />
           <Route path="/pracownicy" element={<Employees />} />
+          <Route path="/oferty-pracy" element={<JobOffers />} />
+          <Route path="/oferty-pracy/:id" element={<JobOffer />} />
+          <Route path="/firmy/:id" element={<Company />} />
           <Route
             path="/profil"
             element={
@@ -52,6 +70,54 @@ function App() {
             <Route path="kursy" element={<Courses />} />
             <Route path="inne" element={<Other />} />
           </Route>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedPage adminProtected>
+                <Admin />
+              </ProtectedPage>
+            }
+          >
+            <Route path="" element={<AdminWelcomePage />} />
+            <Route path="edukacja" element={<AdminEducation />} />
+            <Route path="umiejetnosci-techniczne" element={<AdminTechSkills />} />
+            <Route path="umiejetnosci-miekkie" element={<AdminSoftSkills />} />
+            <Route path="jezyki-obce" element={<AdminForeignLanguages />} />
+            <Route path="poziom-doswiadczenia" element={<AdminWorkExperiences />} />
+            <Route path="tryby-pracy" element={<AdminWorkModes />} />
+          </Route>
+          <Route
+            path="/moje-firmy"
+            element={
+              <ProtectedPage>
+                <MyCompanies />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/moje-firmy/:id"
+            element={
+              <ProtectedPage>
+                <MyCompany />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/moje-firmy/:companyId/oferty-pracy/:jobOfferId/aplikacje"
+            element={
+              <ProtectedPage>
+                <JobOfferApplications />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path="/moje-aplikacje"
+            element={
+              <ProtectedPage>
+                <MyJobApplications />
+              </ProtectedPage>
+            }
+          />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Suspense>

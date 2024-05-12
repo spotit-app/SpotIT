@@ -1,9 +1,9 @@
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { FormikHelpers } from 'formik';
 import { ReadTechSkillName, TechSkillsFormType } from 'types/profile';
-import { Button, Input, Select, Rating, PopUpForm } from 'components';
+import { Button, Input, Rating, PopUpForm, FormikReactSelect } from 'components';
 import validationSchema from './TechSkillsValidation';
-import { useTechSkills } from 'hooks/useTechSkills';
+import { useTechSkills } from 'hooks';
 import { SelectOption } from 'types/shared';
 import { closeModal } from 'utils';
 
@@ -43,14 +43,12 @@ function TechSkillsForm() {
       validationSchema={validationSchema}
       onSubmit={onSubmit}
     >
-      <Select
+      <FormikReactSelect
         label="Nazwa"
         name="techSkillName"
-        id="techSkillName"
-        placeholder="Wybierz umiejętność"
         options={[...(optionsToSelect || []), { value: 'Inna', label: 'Inna' }]}
-        customOnChange={(e: ChangeEvent<HTMLSelectElement>) => {
-          setSelectedTechSkillName(e.target.value);
+        customOnChange={(value) => {
+          setSelectedTechSkillName(value as string);
         }}
       />
       {selectedTechSkillName === 'Inna' && (

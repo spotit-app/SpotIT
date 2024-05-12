@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ReadCourse, WriteCourse } from 'types/profile';
 import { Button, PopUpForm, Input } from 'components';
 import validationSchema from './CoursesValidation';
-import { useCourses } from 'hooks/useCourses';
+import { useCourses } from 'hooks';
 import { closeModal } from 'utils';
 
 interface CoursesFormProps {

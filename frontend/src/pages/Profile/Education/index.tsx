@@ -1,5 +1,5 @@
 import { Loading, NoContent, PopUp, ProfileContainer, EducationCard, Button } from 'components';
-import { useEducations } from 'hooks/useEducations';
+import { useEducations } from 'hooks';
 import { EducationForm } from './EducationForm';
 import { ReadEducation } from 'types/profile';
 

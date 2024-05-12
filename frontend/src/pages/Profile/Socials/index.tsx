@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Loading, NoContent, PopUp, ProfileContainer, SocialCard, Button } from 'components';
-import { useSocials } from 'hooks/useSocials';
+import { useSocials } from 'hooks';
 import { SocialsForm } from './SocialsForm';
 import { ReadSocial } from 'types/profile';
 import { showModal } from 'utils';

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, Ref } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { LogoutArguments } from 'types/auth';
+import { useUser } from 'hooks';
 
 interface AvatarMenuProps {
   picture: string;
@@ -14,10 +15,15 @@ interface NavigationItem {
 }
 
 function AvatarMenu({ picture, logout }: AvatarMenuProps) {
+  const { isAdmin } = useUser();
   const [state, setState] = useState<boolean>(false);
   const profileRef: Ref<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
 
-  const navigation: NavigationItem[] = [{ title: 'Profil', path: 'profil' }];
+  const navigation: NavigationItem[] = [
+    { title: 'Profil', path: 'profil' },
+    { title: 'Moje firmy', path: 'moje-firmy' },
+    { title: 'Moje aplikacje', path: 'moje-aplikacje' }
+  ];
 
   const navigationElements = navigation.map((item, idx) => (
     <li key={idx}>
@@ -55,6 +61,11 @@ function AvatarMenu({ picture, logout }: AvatarMenuProps) {
         }`}
       >
         {navigationElements}
+        {isAdmin && (
+          <Link className="block font-bold md:hover:bg-base-200 md:p-3" to="/admin">
+            Admin
+          </Link>
+        )}
         <button
           data-testid="logout"
           onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}

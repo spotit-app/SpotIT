@@ -2,7 +2,7 @@ import { Field, FormikHelpers, FormikProps } from 'formik';
 import { ChangeEvent, useRef, useState } from 'react';
 import { Input, Button, MainForm, Loading, CheckBox } from 'components';
 import validationSchema from './PersonalDataValidation';
-import { useUser } from 'hooks/useUser';
+import { useUser } from 'hooks';
 
 interface PersonalDataFormTypes {
   firstName: string;
@@ -50,7 +50,7 @@ function PersonalData() {
   return userDataIsPending ? (
     <Loading />
   ) : (
-    <div className="block">
+    <div className="block w-full">
       <div className="flex felx-col w-full">
         <MainForm<PersonalDataFormTypes>
           title="Dane osobowe"
@@ -103,7 +103,7 @@ function PersonalData() {
               </Field>
             </div>
           </div>
-          <div className="lg:w-1/2 lg:p-2 flex items-center">
+          <div className="w-full my-2 lg:p-2 flex items-center">
             <CheckBox
               label="Szukasz pracy?"
               name="isOpen"

@@ -1,12 +1,24 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAuth0 } from '@auth0/auth0-react';
-import { useCallback } from 'react';
+import { IdToken, useAuth0 } from '@auth0/auth0-react';
+import { useCallback, useState, useEffect } from 'react';
 import axios from 'axios';
 import { CreateUser, ReadUser } from 'types/profile';
 import { slugifyAuth0Id } from 'utils';
+import { Role } from '@/types/auth';
 
 function useUser() {
-  const { user, getAccessTokenSilently } = useAuth0();
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const [roles, setRoles] = useState<Role[] | null>(null);
+
+  const {
+    user,
+    getAccessTokenSilently,
+    getIdTokenClaims,
+    isAuthenticated,
+    isLoading,
+    loginWithRedirect
+  } = useAuth0();
+
   const auth0Id = user?.sub;
   const queryClient = useQueryClient();
   const axiosOptions = async () => ({
@@ -14,6 +26,17 @@ function useUser() {
       Authorization: `Bearer ${await getAccessTokenSilently()}`
     }
   });
+
+  async function getRoles() {
+    const claims: IdToken | undefined = await getIdTokenClaims();
+    const roles: Role[] = claims ? claims['spotit/roles'] : [];
+    setRoles(roles);
+    setIsAdmin(roles.includes('ADMIN'));
+  }
+
+  useEffect(() => {
+    auth0Id && getRoles();
+  }, [auth0Id]);
 
   const {
     data: userData,
@@ -91,7 +114,12 @@ function useUser() {
     userPersonalData,
     userProfileData,
     userName,
-    userPicture
+    userPicture,
+    isAdmin,
+    isAuthenticated,
+    isLoading,
+    loginWithRedirect,
+    roles
   };
 }
 

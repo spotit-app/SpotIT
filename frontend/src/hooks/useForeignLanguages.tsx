@@ -7,8 +7,7 @@ import {
   DeleteResponse,
   ReadForeignLanguage,
   ReadForeignLanguageName,
-  WriteForeignLanguage,
-  WriteForeignLanguageName
+  WriteForeignLanguage
 } from 'types/profile';
 
 function useForeignLanguages() {
@@ -87,7 +86,7 @@ function useForeignLanguages() {
 
   const createForeignLanguageName = useMutation({
     mutationFn: useCallback(
-      async (foreignLanguageName: WriteForeignLanguageName): Promise<ReadForeignLanguageName> => {
+      async (foreignLanguageName: FormData): Promise<ReadForeignLanguageName> => {
         return await axios
           .post(`/api/foreignLanguageName`, foreignLanguageName, await axiosOptions())
           .then((res) => res.data);
@@ -98,6 +97,25 @@ function useForeignLanguages() {
       queryClient.setQueryData(['foreignLanguageNames'], (prev: ReadForeignLanguageName[]) => [
         ...prev,
         createdForeignLanguageName
+      ])
+  });
+
+  const updateForeignLanguageName = useMutation({
+    mutationFn: useCallback(
+      async (data: { id: number; formData: FormData }): Promise<ReadForeignLanguageName> => {
+        return await axios
+          .put(`/api/foreignLanguageName/${data.id}`, data.formData, await axiosOptions())
+          .then((res) => res.data);
+      },
+      []
+    ),
+    onSuccess: (updatedForeignLanguageName: ReadForeignLanguageName) =>
+      queryClient.setQueryData(['foreignLanguageNames'], (prev: ReadForeignLanguageName[]) => [
+        ...prev.map((foreignLanguageName) =>
+          foreignLanguageName.id === updatedForeignLanguageName.id
+            ? updatedForeignLanguageName
+            : foreignLanguageName
+        )
       ])
   });
 
@@ -124,7 +142,8 @@ function useForeignLanguages() {
     createForeignLanguage,
     createForeignLanguageName,
     deleteForeignLanguage,
-    deleteForeignLanguageName
+    deleteForeignLanguageName,
+    updateForeignLanguageName
   };
 }
 

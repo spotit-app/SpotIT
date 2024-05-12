@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FiSun } from 'react-icons/fi';
-import { FiMoon } from 'react-icons/fi';
+import { FiSun, FiMoon } from 'react-icons/fi';
 import { LIGHT_THEME, DARK_THEME } from 'appConstants';
 
 function ThemeToggle() {

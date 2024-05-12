@@ -1,10 +1,10 @@
 import { render, fireEvent, act, screen, waitFor, cleanup } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import userEvent from '@testing-library/user-event';
 import { useAuth0 } from '@auth0/auth0-react';
 import nock from 'nock';
 import { showModal, slugifyAuth0Id } from 'utils';
 import TechSkills from '.';
+import selectEvent from 'react-select-event';
 
 jest.mock('../../../utils/modal', () => ({
   showModal: jest.fn()
@@ -80,7 +80,7 @@ describe('TechSkills Page Component', () => {
 
     await waitFor(() => {
       const testTechSkill = screen.getAllByText('testTechSkill1');
-      expect(testTechSkill.length).toBe(2);
+      expect(testTechSkill.length).toBe(1);
     });
   });
 
@@ -94,11 +94,7 @@ describe('TechSkills Page Component', () => {
   });
 
   test('form submits with bad data', async () => {
-    await waitFor(() => {
-      expect(screen.queryByText('testTechSkill2')).toBeInTheDocument();
-    });
-    const techSkillName = screen.getByLabelText('Nazwa');
-    await userEvent.selectOptions(techSkillName, 'testTechSkill1');
+    await selectEvent.select(screen.getByLabelText('Nazwa'), 'testTechSkill1');
 
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
@@ -110,12 +106,7 @@ describe('TechSkills Page Component', () => {
   });
 
   test('form submits with valid data', async () => {
-    await waitFor(() => {
-      expect(screen.queryByText('testTechSkill2')).toBeInTheDocument();
-    });
-
-    const techSkillName = screen.getByLabelText('Nazwa');
-    await userEvent.selectOptions(techSkillName, 'testTechSkill2');
+    await selectEvent.select(screen.getByLabelText('Nazwa'), 'testTechSkill2');
 
     const techSkillLevel = screen.getByTestId('techSkillLevel-2');
     fireEvent.click(techSkillLevel);
@@ -128,13 +119,12 @@ describe('TechSkills Page Component', () => {
 
     await waitFor(() => {
       const newTestTechSkill = screen.queryAllByText('testTechSkill2');
-      expect(newTestTechSkill.length).toBe(2);
+      expect(newTestTechSkill.length).toBe(1);
     });
   });
 
   test('different techSkillLevel renders correctly', async () => {
-    const techSkillName = screen.getByLabelText('Nazwa');
-    fireEvent.change(techSkillName, { target: { value: 'Inna' } });
+    await selectEvent.select(screen.getByLabelText('Nazwa'), 'Inna');
 
     const myTechSkill = screen.getByText('Podaj swoją wartość');
     expect(myTechSkill).toBeInTheDocument();
@@ -143,7 +133,7 @@ describe('TechSkills Page Component', () => {
   test('techSkill delete works correctly', async () => {
     await waitFor(() => {
       const testTechSkill = screen.queryAllByText('testTechSkill1');
-      expect(testTechSkill.length).toBe(2);
+      expect(testTechSkill.length).toBe(1);
     });
 
     await waitFor(() => {
@@ -152,7 +142,7 @@ describe('TechSkills Page Component', () => {
     });
 
     const testTechSkill = screen.queryAllByText('testTechSkill1');
-    expect(testTechSkill.length).toBe(1);
+    expect(testTechSkill.length).toBe(0);
 
     await waitFor(() => {
       const noContent = screen.getByTestId('no-content');

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ReadInterest, WriteInterest } from 'types/profile';
 import { Button, PopUpForm, Input } from 'components';
 import validationSchema from './InterestsValidation';
-import { useInterests } from 'hooks/useInterests';
+import { useInterests } from 'hooks';
 import { closeModal } from 'utils';
 
 interface InterestsFormProps {

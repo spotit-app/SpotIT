@@ -1,10 +1,10 @@
 import { render, fireEvent, act, screen, waitFor, cleanup } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import userEvent from '@testing-library/user-event';
 import { useAuth0 } from '@auth0/auth0-react';
 import nock from 'nock';
 import { showModal, slugifyAuth0Id } from 'utils';
 import ForeignLanguages from '.';
+import selectEvent from 'react-select-event';
 
 jest.mock('../../../utils/modal', () => ({
   showModal: jest.fn()
@@ -86,7 +86,7 @@ describe('ForeignLanguages Page Component', () => {
 
     await waitFor(() => {
       const testForeignLanguage = screen.getAllByText('Angielski');
-      expect(testForeignLanguage.length).toBe(2);
+      expect(testForeignLanguage.length).toBe(1);
     });
   });
 
@@ -100,10 +100,6 @@ describe('ForeignLanguages Page Component', () => {
   });
 
   test('form submits with bad data', async () => {
-    await waitFor(() => {
-      expect(screen.queryByText('Niemiecki')).toBeInTheDocument();
-    });
-
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
 
@@ -114,27 +110,22 @@ describe('ForeignLanguages Page Component', () => {
   });
 
   test('form submits with valid data', async () => {
-    await waitFor(() => {
-      expect(screen.queryByText('Niemiecki')).toBeInTheDocument();
-    });
+    await selectEvent.select(screen.getByLabelText('Nazwa języka'), 'Niemiecki');
 
-    const foreignLanguageName = screen.getByLabelText('Nazwa języka');
-    await userEvent.selectOptions(foreignLanguageName, 'Niemiecki');
+    fireEvent.click(screen.getByText('Niemiecki'));
 
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
       const newTestForeignLanguage = screen.queryAllByText('Niemiecki');
-      expect(newTestForeignLanguage.length).toBe(2);
+      expect(newTestForeignLanguage.length).toBe(1);
     });
   });
 
   test('foreignLanguage delete works correctly', async () => {
-    await waitFor(() => {
-      const testForeignLanguage = screen.queryAllByText('Angielski');
-      expect(testForeignLanguage.length).toBe(2);
-    });
+    await waitFor(() => screen.getByText('Angielski'));
+    expect(screen.queryAllByText('Angielski').length).toBe(1);
 
     await waitFor(() => {
       const deleteButton = screen.getByText('Usuń');
@@ -142,7 +133,7 @@ describe('ForeignLanguages Page Component', () => {
     });
 
     const testForeignLanguage = screen.queryAllByText('Angielski');
-    expect(testForeignLanguage.length).toBe(1);
+    expect(testForeignLanguage.length).toBe(0);
 
     await waitFor(() => {
       const noContent = screen.getByTestId('no-content');

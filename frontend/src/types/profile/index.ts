@@ -15,6 +15,10 @@ export interface SoftSkillsFormType {
   softSkillLevel: number;
 }
 
+export interface SoftSkillNamesFormType {
+  name: string;
+}
+
 export interface ReadSoftSkillName {
   id: number;
   name: string;
@@ -66,6 +70,10 @@ export interface ReadEducationLevel {
   name: string;
 }
 
+export interface EducationLevelFormType {
+  name: string;
+}
+
 export interface WriteEducationLevel {
   name: string;
 }
@@ -111,12 +119,17 @@ export interface ReadTechSkillName {
 
 export interface WriteTechSkillName {
   name: string;
-  logo: File;
+  logo: File | string;
+}
+
+export interface TechSkillNamesFormType {
+  name: string;
+  logo: File | string;
 }
 
 export interface ReadForeignLanguage {
   id: number;
-  languageLevel: number;
+  languageLevel: string;
   foreignLanguageName: string;
   flagUrl: string;
 }
@@ -124,6 +137,11 @@ export interface ReadForeignLanguage {
 export interface WriteForeignLanguage {
   languageLevel: string;
   foreignLanguageNameId: number;
+}
+
+export interface ForeignLanguageNamesFormType {
+  name: string;
+  flag: File | string;
 }
 
 export interface ReadForeignLanguageName {
@@ -134,7 +152,7 @@ export interface ReadForeignLanguageName {
 
 export interface WriteForeignLanguageName {
   name: string;
-  flag: File;
+  flag: File | string;
 }
 
 export interface ReadInterest {
