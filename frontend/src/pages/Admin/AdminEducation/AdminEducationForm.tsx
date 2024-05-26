@@ -1,4 +1,4 @@
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 import { useEducations } from 'hooks';
 import { Button, Input, PopUpForm } from 'components';
 import adminEducationValidationSchema from './AdminEducationValidation';
@@ -22,12 +22,16 @@ function AdminEducationForm({ educationLevelToEdit }: AdminEducationFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<EducationLevelFormType>
   ) => {
     setSubmitting(true);
-    if (educationLevelToEdit) {
-      await updateEducationLevel.mutateAsync({ id: educationLevelToEdit.id, ...values });
-    } else {
-      await createEducationLevel.mutateAsync(values);
+    try {
+      if (educationLevelToEdit) {
+        await updateEducationLevel.mutateAsync({ id: educationLevelToEdit.id, ...values });
+      } else {
+        await createEducationLevel.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

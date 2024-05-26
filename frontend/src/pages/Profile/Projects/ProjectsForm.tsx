@@ -4,7 +4,7 @@ import { Button, PopUpForm, Input, TextArea } from 'components';
 import { ReadProject, WriteProject } from 'types/profile';
 import validationSchema from './ProjectsValidation';
 import { useProjects } from 'hooks';
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 
 interface ProjectsFormProps {
   projectToEdit?: ReadProject;
@@ -24,13 +24,16 @@ function ProjectsForm({ projectToEdit }: ProjectsFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<WriteProject>
   ) => {
     setSubmitting(true);
-
-    if (projectToEdit) {
-      await updateProject.mutateAsync({ id: projectToEdit.id, ...values });
-    } else {
-      await createProject.mutateAsync(values);
+    try {
+      if (projectToEdit) {
+        await updateProject.mutateAsync({ id: projectToEdit.id, ...values });
+      } else {
+        await createProject.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

@@ -5,7 +5,7 @@ import { Button, CheckBox, PopUpForm, Input } from 'components';
 import { ReadExperience, WriteExperience } from 'types/profile';
 import { useExperiences } from 'hooks';
 import validationSchema from './ExperienceValidation';
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 
 interface ExperienceFormProps {
   experienceToEdit?: ReadExperience;
@@ -39,13 +39,16 @@ function ExperienceForm({ experienceToEdit }: ExperienceFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<WriteExperience>
   ) => {
     setSubmitting(true);
-
-    if (experienceToEdit) {
-      await updateExperience.mutateAsync({ id: experienceToEdit.id, ...values });
-    } else {
-      await createExperience.mutateAsync(values);
+    try {
+      if (experienceToEdit) {
+        await updateExperience.mutateAsync({ id: experienceToEdit.id, ...values });
+      } else {
+        await createExperience.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

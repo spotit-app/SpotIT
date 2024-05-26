@@ -62,11 +62,11 @@ function useJobOffers(companyId?: number) {
       },
       [auth0Id, companyId]
     ),
-    onSuccess: (createdJobOffer: ReadJobOffer) =>
-      queryClient.setQueryData(['jobOffers', auth0Id], (prev: ReadJobOffer[] = []) => [
-        createdJobOffer,
-        ...prev
-      ])
+    onSuccess: (createdJobOffer: ReadJobOffer) => {
+      queryClient.refetchQueries({
+        queryKey: ['jobOffers', createdJobOffer.company.id, queryParams]
+      });
+    }
   });
 
   const deleteJobOffer = useMutation({
@@ -81,10 +81,10 @@ function useJobOffers(companyId?: number) {
       },
       [auth0Id, companyId]
     ),
-    onSuccess: ({ id }) => {
-      queryClient.setQueryData(['jobOffers', auth0Id], (prev: ReadJobOffer[]) => [
-        ...prev.filter((jobOffer) => jobOffer.id !== id)
-      ]);
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ['jobOffers', companyId, queryParams]
+      });
     }
   });
 
@@ -103,10 +103,11 @@ function useJobOffers(companyId?: number) {
       },
       [auth0Id, companyId]
     ),
-    onSuccess: (updatedJobOffer: ReadJobOffer) =>
-      queryClient.setQueryData(['jobOffers', auth0Id], (prev: ReadJobOffer[] = []) => [
-        ...prev.map((jobOffer) => (jobOffer.id === updatedJobOffer.id ? updatedJobOffer : jobOffer))
-      ])
+    onSuccess: (updatedJobOffer: ReadJobOffer) => {
+      queryClient.refetchQueries({
+        queryKey: ['jobOffers', updatedJobOffer.company.id, queryParams]
+      });
+    }
   });
 
   return {

@@ -1,6 +1,7 @@
 package com.spotit.backend.domain.referenceData.workMode;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,10 @@ public class WorkModeServiceImpl
     @Cacheable(key = "'all'")
     public List<WorkMode> getAll() {
         return workModeRepository.findAll();
+    }
+
+    @Override
+    public Optional<WorkMode> getByName(String name) {
+        return workModeRepository.findByName(name);
     }
 }

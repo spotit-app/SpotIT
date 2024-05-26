@@ -3,7 +3,7 @@ import { Button, Loading, NoContent, PopUp, ProfileContainer, ProjectCard } from
 import { useProjects } from 'hooks';
 import { ProjectsForm } from './ProjectsForm';
 import { ReadProject } from 'types/profile';
-import { showModal } from 'utils';
+import { errorToast, showModal, successToast } from 'utils';
 
 function Projects() {
   const [projectToEdit, setProjectToEdit] = useState<ReadProject | undefined>(undefined);
@@ -20,7 +20,18 @@ function Projects() {
         <Button onClick={() => editProject(project)}>Edytuj</Button>
       </div>
 
-      <Button onClick={() => deleteProject.mutate(project.id)}>Usuń</Button>
+      <Button
+        onClick={() => {
+          try {
+            deleteProject.mutate(project.id);
+            successToast();
+          } catch (error) {
+            errorToast();
+          }
+        }}
+      >
+        Usuń
+      </Button>
     </ProjectCard>
   ));
 

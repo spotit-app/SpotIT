@@ -74,7 +74,7 @@ public class UserAccountServiceImpl implements UserAccountService {
             String profilePictureUrl = storageService.uploadFile(
                     profilePicture,
                     PROFILE_PICTURES_DIRECTORY_NAME,
-                    foundUserAccount.getAuth0Id() + System.currentTimeMillis());
+                    foundUserAccount.getAuth0Id());
 
             userAccount.setProfilePictureUrl(profilePictureUrl);
 

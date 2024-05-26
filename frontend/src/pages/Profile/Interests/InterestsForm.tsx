@@ -4,7 +4,7 @@ import { ReadInterest, WriteInterest } from 'types/profile';
 import { Button, PopUpForm, Input } from 'components';
 import validationSchema from './InterestsValidation';
 import { useInterests } from 'hooks';
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 
 interface InterestsFormProps {
   interestToEdit?: ReadInterest;
@@ -22,13 +22,16 @@ function InterestsForm({ interestToEdit }: InterestsFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<WriteInterest>
   ) => {
     setSubmitting(true);
-
-    if (interestToEdit) {
-      await updateInterest.mutateAsync({ id: interestToEdit.id, ...values });
-    } else {
-      await createInterest.mutateAsync(values);
+    try {
+      if (interestToEdit) {
+        await updateInterest.mutateAsync({ id: interestToEdit.id, ...values });
+      } else {
+        await createInterest.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

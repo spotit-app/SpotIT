@@ -3,7 +3,7 @@ import { Button, Loading, NoContent, PopUp, ProfileContainer, ExperienceCard } f
 import { useExperiences } from 'hooks';
 import { ExperienceForm } from './ExperienceForm';
 import { ReadExperience } from 'types/profile';
-import { showModal } from 'utils';
+import { errorToast, showModal, successToast } from 'utils';
 
 function Experience() {
   const [experienceToEdit, setExperienceToEdit] = useState<ReadExperience | undefined>(undefined);
@@ -21,7 +21,18 @@ function Experience() {
         <Button onClick={() => editExperience(experience)}>Edytuj</Button>
       </div>
 
-      <Button onClick={() => deleteExperience.mutate(experience.id)}>Usuń</Button>
+      <Button
+        onClick={() => {
+          try {
+            deleteExperience.mutate(experience.id);
+            successToast();
+          } catch (error) {
+            errorToast();
+          }
+        }}
+      >
+        Usuń
+      </Button>
     </ExperienceCard>
   ));
 

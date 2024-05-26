@@ -1,4 +1,4 @@
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 import { useTechSkills } from 'hooks';
 import { Button, Input, PopUpForm } from 'components';
 import adminTechSkillsValidationSchema from './AdminTechSkillsValidation';
@@ -28,12 +28,16 @@ function AdminTechSkillsForm({ techSkillToEdit }: AdminTechSkillsFormProps) {
     formData.append('name', new Blob([values.name], { type: 'application/json' }));
     values.logo && formData.append('logo', values.logo as Blob);
     setSubmitting(true);
-    if (techSkillToEdit) {
-      await updateTechSkillName.mutateAsync({ id: techSkillToEdit.id, formData });
-    } else {
-      await createTechSkillName.mutateAsync(formData);
+    try {
+      if (techSkillToEdit) {
+        await updateTechSkillName.mutateAsync({ id: techSkillToEdit.id, formData });
+      } else {
+        await createTechSkillName.mutateAsync(formData);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     if (logoRef.current) {

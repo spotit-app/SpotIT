@@ -34,15 +34,13 @@ describe('AdminWorkExperiences', () => {
     nock('http://localhost:80')
       .get(`/api/workExperience`)
       .reply(200, [
-        { id: 1, name: 'testWorkExperience1' },
-        { id: 2, name: 'testWorkExperience2' }
+        { id: 1, name: 'test1' },
+        { id: 2, name: 'test2' }
       ]);
-    nock('http://localhost:80')
-      .post(`/api/workExperience`)
-      .reply(201, { id: 3, name: 'testWorkExperience3' });
+    nock('http://localhost:80').post(`/api/workExperience`).reply(201, { id: 3, name: 'test3' });
     nock('http://localhost:80')
       .put(`/api/workExperience/1`)
-      .reply(200, { id: 1, name: 'testWorkExperience1Updated' });
+      .reply(200, { id: 1, name: 'test1Updated' });
     act(() =>
       render(
         <QueryClientProvider client={queryClient}>
@@ -59,7 +57,7 @@ describe('AdminWorkExperiences', () => {
 
   test('renders correctly', async () => {
     expect(screen.getByText('Poziom doświadczenia')).toBeInTheDocument();
-    await waitFor(() => expect(screen.getByText('testWorkExperience1')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('test1')).toBeInTheDocument());
   });
 
   test('button triggers formToggle function', async () => {
@@ -76,13 +74,13 @@ describe('AdminWorkExperiences', () => {
     fireEvent.click(addButton);
 
     const name = screen.getByLabelText('Nazwa');
-    fireEvent.change(name, { target: { value: 'testWorkExperience3' } });
+    fireEvent.change(name, { target: { value: 'test3' } });
 
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('testWorkExperience3')).toBeInTheDocument();
+      expect(screen.getByText('test3')).toBeInTheDocument();
     });
   });
 
@@ -93,13 +91,13 @@ describe('AdminWorkExperiences', () => {
     });
 
     const name = screen.getByLabelText('Nazwa');
-    fireEvent.change(name, { target: { value: 'testWorkExperience1Updated' } });
+    fireEvent.change(name, { target: { value: 'test1Updated' } });
 
     const submitButton = screen.getByText('Zapisz');
     fireEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(screen.getByText('testWorkExperience1Updated')).toBeInTheDocument();
+      expect(screen.getByText('test1Updated')).toBeInTheDocument();
     });
   });
 });

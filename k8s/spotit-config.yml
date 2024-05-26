@@ -4,7 +4,7 @@ metadata:
   name: spotit-config
 data:
   postgres-db: spotit-db
-  imagekit-public-key: ***REMOVED***
+  imagekit-public-key: public_MoX//mEMDCoKCBeud68jTpOZ4K0=
   datasource-url: jdbc:postgresql://spotit-postgres/spotit-db
   redis-host: spotit-redis
   redis-port: "6379"

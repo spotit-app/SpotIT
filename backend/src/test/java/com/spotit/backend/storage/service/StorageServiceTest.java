@@ -37,7 +37,7 @@ class StorageServiceTest {
     @Test
     void shouldReturnFilenameFromUrl() {
         // given
-        var fileUrl = "***REMOVED***/flags/english-flag";
+        var fileUrl = "https://ik.imagekit.io/spotit/flags/english-flag";
 
         // when
         var result = StorageServiceImpl.getFilenameFromUrl(fileUrl);
@@ -52,7 +52,7 @@ class StorageServiceTest {
         var file = new byte[0];
         var directory = "directory";
         var filename = "filename";
-        var url = "***REMOVED***/" + directory + "/" + filename;
+        var url = "https://ik.imagekit.io/spotit/" + directory + "/" + filename;
 
         var mockedResult = new Result();
         mockedResult.setUrl(url);

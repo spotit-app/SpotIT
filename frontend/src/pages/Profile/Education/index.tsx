@@ -2,13 +2,25 @@ import { Loading, NoContent, PopUp, ProfileContainer, EducationCard, Button } fr
 import { useEducations } from 'hooks';
 import { EducationForm } from './EducationForm';
 import { ReadEducation } from 'types/profile';
+import { errorToast, successToast } from 'utils';
 
 function Education() {
   const { educations, educationsIsPending, deleteEducation } = useEducations();
 
   const educationElements = educations?.map((education: ReadEducation) => (
     <EducationCard key={education.id} {...education}>
-      <Button onClick={() => deleteEducation.mutate(education.id)}>Usuń</Button>
+      <Button
+        onClick={() => {
+          try {
+            deleteEducation.mutate(education.id);
+            successToast();
+          } catch (error) {
+            errorToast();
+          }
+        }}
+      >
+        Usuń
+      </Button>
     </EducationCard>
   ));
 

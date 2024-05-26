@@ -43,11 +43,12 @@ function FilterButton({ entity, onChange, isChecked }: FilterButtonProps) {
         className="text-gray-500 bg-base-100 border-2 border-gray-200 rounded-lg cursor-pointer peer-checked:border-primary"
       >
         {isReadTechSkillNameOrForeignLanguageName(entity) && (
-          <img
-            src={isReadTechSkillName(entity) ? entity.logoUrl : entity.flagUrl}
-            width="20"
-            height="20"
-          />
+          <div className="w-8 h-8 flex justify-center items-center">
+            <img
+              src={isReadTechSkillName(entity) ? entity.logoUrl : entity.flagUrl}
+              className="max-w-full max-h-full"
+            />
+          </div>
         )}
         <span className="text-lg font-semibold">{getEntityName(entity)}</span>
       </label>

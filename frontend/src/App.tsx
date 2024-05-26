@@ -36,11 +36,14 @@ import {
   JobOfferApplications,
   AdminWelcomePage
 } from 'pages';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <>
       <Navbar />
+      <ToastContainer />
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Home />} />

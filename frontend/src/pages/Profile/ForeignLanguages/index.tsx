@@ -9,6 +9,7 @@ import {
   PopUp,
   ProfileContainer
 } from 'components';
+import { errorToast, successToast } from 'utils';
 
 function ForeignLanguages() {
   const { foreignLanguages, foreignLanguagesIsPending, deleteForeignLanguage } =
@@ -20,7 +21,18 @@ function ForeignLanguages() {
       flagUrl={foreignLanguage.flagUrl}
       level={foreignLanguage.languageLevel}
     >
-      <Button onClick={() => deleteForeignLanguage.mutate(foreignLanguage.id)}>Usuń</Button>
+      <Button
+        onClick={() => {
+          try {
+            deleteForeignLanguage.mutate(foreignLanguage.id);
+            successToast();
+          } catch (error) {
+            errorToast();
+          }
+        }}
+      >
+        Usuń
+      </Button>
     </ForeignLanguageCard>
   ));
 

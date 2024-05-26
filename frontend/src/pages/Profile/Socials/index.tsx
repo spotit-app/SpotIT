@@ -3,7 +3,7 @@ import { Loading, NoContent, PopUp, ProfileContainer, SocialCard, Button } from 
 import { useSocials } from 'hooks';
 import { SocialsForm } from './SocialsForm';
 import { ReadSocial } from 'types/profile';
-import { showModal } from 'utils';
+import { errorToast, showModal, successToast } from 'utils';
 
 function Socials() {
   const [socialToEdit, setSocialToEdit] = useState<ReadSocial | undefined>(undefined);
@@ -20,7 +20,18 @@ function Socials() {
         <Button onClick={() => editSocial(social)}>Edytuj</Button>
       </div>
 
-      <Button onClick={() => deleteSocial.mutate(social.id)}>Usuń</Button>
+      <Button
+        onClick={() => {
+          try {
+            deleteSocial.mutate(social.id);
+            successToast();
+          } catch (error) {
+            errorToast();
+          }
+        }}
+      >
+        Usuń
+      </Button>
     </SocialCard>
   ));
 

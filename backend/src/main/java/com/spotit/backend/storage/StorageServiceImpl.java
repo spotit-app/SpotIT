@@ -26,7 +26,7 @@ public class StorageServiceImpl implements StorageService {
         try {
             FileCreateRequest fileCreateRequest = new FileCreateRequest(file, filename);
             fileCreateRequest.setFolder(directory);
-            fileCreateRequest.setUseUniqueFileName(false);
+            fileCreateRequest.setUseUniqueFileName(true);
 
             Result result = imageKit.upload(fileCreateRequest);
 

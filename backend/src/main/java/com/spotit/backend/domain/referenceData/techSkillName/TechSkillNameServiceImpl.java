@@ -69,10 +69,16 @@ public class TechSkillNameServiceImpl
         }
 
         if (logo != null) {
-            storageService.uploadFile(
+            String oldTechSkillLogoFileName = getFilenameFromUrl(getFilenameFromUrl(foundTechSkillName.getLogoUrl()));
+
+            String newTechSkillLogoUrl = storageService.uploadFile(
                     logo,
                     LOGOS_DIRECTORY_NAME,
-                    getFilenameFromUrl(foundTechSkillName.getLogoUrl()));
+                    foundTechSkillName.getName() + "-logo");
+
+            foundTechSkillName.setLogoUrl(newTechSkillLogoUrl);
+
+            storageService.deleteFile(oldTechSkillLogoFileName);
         }
 
         return techSkillNameRepository.save(foundTechSkillName);

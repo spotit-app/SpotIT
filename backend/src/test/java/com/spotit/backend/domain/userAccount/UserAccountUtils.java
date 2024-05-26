@@ -36,6 +36,20 @@ public interface UserAccountUtils {
                 .build();
     }
 
+    static UserAccountReadDataDto createUserAccountReadDataDto(int id) {
+        return UserAccountReadDataDto.builder()
+                .firstName("Name " + id)
+                .lastName("Lastname " + id)
+                .email("email@email" + id + ".com")
+                .phoneNumber("phone" + id)
+                .profilePictureUrl("https://example.com/profile" + id + ".jpg")
+                .position("Position " + id)
+                .description("Description " + id)
+                .cvClause("CV clause " + id)
+                .isOpen(false)
+                .build();
+    }
+
     static UserAccountWriteDto createUserAccountWriteDto(int id) {
         return UserAccountWriteDto.builder()
                 .auth0Id("auth0Id" + id)

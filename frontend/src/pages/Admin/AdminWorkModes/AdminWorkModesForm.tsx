@@ -1,4 +1,4 @@
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 import { useWorkModes } from 'hooks';
 import { Button, Input, PopUpForm } from 'components';
 import adminWorkModesValidationSchema from './AdminWorkModesValidation';
@@ -22,12 +22,16 @@ function AdminWorkModesForm({ workModeToEdit }: AdminWorkModesFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<WriteWorkMode>
   ) => {
     setSubmitting(true);
-    if (workModeToEdit) {
-      await updateWorkMode.mutateAsync({ id: workModeToEdit.id, ...values });
-    } else {
-      await createWorkMode.mutateAsync(values);
+    try {
+      if (workModeToEdit) {
+        await updateWorkMode.mutateAsync({ id: workModeToEdit.id, ...values });
+      } else {
+        await createWorkMode.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

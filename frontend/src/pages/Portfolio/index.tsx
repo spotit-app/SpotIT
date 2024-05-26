@@ -106,14 +106,18 @@ function Portfolio() {
           <div className="my-10">
             <h1 className="text-3xl font-bold mb-3 break-words">Kontakt</h1>
             <div className="border-b-2 border-l-2 border-primary p-3">
-              <div className="flex flex-wrap">
-                <div className="font-bold mr-2">Email:</div>
-                <div>{portfolio?.userData.email}</div>
-              </div>
-              <div className="flex flex-wrap">
-                <div className="font-bold mr-2">Telefon:</div>
-                <div>{portfolio?.userData.phoneNumber}</div>
-              </div>
+              {portfolio?.userData.email && (
+                <div className="flex flex-wrap">
+                  <div className="font-bold mr-2">Email:</div>
+                  <div>{portfolio?.userData.email}</div>
+                </div>
+              )}
+              {portfolio?.userData.phoneNumber && (
+                <div className="flex flex-wrap">
+                  <div className="font-bold mr-2">Telefon:</div>
+                  <div>{portfolio?.userData.phoneNumber}</div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -169,6 +173,12 @@ function Portfolio() {
           <div className="my-10">
             <h1 className="text-3xl font-bold mb-3 break-words">Kursy</h1>
             {courseCards}
+          </div>
+        )}
+        {portfolio?.userData.cvClause && (
+          <div className="my-10">
+            <h1 className="text-3xl font-bold mb-3 break-words">Klauzula informacyjna</h1>
+            {portfolio?.userData.cvClause}
           </div>
         )}
       </div>

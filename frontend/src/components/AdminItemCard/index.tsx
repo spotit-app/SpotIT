@@ -13,8 +13,11 @@ function AdminItemCard({ children, name, logo }: AdminItemCardProps) {
       <div className="block md:flex items-center w-full">
         <div className="text-xl w-full font-bold flex items-center">
           {logo && (
-            <div className="w-12" data-testid="admin-item-card-logo">
-              <img src={logo} alt="Skill Logo" className="w-10 h-10" />
+            <div
+              className="w-12 h-12 flex justify-center items-center mr-2"
+              data-testid="admin-item-card-logo"
+            >
+              <img src={logo} alt="Skill Logo" className="max-w-full max-h-full" />
             </div>
           )}
           <div>{name}</div>

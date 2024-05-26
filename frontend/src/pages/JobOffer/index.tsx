@@ -2,7 +2,7 @@ import { Badge, Button, Loading } from 'components';
 import { useJobOffers, useJobApplications } from 'hooks';
 import { Link, useParams } from 'react-router-dom';
 import icons from 'assets/icons';
-import { mapToNames } from 'utils';
+import { errorToast, mapToNames, successToast } from 'utils';
 import { useAuth0 } from '@auth0/auth0-react';
 
 function JobOffer() {
@@ -14,7 +14,12 @@ function JobOffer() {
   const { data: jobOffer, isPending: jobOfferIsPending } = getJobOffer(+id!);
 
   const onApply = async () => {
-    await createJobApplication.mutateAsync(+id!);
+    try {
+      await createJobApplication.mutateAsync(+id!);
+      successToast('Aplikacja została wysłana!');
+    } catch (error) {
+      errorToast('Błąd: Upewnij się, że portfolio zostało wygenerowane!');
+    }
   };
 
   const details = [

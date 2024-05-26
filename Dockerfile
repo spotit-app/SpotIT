@@ -19,7 +19,7 @@ WORKDIR /app
 COPY --from=backend-builder /app/build/libs/backend-0.0.1-SNAPSHOT.jar app.jar
 
 HEALTHCHECK --interval=30s --timeout=3s \ 
-    CMD wget -qO- http://localhost:8080/actuator/health || exit 1
+    CMD wget -qO- https://localhost:8080/actuator/health || exit 1
 
 RUN adduser -D app
 USER app

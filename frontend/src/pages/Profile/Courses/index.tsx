@@ -3,7 +3,7 @@ import { Button, Loading, NoContent, PopUp, ProfileContainer, CourseCard } from 
 import { useCourses } from 'hooks';
 import { CoursesForm } from './CoursesForm';
 import { ReadCourse } from 'types/profile';
-import { showModal } from 'utils';
+import { errorToast, showModal, successToast } from 'utils';
 
 function Courses() {
   const [courseToEdit, setCourseToEdit] = useState<ReadCourse | undefined>(undefined);
@@ -21,7 +21,18 @@ function Courses() {
         <Button onClick={() => editCourse(course)}>Edytuj</Button>
       </div>
 
-      <Button onClick={() => deleteCourse.mutate(course.id)}>Usuń</Button>
+      <Button
+        onClick={() => {
+          try {
+            deleteCourse.mutate(course.id);
+            successToast();
+          } catch (error) {
+            errorToast();
+          }
+        }}
+      >
+        Usuń
+      </Button>
     </CourseCard>
   ));
 

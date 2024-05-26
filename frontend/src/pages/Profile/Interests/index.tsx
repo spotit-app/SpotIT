@@ -3,7 +3,7 @@ import { Button, InterestCard, Loading, NoContent, PopUp, ProfileContainer } fro
 import { useInterests } from 'hooks';
 import { InterestsForm } from './InterestsForm';
 import { ReadInterest } from 'types/profile';
-import { showModal } from 'utils';
+import { errorToast, showModal, successToast } from 'utils';
 
 function Interests() {
   const [interestToEdit, setInterestToEdit] = useState<ReadInterest | undefined>(undefined);
@@ -21,7 +21,18 @@ function Interests() {
         <Button onClick={() => editInterest(interest)}>Edytuj</Button>
       </div>
 
-      <Button onClick={() => deleteInterest.mutate(interest.id)}>Usuń</Button>
+      <Button
+        onClick={() => {
+          try {
+            deleteInterest.mutate(interest.id);
+            successToast();
+          } catch (error) {
+            errorToast();
+          }
+        }}
+      >
+        Usuń
+      </Button>
     </InterestCard>
   ));
 

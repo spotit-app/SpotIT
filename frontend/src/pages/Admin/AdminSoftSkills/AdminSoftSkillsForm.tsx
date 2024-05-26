@@ -1,4 +1,4 @@
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 import { useSoftSkills } from 'hooks';
 import { Button, Input, PopUpForm } from 'components';
 import adminSoftSkillsValidationSchema from './AdminSoftSkillsValidation';
@@ -22,12 +22,16 @@ function AdminSoftSkillsForm({ softSkillToEdit }: AdminSoftSkillsFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<SoftSkillNamesFormType>
   ) => {
     setSubmitting(true);
-    if (softSkillToEdit) {
-      await updateSoftSkillName.mutateAsync({ id: softSkillToEdit.id, ...values });
-    } else {
-      await createSoftSkillName.mutateAsync(values);
+    try {
+      if (softSkillToEdit) {
+        await updateSoftSkillName.mutateAsync({ id: softSkillToEdit.id, ...values });
+      } else {
+        await createSoftSkillName.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

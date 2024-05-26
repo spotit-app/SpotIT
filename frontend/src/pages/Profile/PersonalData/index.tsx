@@ -3,6 +3,7 @@ import { ChangeEvent, useRef, useState } from 'react';
 import { Input, Button, MainForm, Loading, CheckBox } from 'components';
 import validationSchema from './PersonalDataValidation';
 import { useUser } from 'hooks';
+import { successToast, errorToast } from 'utils';
 
 interface PersonalDataFormTypes {
   firstName: string;
@@ -39,7 +40,12 @@ function PersonalData() {
     );
     updatedUser.append('profilePicture', values.profilePicture as Blob);
     setSubmitting(true);
-    await updateUser.mutateAsync(updatedUser);
+    try {
+      await updateUser.mutateAsync(updatedUser);
+      successToast();
+    } catch (error) {
+      errorToast();
+    }
     setSubmitting(false);
 
     if (profilePictureRef.current) {

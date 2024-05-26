@@ -2,6 +2,7 @@ import { Portfolio } from 'types/profile';
 import { useUser, usePortfolio } from 'hooks';
 import { useNavigate } from 'react-router-dom';
 import { Button, Loading } from 'components';
+import { errorToast, successToast } from 'utils';
 
 function WelcomePage() {
   const { userName } = useUser();
@@ -11,10 +12,16 @@ function WelcomePage() {
   const createOrUpdatePortfolio = async () => {
     if (portfolioUrl) {
       await updatePortfolio.mutateAsync();
+      successToast('Adres portfolio został zaktualizowany!');
       navigate(`/portfolio/${portfolioUrl}`);
     } else {
-      const createdPortfolio: Portfolio = await createPortfolio.mutateAsync();
-      navigate(`/portfolio/${createdPortfolio.portfolioUrl}`);
+      try {
+        const createdPortfolio: Portfolio = await createPortfolio.mutateAsync();
+        successToast('Portfolio zostało wygenerowane!');
+        navigate(`/portfolio/${createdPortfolio.portfolioUrl}`);
+      } catch (error) {
+        errorToast('Błąd: Upewnij się, że wypełniłeś swoje imię i nazwisko!');
+      }
     }
   };
 

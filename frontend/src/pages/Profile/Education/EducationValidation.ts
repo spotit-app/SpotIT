@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import { REQUIRED_MESSAGE } from 'appConstants';
+import { REQUIRED_MESSAGE, TOO_LONG_MESSAGE } from 'appConstants';
 
 const educationValidationSchema = Yup.object({
   educationLevel: Yup.string().required(REQUIRED_MESSAGE),
@@ -7,8 +7,8 @@ const educationValidationSchema = Yup.object({
     if (educationLevel.toString() === 'Inny') return schema.required(REQUIRED_MESSAGE);
     return schema;
   }),
-  schoolName: Yup.string().required(REQUIRED_MESSAGE),
-  faculty: Yup.string(),
+  schoolName: Yup.string().required(REQUIRED_MESSAGE).max(50, TOO_LONG_MESSAGE),
+  faculty: Yup.string().max(50, TOO_LONG_MESSAGE),
   startDate: Yup.date().required(REQUIRED_MESSAGE),
   isChecked: Yup.boolean(),
   endDate: Yup.date().when('isChecked', (isChecked, schema) => {

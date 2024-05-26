@@ -1,4 +1,4 @@
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 import { useWorkExperiences } from 'hooks';
 import { Button, Input, PopUpForm } from 'components';
 import adminWorkExperiencesValidationSchema from './AdminWorkExperiencesValidation';
@@ -22,12 +22,16 @@ function AdminWorkExperiencesForm({ workExperienceToEdit }: AdminWorkExperiences
     { setSubmitting, resetForm }: FormikHelpers<WriteWorkExperience>
   ) => {
     setSubmitting(true);
-    if (workExperienceToEdit) {
-      await updateWorkExperience.mutateAsync({ id: workExperienceToEdit.id, ...values });
-    } else {
-      await createWorkExperience.mutateAsync(values);
+    try {
+      if (workExperienceToEdit) {
+        await updateWorkExperience.mutateAsync({ id: workExperienceToEdit.id, ...values });
+      } else {
+        await createWorkExperience.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

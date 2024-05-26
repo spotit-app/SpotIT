@@ -23,6 +23,7 @@ public interface JobOfferMapper extends EntityMapper<JobOffer, JobOfferReadDto, 
     @Mapping(target = "workExperienceName", expression = "java(jobOffer.getWorkExperience().getName())")
     JobOfferReadDto toReadDto(JobOffer jobOffer);
 
+    @Mapping(target = "workExperienceName", expression = "java(jobOffer.getWorkExperience().getName())")
     JobOfferListReadDto toListReadDto(JobOffer jobOffer);
 
     @Override

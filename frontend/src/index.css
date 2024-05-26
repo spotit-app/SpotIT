@@ -80,3 +80,24 @@
 .bg-home {
   background-color: #001b60;
 }
+
+.Toastify__toast-theme--light {
+  background: theme('colors.base-100') !important;
+  border: 2px solid theme('colors.primary');
+}
+
+.Toastify__progress-bar--error {
+  background: theme('colors.primary');
+}
+
+.Toastify__close-button {
+  display: none;
+}
+
+.text-error {
+  color: #e74c3c;
+}
+
+.text-success {
+  color: #07bc0c;
+}

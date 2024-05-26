@@ -4,7 +4,7 @@ import { ReadCourse, WriteCourse } from 'types/profile';
 import { Button, PopUpForm, Input } from 'components';
 import validationSchema from './CoursesValidation';
 import { useCourses } from 'hooks';
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 
 interface CoursesFormProps {
   courseToEdit?: ReadCourse;
@@ -23,13 +23,16 @@ function CoursesForm({ courseToEdit }: CoursesFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<WriteCourse>
   ) => {
     setSubmitting(true);
-
-    if (courseToEdit) {
-      await updateCourse.mutateAsync({ id: courseToEdit.id, ...values });
-    } else {
-      await createCourse.mutateAsync(values);
+    try {
+      if (courseToEdit) {
+        await updateCourse.mutateAsync({ id: courseToEdit.id, ...values });
+      } else {
+        await createCourse.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

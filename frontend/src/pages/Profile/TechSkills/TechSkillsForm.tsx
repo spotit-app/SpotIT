@@ -5,7 +5,7 @@ import { Button, Input, Rating, PopUpForm, FormikReactSelect } from 'components'
 import validationSchema from './TechSkillsValidation';
 import { useTechSkills } from 'hooks';
 import { SelectOption } from 'types/shared';
-import { closeModal } from 'utils';
+import { closeModal, errorToast, successToast } from 'utils';
 
 function TechSkillsForm() {
   const [selectedTechSkillName, setSelectedTechSkillName] = useState('');
@@ -30,7 +30,12 @@ function TechSkillsForm() {
     { setSubmitting, resetForm }: FormikHelpers<TechSkillsFormType>
   ) => {
     setSubmitting(true);
-    await createTechSkill.mutateAsync(values);
+    try {
+      await createTechSkill.mutateAsync(values);
+      successToast();
+    } catch (error) {
+      errorToast();
+    }
     setSubmitting(false);
     resetForm();
     setSelectedTechSkillName('');

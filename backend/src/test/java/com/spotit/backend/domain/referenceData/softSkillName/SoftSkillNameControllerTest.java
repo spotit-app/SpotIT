@@ -35,7 +35,7 @@ import com.spotit.backend.config.security.SecurityConfig;
 @Import(SecurityConfig.class)
 class SoftSkillNameControllerTest {
 
-    private static final String TECH_SKILL_NAME_API_URL = "/api/softSkillName";
+    private static final String SOFT_SKILL_NAME_API_URL = "/api/softSkillName";
 
     @Autowired
     ObjectMapper objectMapper;
@@ -58,7 +58,7 @@ class SoftSkillNameControllerTest {
                 .thenReturn(createSoftSkillNameReadDto(1));
 
         // when
-        var result = mockMvc.perform(get(TECH_SKILL_NAME_API_URL).with(jwt()));
+        var result = mockMvc.perform(get(SOFT_SKILL_NAME_API_URL).with(jwt()));
 
         // then
         verify(softSkillNameService, times(1)).getAll();
@@ -79,7 +79,7 @@ class SoftSkillNameControllerTest {
                 .thenReturn(createdSoftSkillName);
 
         // when
-        var result = mockMvc.perform(post(TECH_SKILL_NAME_API_URL)
+        var result = mockMvc.perform(post(SOFT_SKILL_NAME_API_URL)
                 .with(createAdminMockJwt())
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(softSkillNameToCreate)));
@@ -103,7 +103,7 @@ class SoftSkillNameControllerTest {
                 .thenThrow(creatingSoftSkillNameError);
 
         // when
-        var result = mockMvc.perform(post(TECH_SKILL_NAME_API_URL)
+        var result = mockMvc.perform(post(SOFT_SKILL_NAME_API_URL)
                 .with(createAdminMockJwt())
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(softSkillNameToCreate)));
@@ -125,7 +125,7 @@ class SoftSkillNameControllerTest {
                 .thenReturn(softSkillName);
 
         // when
-        var result = mockMvc.perform(get(TECH_SKILL_NAME_API_URL + "/" + softSkillNameId)
+        var result = mockMvc.perform(get(SOFT_SKILL_NAME_API_URL + "/" + softSkillNameId)
                 .with(jwt()));
 
         // then
@@ -147,7 +147,7 @@ class SoftSkillNameControllerTest {
                 .thenThrow(softSkillNameNotFoundError);
 
         // when
-        var result = mockMvc.perform(get(TECH_SKILL_NAME_API_URL + "/" + softSkillNameId)
+        var result = mockMvc.perform(get(SOFT_SKILL_NAME_API_URL + "/" + softSkillNameId)
                 .with(jwt()));
 
         // then
@@ -168,7 +168,7 @@ class SoftSkillNameControllerTest {
                 .thenReturn(modifiedSoftSkillName);
 
         // when
-        var result = mockMvc.perform(put(TECH_SKILL_NAME_API_URL + "/" + softSkillNameId)
+        var result = mockMvc.perform(put(SOFT_SKILL_NAME_API_URL + "/" + softSkillNameId)
                 .with(createAdminMockJwt())
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(softSkillNameToModify)));
@@ -193,7 +193,7 @@ class SoftSkillNameControllerTest {
                 .thenThrow(softSkillNameNotFoundError);
 
         // when
-        var result = mockMvc.perform(put(TECH_SKILL_NAME_API_URL + "/" + softSkillNameId)
+        var result = mockMvc.perform(put(SOFT_SKILL_NAME_API_URL + "/" + softSkillNameId)
                 .with(createAdminMockJwt())
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(softSkillNameToModify)));
@@ -211,7 +211,7 @@ class SoftSkillNameControllerTest {
         var softSkillNameId = 1;
 
         // when
-        var result = mockMvc.perform(delete(TECH_SKILL_NAME_API_URL + "/" + softSkillNameId)
+        var result = mockMvc.perform(delete(SOFT_SKILL_NAME_API_URL + "/" + softSkillNameId)
                 .with(createAdminMockJwt()));
 
         // then
@@ -231,7 +231,7 @@ class SoftSkillNameControllerTest {
         doThrow(softSkillNameNotFoundError).when(softSkillNameService).delete(softSkillNameId);
 
         // when
-        var result = mockMvc.perform(delete(TECH_SKILL_NAME_API_URL + "/" + softSkillNameId)
+        var result = mockMvc.perform(delete(SOFT_SKILL_NAME_API_URL + "/" + softSkillNameId)
                 .with(createAdminMockJwt()));
 
         // then

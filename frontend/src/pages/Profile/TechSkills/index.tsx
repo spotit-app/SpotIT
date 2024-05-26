@@ -2,6 +2,7 @@ import { Button, Loading, NoContent, PopUp, ProfileContainer, SkillCard } from '
 import { useTechSkills } from 'hooks';
 import { TechSkillsForm } from './TechSkillsForm';
 import { ReadTechSkill } from 'types/profile';
+import { errorToast, successToast } from 'utils';
 
 function TechSkills() {
   const { techSkills, techSkillsIsPending, deleteTechSkill } = useTechSkills();
@@ -12,7 +13,18 @@ function TechSkills() {
       level={techSkill.skillLevel}
       logo={techSkill.logoUrl}
     >
-      <Button onClick={() => deleteTechSkill.mutate(techSkill.id)}>Usuń</Button>
+      <Button
+        onClick={() => {
+          try {
+            deleteTechSkill.mutate(techSkill.id);
+            successToast();
+          } catch (error) {
+            errorToast();
+          }
+        }}
+      >
+        Usuń
+      </Button>
     </SkillCard>
   ));
 

@@ -4,7 +4,7 @@ import { useForeignLanguages } from 'hooks';
 import validationSchema from './ForeignLanguageValidation';
 import { Button, FormikReactSelect, PopUpForm } from 'components';
 import { SelectOption } from 'types/shared';
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 
 type Empty = '';
 interface ForeignLanguageForm {
@@ -37,7 +37,12 @@ function ForeignLanguageForm() {
     { setSubmitting, resetForm }: FormikHelpers<ForeignLanguageForm>
   ) => {
     setSubmitting(true);
-    await createForeignLanguage.mutateAsync(values as WriteForeignLanguage);
+    try {
+      await createForeignLanguage.mutateAsync(values as WriteForeignLanguage);
+      successToast();
+    } catch (error) {
+      errorToast();
+    }
     setSubmitting(false);
     resetForm();
     closeModal();

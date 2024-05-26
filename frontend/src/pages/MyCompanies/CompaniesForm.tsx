@@ -1,7 +1,7 @@
 import { Button, Input, PopUpForm } from 'components';
 import { FormikHelpers } from 'formik';
 import { CompanyForm, WriteCompany } from 'types/company';
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 import companiesValidationSchema from './CompaniesValidation';
 import { useCompanies } from 'hooks';
 
@@ -36,9 +36,12 @@ function CompaniesForm() {
       }
     };
     setSubmitting(true);
-
-    await createCompany.mutateAsync(company);
-
+    try {
+      await createCompany.mutateAsync(company);
+      successToast();
+    } catch (error) {
+      errorToast();
+    }
     setSubmitting(false);
     resetForm();
     closeModal();

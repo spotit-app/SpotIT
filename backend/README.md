@@ -2,6 +2,7 @@
 
 <p align="center">
     <img src="https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white" alt="gradle">
+    <img src="https://img.shields.io/badge/JUnit5-25A162.svg?style=for-the-badge&logo=JUnit5&logoColor=white" alt="junit5">
     <img src="https://img.shields.io/badge/Docker-2496ED.svg?style=for-the-badge&logo=Docker&logoColor=white" alt="docker">
 </p>
 <p align="center">
@@ -11,13 +12,19 @@
 </p>
 <p align="center">
     <img src="https://img.shields.io/badge/PostgreSQL-4169E1.svg?style=for-the-badge&logo=PostgreSQL&logoColor=white" alt="mongodb">
-    <img src="https://img.shields.io/badge/JUnit5-25A162.svg?style=for-the-badge&logo=JUnit5&logoColor=white" alt="junit5">
+    <img src="https://img.shields.io/badge/Redis-red?style=for-the-badge&logo=redis&logoColor=white" alt="redis">
 </p>
 
 ## :wrench: Running backend locally
 
 For local development and testing, backend uses `Docker` (and `Docker Compose`).
-Once you have them installed, in order to run the app you have to execute the following command:
+Once you have them installed, in order to run the app you have to execute the following command (inside the `backend` directory) to start the databases:
+
+```shell
+$ docker compose up
+```
+
+And then this command to start the backend:
 
 ```shell
 $ gradle bootRun

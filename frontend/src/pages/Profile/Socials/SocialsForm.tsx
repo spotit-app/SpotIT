@@ -4,7 +4,7 @@ import { ReadSocial, WriteSocial } from 'types/profile';
 import { Button, PopUpForm, Input } from 'components';
 import validationSchema from './SocialsValidation';
 import { useSocials } from 'hooks';
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 
 interface SocialsFormProps {
   socialToEdit?: ReadSocial;
@@ -23,13 +23,16 @@ function SocialsForm({ socialToEdit }: SocialsFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<WriteSocial>
   ) => {
     setSubmitting(true);
-
-    if (socialToEdit) {
-      await updateSocial.mutateAsync({ id: socialToEdit.id, ...values });
-    } else {
-      await createSocial.mutateAsync(values);
+    try {
+      if (socialToEdit) {
+        await updateSocial.mutateAsync({ id: socialToEdit.id, ...values });
+      } else {
+        await createSocial.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     closeModal();

@@ -2,6 +2,7 @@ import { FormikHelpers } from 'formik';
 import { TextArea, Button, MainForm, Loading } from 'components';
 import validationSchema from './OtherValidation';
 import { useUser } from 'hooks';
+import { successToast, errorToast } from 'utils';
 
 interface OtherFormTypes {
   description: string;
@@ -28,7 +29,12 @@ function Other() {
     );
 
     setSubmitting(false);
-    await updateUser.mutateAsync(updatedUser);
+    try {
+      await updateUser.mutateAsync(updatedUser);
+      successToast();
+    } catch (error) {
+      errorToast();
+    }
     setSubmitting(false);
   };
 

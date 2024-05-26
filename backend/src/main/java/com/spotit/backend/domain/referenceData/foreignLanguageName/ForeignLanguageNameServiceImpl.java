@@ -63,10 +63,16 @@ public class ForeignLanguageNameServiceImpl
         }
 
         if (flag != null) {
-            storageService.uploadFile(
+            String oldFlagFileName = getFilenameFromUrl(foundForeignLanguageName.getFlagUrl());
+
+            String newFlagUrl = storageService.uploadFile(
                     flag,
                     FLAGS_DIRECTORY_NAME,
-                    getFilenameFromUrl(foundForeignLanguageName.getFlagUrl()));
+                    foundForeignLanguageName.getName() + "-flag");
+
+            foundForeignLanguageName.setFlagUrl(newFlagUrl);
+
+            storageService.deleteFile(oldFlagFileName);
         }
 
         return foreignLanguageNameRepository.save(foundForeignLanguageName);

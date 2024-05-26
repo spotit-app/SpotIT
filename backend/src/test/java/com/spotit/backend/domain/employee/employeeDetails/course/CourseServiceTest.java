@@ -2,9 +2,9 @@ package com.spotit.backend.domain.employee.employeeDetails.course;
 
 import static com.spotit.backend.abstraction.GeneralUtils.getEntityNotFoundMessage;
 import static com.spotit.backend.abstraction.GeneralUtils.getErrorCreatingEntityMessage;
-import static com.spotit.backend.domain.userAccount.UserAccountUtils.createUserAccount;
 import static com.spotit.backend.domain.employee.employeeDetails.course.CourseUtils.createCourse;
 import static com.spotit.backend.domain.employee.employeeDetails.course.CourseUtils.generateCourseList;
+import static com.spotit.backend.domain.userAccount.UserAccountUtils.createUserAccount;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;

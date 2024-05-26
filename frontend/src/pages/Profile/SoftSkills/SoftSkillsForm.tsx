@@ -5,7 +5,7 @@ import { Button, PopUpForm, Input, Rating, FormikReactSelect } from 'components'
 import validationSchema from './SoftSkillsValidation';
 import { useSoftSkills } from 'hooks';
 import { SelectOption } from 'types/shared';
-import { closeModal } from 'utils';
+import { closeModal, errorToast, successToast } from 'utils';
 
 function SoftSkillsForm() {
   const [selectedSoftSkillName, setSelectedSoftSkillName] = useState('');
@@ -30,7 +30,12 @@ function SoftSkillsForm() {
     { setSubmitting, resetForm }: FormikHelpers<SoftSkillsFormType>
   ) => {
     setSubmitting(true);
-    await createSoftSkill.mutateAsync(values);
+    try {
+      await createSoftSkill.mutateAsync(values);
+      successToast();
+    } catch (error) {
+      errorToast();
+    }
     setSubmitting(false);
     resetForm();
     setSelectedSoftSkillName('');

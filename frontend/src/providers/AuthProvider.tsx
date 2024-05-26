@@ -9,7 +9,7 @@ function AuthProvider({ children }: PropsWithChildren) {
       clientId="X6Kfhqp6UuE93tVOfQeOtdbo92RUF3dh"
       authorizationParams={{
         redirect_uri: window.location.origin,
-        audience: '***REMOVED***'
+        audience: 'https://www.spotit-api.com'
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import { closeModal, mapToIds, mapToNames } from 'utils';
+import { closeModal, mapToIds, mapToNames, successToast, errorToast } from 'utils';
 import { FormikHelpers } from 'formik';
 import { Button, Input, PopUpForm, TextArea } from '..';
 import jobOfferValidationSchema from './JobOfferValidation';
@@ -75,11 +75,17 @@ function JobOfferForm({ jobOfferToEdit }: JobOfferFormProps) {
     { setSubmitting, resetForm }: FormikHelpers<WriteJobOffer>
   ) => {
     setSubmitting(true);
-    if (jobOfferToEdit) {
-      await updateJobOffer.mutateAsync({ id: jobOfferToEdit.id, ...values });
-    } else {
-      await createJobOffer.mutateAsync(values);
+    try {
+      if (jobOfferToEdit) {
+        await updateJobOffer.mutateAsync({ id: jobOfferToEdit.id, ...values });
+      } else {
+        await createJobOffer.mutateAsync(values);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
+
     setSubmitting(false);
     resetForm();
     closeModal();

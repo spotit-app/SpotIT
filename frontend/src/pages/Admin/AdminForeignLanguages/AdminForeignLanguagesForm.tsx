@@ -1,4 +1,4 @@
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 import { useForeignLanguages } from 'hooks';
 import { Button, Input, PopUpForm } from 'components';
 import adminForeignLanguagesValidationSchema from './AdminForeignLanguagesValidation';
@@ -32,12 +32,16 @@ function AdminForeignLanguagesForm({ foreignLanguageToEdit }: AdminForeignLangua
     formData.append('name', new Blob([values.name], { type: 'application/json' }));
     values.flag && formData.append('flag', values.flag as Blob);
     setSubmitting(true);
-    if (foreignLanguageToEdit) {
-      await updateForeignLanguageName.mutateAsync({ id: foreignLanguageToEdit.id, formData });
-    } else {
-      await createForeignLanguageName.mutateAsync(formData);
+    try {
+      if (foreignLanguageToEdit) {
+        await updateForeignLanguageName.mutateAsync({ id: foreignLanguageToEdit.id, formData });
+      } else {
+        await createForeignLanguageName.mutateAsync(formData);
+      }
+      successToast();
+    } catch (error) {
+      errorToast();
     }
-
     setSubmitting(false);
     resetForm();
     if (flagRef.current) {

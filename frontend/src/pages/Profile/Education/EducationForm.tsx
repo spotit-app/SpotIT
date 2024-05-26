@@ -5,7 +5,7 @@ import { EducationFormType, ReadEducationLevel } from 'types/profile';
 import validationSchema from './EducationValidation';
 import { useEducations } from 'hooks';
 import { SelectOption } from 'types/shared';
-import { closeModal } from 'utils';
+import { closeModal, successToast, errorToast } from 'utils';
 
 function EducationForm() {
   const [selectedEducationLevel, setSelectedEducationLevel] = useState('');
@@ -40,7 +40,12 @@ function EducationForm() {
     { setSubmitting, resetForm }: FormikHelpers<EducationFormType>
   ) => {
     setSubmitting(true);
-    await createEducation.mutateAsync(values);
+    try {
+      await createEducation.mutateAsync(values);
+      successToast();
+    } catch (error) {
+      errorToast();
+    }
     setSubmitting(false);
     resetForm();
     setSelectedEducationLevel('');

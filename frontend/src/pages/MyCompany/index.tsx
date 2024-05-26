@@ -5,6 +5,7 @@ import { Field, FormikHelpers, FormikProps } from 'formik';
 import { Button, MyCompanyJobOffers, Input, Loading, MainForm } from 'components';
 import validationSchema from './CompanyValidation';
 import icons from 'assets/icons';
+import { successToast, errorToast } from 'utils';
 
 interface CompanyForm {
   name: string;
@@ -56,7 +57,12 @@ function MyCompany() {
     );
     updatedCompany.append('profilePicture', values.profilePicture as Blob);
     setSubmitting(true);
-    await updateCompany.mutateAsync({ id: +id!, formData: updatedCompany });
+    try {
+      await updateCompany.mutateAsync({ id: +id!, formData: updatedCompany });
+      successToast();
+    } catch (error) {
+      errorToast();
+    }
     setSubmitting(false);
 
     if (profilePictureRef.current) {

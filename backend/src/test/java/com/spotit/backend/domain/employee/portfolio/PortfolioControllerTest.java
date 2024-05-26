@@ -1,7 +1,10 @@
 package com.spotit.backend.domain.employee.portfolio;
 
 import static com.spotit.backend.abstraction.GeneralUtils.createMockJwt;
+import static com.spotit.backend.domain.employee.portfolio.PortfolioUtils.createPortfolioListReadDto;
 import static com.spotit.backend.domain.employee.portfolio.PortfolioUtils.generatePortfolio;
+import static com.spotit.backend.domain.employee.portfolio.PortfolioUtils.generatePortfolioList;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.spotit.backend.config.security.SecurityConfig;
@@ -34,6 +39,28 @@ class PortfolioControllerTest {
 
     @MockBean
     PortfolioMapper portfolioMapper;
+
+    @Test
+    void shouldReturnPortfolios() throws Exception {
+        // given
+        var portfolios = generatePortfolioList(3);
+        Page<Portfolio> pageOfPortfolios = new PageImpl<>(portfolios);
+
+        when(portfolioService.findByCriteria(any(), any()))
+                .thenReturn(pageOfPortfolios);
+        when(portfolioMapper.toListReadDto(any()))
+                .thenReturn(createPortfolioListReadDto(1));
+        // when
+        var result = mockMvc.perform(get("/api/portfolios").with(createMockJwt("auth0Id1")));
+
+        // then
+        verify(portfolioService,
+                times(1)).findByCriteria(any(), any());
+        verify(portfolioMapper, times(3)).toListReadDto(any());
+
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(3)));
+    }
 
     @Test
     void shouldReturnPortfolio() throws Exception {
