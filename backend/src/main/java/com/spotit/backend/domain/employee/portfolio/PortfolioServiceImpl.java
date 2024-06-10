@@ -42,7 +42,6 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    @CachePut(key = "#result.portfolioUrl")
     public Portfolio create(String auth0Id) {
         UserAccount userAccount = userAccountService.getByAuth0Id(auth0Id);
 
@@ -83,7 +82,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    // @Cacheable(key = "#bookSearchCriteria?.toString() + #pageable?.toString()")
+    @Cacheable(key = "#portfolioSearchCriteria?.toString() + #pageable?.toString()")
     public Page<Portfolio> findByCriteria(
             Supplier<Specification<Portfolio>> portfolioSearchCriteria,
             Pageable pageable) {
