@@ -24,10 +24,6 @@ public class SecurityConfig {
     @Value("${okta.oauth2.issuer}")
     private String jwtIssuerUri;
 
-    private static final String[] FRONTEND_ENDPOINTS = { "/*", "/index.html", "/assets/*", "/favicon/*" };
-
-    private static final String[] SWAGGER_ENDPOINTS = { "/api", "/swagger-ui/*", "/v3/api-docs", "/v3/api-docs/*" };
-
     private static final String[] API_PUBLIC_ENDPOINTS = {
             "/api/educationLevel",
             "/api/techSkillName",
@@ -66,10 +62,10 @@ public class SecurityConfig {
                         .requestMatchers(POST, API_ADMIN_ENDPOINTS).hasRole("ADMIN")
                         .requestMatchers(PUT, API_ADMIN_ENDPOINTS).hasRole("ADMIN")
                         .requestMatchers(DELETE, API_ADMIN_ENDPOINTS).hasRole("ADMIN")
-                        .requestMatchers(GET, FRONTEND_ENDPOINTS).permitAll()
-                        .requestMatchers(GET, SWAGGER_ENDPOINTS).permitAll()
                         .requestMatchers(GET, API_PUBLIC_ENDPOINTS).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll())
                 .cors(withDefaults())
                 .oauth2ResourceServer(
                         oauth2 -> oauth2.jwt(

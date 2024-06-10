@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: spotit-app
-          image: ghcr.io/wgola/spotit-app:main
+          image: ghcr.io/spotit-app/spotit-app:main
           resources:
             limits:
               memory: "512Mi"
