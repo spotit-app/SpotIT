@@ -23,7 +23,6 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     }
 
     @Override
-    // @Cacheable(key = "#jobOffer.id")
     public Page<JobApplication> getAllByJobOfferFilteredByStatus(
             JobOffer jobOffer,
             Optional<ApplicationStatus> applicationStatus,
@@ -55,8 +54,6 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     }
 
     @Override
-    // @Caching(evict = @CacheEvict(key = "#result.jobOffer.id"), put =
-    // @CachePut(key = "#result.id"))
     public JobApplication create(JobApplication jobApplication) {
         try {
             return jobApplicationRepository.save(jobApplication);
