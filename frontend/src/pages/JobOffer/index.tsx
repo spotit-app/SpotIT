@@ -124,9 +124,9 @@ function JobOffer() {
 
         <div className="border-2 border-primary rounded-lg my-3 p-2 lg:p-4 m-2 lg:m-4">
           <h1 className="text-3xl text-primary font-bold">Opis stanowiska</h1>
-          <p className="text-lg">{jobOffer?.description}</p>
+          <p className="text-lg whitespace-pre-wrap">{jobOffer?.description}</p>
           <h3 className="text-xl font-bold mt-5">Benefity:</h3>
-          <p className="text-lg">{jobOffer?.benefits}</p>
+          <p className="text-lg whitespace-pre-wrap">{jobOffer?.benefits}</p>
           <h3 className="text-xl font-bold mt-5">Oferta ważna do:</h3>
           <p className="text-lg">{jobOffer?.dueDate}</p>
         </div>
