@@ -97,7 +97,7 @@ function Portfolio() {
         {portfolio?.userData.description && (
           <div className="my-10">
             <h1 className="text-3xl font-bold mb-3 break-words">O mnie</h1>
-            <div className="text-base border-b-2 border-l-2 border-primary p-3">
+            <div className="text-base border-b-2 border-l-2 border-primary p-3 whitespace-pre-wrap">
               {portfolio?.userData.description}
             </div>
           </div>
@@ -178,7 +178,7 @@ function Portfolio() {
         {portfolio?.userData.cvClause && (
           <div className="my-10">
             <h1 className="text-3xl font-bold mb-3 break-words">Klauzula informacyjna</h1>
-            {portfolio?.userData.cvClause}
+            <div className="whitespace-pre-wrap">{portfolio?.userData.cvClause}</div>
           </div>
         )}
       </div>
