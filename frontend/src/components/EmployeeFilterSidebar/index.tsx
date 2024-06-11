@@ -77,7 +77,7 @@ function EmployeeFilterSidebar() {
               <>
                 <h3 className="mt-5 mb-3 text-lg self-start font-medium">Technologie:</h3>
                 <ul className="flex flex-row justify-center flex-wrap">{techSkillsToChooseFrom}</ul>
-                <h3 className="mt-10 mb-3 text-lg self-start font-medium">Języki obce:</h3>
+                <h3 className="mt-5 mb-3 text-lg self-start font-medium">Języki obce:</h3>
                 <ul className="flex flex-row justify-center flex-wrap">
                   {foreignLanguaguesToChooseFrom}
                 </ul>

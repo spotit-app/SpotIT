@@ -14,7 +14,7 @@ function ProjectCard({ children, name, description, projectUrl }: ProjectCardPro
       <div className="flex flex-col w-full">
         <div className="text-2xl text-primary font-bold">{name}</div>
         <label className="mt-3 text-primary font-bold text-lg">Opis</label>
-        <div className="flex my-2">{description}</div>
+        <div className="flex my-2 whitespace-pre-wrap">{description}</div>
         <label className="mt-3 text-primary font-bold text-lg">Link do projektu</label>
         <a href={projectUrl} target="_blank" rel="noreferrer" className="font-bold flex break-all">
           {projectUrl}
