@@ -6,7 +6,7 @@ export const errorToast = (message = 'Błąd: Operacja nie powiodła się!') =>
     bodyClassName: 'text-error'
   });
 
-export const successToast = (message = 'Sukces: Operacja zkończona pomyślnie!') =>
+export const successToast = (message = 'Sukces: Operacja zakończona pomyślnie!') =>
   toast.success(message, {
     autoClose: 3000,
     bodyClassName: 'text-success'

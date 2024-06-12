@@ -75,7 +75,9 @@ function MyJobApplications() {
   return (
     <div className="p-2 lg:p-4 w-full flex flex-col">
       <h1 className="text-2xl font-bold text-center">Moje aplikacje</h1>
-      <div className="flex flex-row justify-end space-x-5 pt-5">{statusesToChooseFrom}</div>
+      <div className="flex flex-col sm:flex-row sm:justify-end space-y-5 sm:space-y-0 sm:space-x-5 pt-5">
+        {statusesToChooseFrom}
+      </div>
       {content}
       {myJobApplicationElements?.length !== 0 && (
         <Pagination page={page} isFirst={isFirst} isLast={isLast} changePage={changePage} />
