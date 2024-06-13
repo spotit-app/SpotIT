@@ -48,7 +48,7 @@ function WelcomePage() {
         </div>
         <div className="w-full lg:w-1/2  p-3">
           <div className="h-auto lg:h-72 flex flex-col justify-between border-2 rounded-lg  border-primary p-5">
-            <h2 className="text-xl lg:text-3xl font-bold">Porfolio</h2>
+            <h2 className="text-xl lg:text-3xl font-bold">Portfolio</h2>
             <p className="text-lg font-normal my-2">
               Wygeneruj portfolio zawierające wszystkie wypełnione przez ciebie dane, którym możesz
               podzielić się z całym światem.

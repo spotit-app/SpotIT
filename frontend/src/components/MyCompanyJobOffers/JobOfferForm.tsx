@@ -97,7 +97,7 @@ function JobOfferForm({ jobOfferToEdit }: JobOfferFormProps) {
       validationSchema={jobOfferValidationSchema}
       onSubmit={onSubmit}
     >
-      <Input name="name" label="Nazwa" type="text" id="jobOfferName" />
+      <Input name="name" label="Nazwa oferty" type="text" id="jobOfferName" />
       <Input name="position" label="Stanowisko" type="text" id="jobOfferPosition" />
       <FormikReactSelect
         name="workExperienceId"
@@ -107,13 +107,13 @@ function JobOfferForm({ jobOfferToEdit }: JobOfferFormProps) {
       <TextArea name="description" label="Opis" type="text" id="jobOfferDescription" />
       <Input
         name="minSalary"
-        label="Minimalne wynagrodzenie"
+        label="Minimalne wynagrodzenie (brutto)"
         type="number"
         id="jobOfferMinSalary"
       />
       <Input
         name="maxSalary"
-        label="Maksymalne wynagrodzenie"
+        label="Maksymalne wynagrodzenie (brutto)"
         type="number"
         id="jobOfferMaxSalary"
       />

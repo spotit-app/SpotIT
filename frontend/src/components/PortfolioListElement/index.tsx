@@ -15,12 +15,15 @@ function PortfolioListElement({ portfolio, children }: PortfolioListElementProps
       key={portfolio.portfolioUrl}
       className="w-full flex items-center p-4 border-2 border-primary rounded-lg my-3"
     >
-      <img
-        src={portfolio.userData.profilePictureUrl}
-        referrerPolicy="no-referrer"
-        alt="Profile Picture"
-        className="w-20 h-20 rounded-full"
-      />
+      <div className="avatar">
+        <div className="w-20 h-20 rounded-full">
+          <img
+            src={portfolio.userData.profilePictureUrl}
+            referrerPolicy="no-referrer"
+            alt="Profile Picture"
+          />
+        </div>
+      </div>
       <div className="ml-3 flex flex-col sm:flex-row justify-between w-full">
         <div>
           <div className="text-2xl font-bold">

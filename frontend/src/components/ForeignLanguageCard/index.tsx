@@ -14,7 +14,11 @@ function ForeignLanguageCard({ children, name, flagUrl, level }: ForeignLanguage
       <div className="block md:flex items-center w-full">
         <div className="text-xl w-full md:w-1/3 md:mx-3 font-bold flex items-center">
           <div className="w-12 h-12 flex justify-center items-center mr-2">
-            <img className="max-w-full max-h-full border-2 border-primary" src={flagUrl} />
+            <img
+              className="max-w-full max-h-full border-2 border-primary"
+              alt="Flag Picture"
+              src={flagUrl}
+            />
           </div>
 
           {name}

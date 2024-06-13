@@ -1,3 +1,4 @@
+import { httpify } from 'utils';
 import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
@@ -16,7 +17,12 @@ function ProjectCard({ children, name, description, projectUrl }: ProjectCardPro
         <label className="mt-3 text-primary font-bold text-lg">Opis</label>
         <div className="flex my-2 whitespace-pre-wrap">{description}</div>
         <label className="mt-3 text-primary font-bold text-lg">Link do projektu</label>
-        <a href={projectUrl} target="_blank" rel="noreferrer" className="font-bold flex break-all">
+        <a
+          href={httpify(projectUrl)}
+          target="_blank"
+          rel="noreferrer"
+          className="font-bold flex break-all"
+        >
           {projectUrl}
         </a>
       </div>

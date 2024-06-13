@@ -1,3 +1,4 @@
+import { httpify } from 'utils';
 import PropTypes from 'prop-types';
 import { ReactNode } from 'react';
 
@@ -13,7 +14,7 @@ function SocialCard({ children, name, socialUrl }: SocialCardProps) {
       <div className="block md:flex items-center w-full">
         <div className="text-xl w-1/5 md:mx-3 font-bold">{name}</div>
         <a
-          href={socialUrl}
+          href={httpify(socialUrl)}
           target="_blank"
           rel="noreferrer"
           className="text-primary flex font-bold break-all"
