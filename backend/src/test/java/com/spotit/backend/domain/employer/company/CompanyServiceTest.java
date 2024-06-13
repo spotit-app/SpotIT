@@ -22,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.spotit.backend.abstraction.EntityNotFoundException;
 import com.spotit.backend.abstraction.ErrorCreatingEntityException;
+import com.spotit.backend.domain.employer.address.AddressService;
 import com.spotit.backend.domain.userAccount.UserAccount;
 import com.spotit.backend.domain.userAccount.UserAccountService;
 import com.spotit.backend.storage.StorageService;
@@ -40,6 +41,9 @@ class CompanyServiceTest {
 
     @Mock
     StorageService storageService;
+
+    @Mock
+    AddressService addressService;
 
     @InjectMocks
     CompanyServiceImpl companyServiceImpl;
@@ -193,6 +197,7 @@ class CompanyServiceTest {
         verify(storageService, times(1)).uploadFile(any(), any(), any());
         verify(companyRepository, times(1)).findById(companyToModifyId);
         verify(companyRepository, times(1)).save(any());
+        verify(addressService, times(1)).updateById(any(), any());
 
         assertEquals(modifiedCompany.getName(), result.getName());
         assertEquals(modifiedCompany.getNip(), result.getNip());

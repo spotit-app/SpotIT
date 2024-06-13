@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.spotit.backend.abstraction.EntityNotFoundException;
 import com.spotit.backend.abstraction.ErrorCreatingEntityException;
+import com.spotit.backend.domain.employer.address.AddressService;
 import com.spotit.backend.domain.userAccount.UserAccount;
 import com.spotit.backend.domain.userAccount.UserAccountService;
 import com.spotit.backend.storage.StorageService;
@@ -24,15 +25,17 @@ public class CompanyServiceImpl implements CompanyService {
     protected final CompanyRepository repository;
     protected final UserAccountService userAccountService;
     protected final StorageService storageService;
+    protected final AddressService addressService;
 
     private static final String COMPANY_LOGOS_DIRECTORY_NAME = "companyLogos";
 
     public CompanyServiceImpl(
             CompanyRepository repository,
-            UserAccountService userAccountService, StorageService storageService) {
+            UserAccountService userAccountService, StorageService storageService, AddressService addressService) {
         this.repository = repository;
         this.userAccountService = userAccountService;
         this.storageService = storageService;
+        this.addressService = addressService;
     }
 
     @Override
@@ -87,6 +90,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Caching(evict = @CacheEvict(key = "#result.userAccount.auth0Id"), put = @CachePut(key = "#id"))
     public Company update(Integer id, Company companyToUpdate, byte[] companyLogo) {
         Company foundCompany = getById(id);
+        Integer foundAddressId = foundCompany.getAddress().getId();
 
         if (companyLogo != null) {
             String companyLogoUrl = storageService.uploadFile(
@@ -101,6 +105,8 @@ public class CompanyServiceImpl implements CompanyService {
             } catch (Exception ignored) {
             }
         }
+
+        addressService.updateById(foundAddressId, companyToUpdate.getAddress());
 
         foundCompany.update(companyToUpdate);
 
