@@ -42,7 +42,7 @@ class AddressServiceTest {
                 .thenReturn(companytoCreate);
 
         // when
-        var result = addressServiceImpl.getByCompanyId(1);
+        var result = addressServiceImpl.getById(1);
 
         // then
         verify(companyService, times(1)).getById(1);
@@ -62,7 +62,7 @@ class AddressServiceTest {
                 .thenAnswer(i -> i.getArguments()[0]);
 
         // when
-        var result = addressServiceImpl.updateByCompanyId(addressToModifyId, modifiedAddress);
+        var result = addressServiceImpl.updateById(addressToModifyId, modifiedAddress);
 
         // then
         verify(companyService, times(1)).getById(1);
@@ -86,7 +86,7 @@ class AddressServiceTest {
                 .thenAnswer(i -> i.getArguments()[0]);
 
         // when
-        var result = addressServiceImpl.updateByCompanyId(addressToModifyId, modifiedAddress);
+        var result = addressServiceImpl.updateById(addressToModifyId, modifiedAddress);
 
         // then
         verify(companyService, times(1)).getById(1);

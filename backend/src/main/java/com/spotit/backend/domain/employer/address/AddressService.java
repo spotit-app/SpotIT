@@ -2,7 +2,7 @@ package com.spotit.backend.domain.employer.address;
 
 public interface AddressService {
 
-    Address getByCompanyId(Integer companyId);
+    Address getById(Integer id);
 
-    Address updateByCompanyId(Integer companyId, Address addressToUpdate);
+    Address updateById(Integer addressId, Address addressToUpdate);
 }
