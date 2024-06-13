@@ -46,6 +46,7 @@ function FilterButton({ entity, onChange, isChecked }: FilterButtonProps) {
           <div className="w-8 h-8 flex justify-center items-center">
             <img
               src={isReadTechSkillName(entity) ? entity.logoUrl : entity.flagUrl}
+              alt="Skill Picture"
               className="max-w-full max-h-full"
             />
           </div>

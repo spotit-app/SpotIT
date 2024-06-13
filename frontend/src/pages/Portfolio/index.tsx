@@ -82,7 +82,11 @@ function Portfolio() {
       <header className="flex justify-around items-center bg-base-200 flex-wrap p-3">
         <div className="avatar">
           <div className="w-40 rounded-full border-b-4 border-l-4 border-primary">
-            <img referrerPolicy="no-referrer" src={portfolio?.userData.profilePictureUrl} />
+            <img
+              referrerPolicy="no-referrer"
+              alt="Profile Picture"
+              src={portfolio?.userData.profilePictureUrl}
+            />
           </div>
         </div>
         <div>

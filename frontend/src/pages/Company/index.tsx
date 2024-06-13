@@ -3,6 +3,7 @@ import { useCompanies, useJobOffers } from 'hooks';
 import icons from 'assets/icons';
 import { useParams } from 'react-router-dom';
 import { ReadJobOffer } from 'types/company';
+import { httpify } from 'utils';
 
 function Company() {
   const { id } = useParams<{ id: string }>();
@@ -31,7 +32,9 @@ function Company() {
   ) : jobOfferElements?.length !== 0 ? (
     jobOfferElements
   ) : (
-    <NoContent />
+    <div className="w-full p-20 relative">
+      <NoContent />
+    </div>
   );
 
   return isPending || jobOffersIsPending ? (
@@ -46,7 +49,7 @@ function Company() {
             <div className="flex items-center my-1">
               <icons.TbWorldWww size="20" className="mr-2 text-primary" />
               <a
-                href={company?.websiteUrl}
+                href={httpify(company?.websiteUrl || '')}
                 target="_blank"
                 rel="noreferrer"
                 className="link-hover text-primary"

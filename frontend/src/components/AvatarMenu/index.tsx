@@ -52,7 +52,12 @@ function AvatarMenu({ picture, logout }: AvatarMenuProps) {
           className="hidden w-10 h-10 outline-none rounded-full ring-primary md:focus:ring-2 md:block"
           onClick={() => setState(!state)}
         >
-          <img src={picture} referrerPolicy="no-referrer" className="w-full h-full rounded-full" />
+          <img
+            alt="Profile Picture"
+            src={picture}
+            referrerPolicy="no-referrer"
+            className="w-full h-full rounded-full"
+          />
         </button>
       </div>
       <ul
