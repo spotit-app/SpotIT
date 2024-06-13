@@ -20,7 +20,7 @@ function MyCompanyJobOffers() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const page = parseInt(params.get('page') || '1') - 1;
+    const page = Math.max(0, parseInt(params.get('page') || '1') - 1);
 
     setPage(page + 1);
     setQueryParams({ page });

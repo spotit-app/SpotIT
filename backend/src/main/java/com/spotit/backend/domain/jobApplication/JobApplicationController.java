@@ -49,7 +49,7 @@ public class JobApplicationController {
     @GetMapping("/userAccount/{auth0Id}/company/{companyId}/jobOffer/{jobOfferId}/application")
     public Page<JobApplicationReadDto> getJobOfferApplications(
             @PathVariable Integer jobOfferId,
-            @PageableDefault(size = 20, sort = "portfolio", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 5, sort = "portfolio", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false) Optional<ApplicationStatus> status) {
         JobOffer jobOffer = jobOfferService.getById(jobOfferId);
 
@@ -74,7 +74,7 @@ public class JobApplicationController {
     @GetMapping("/userAccount/{auth0Id}/application")
     public Page<JobApplicationUserReadDto> getJobApplicationsOfUser(
             @PathVariable String auth0Id,
-            @PageableDefault(size = 20, sort = "applicationStatus", direction = Sort.Direction.DESC) Pageable pageable,
+            @PageableDefault(size = 5, sort = "applicationStatus", direction = Sort.Direction.DESC) Pageable pageable,
             @RequestParam(required = false) Optional<ApplicationStatus> status) {
         Portfolio portfolio = portfolioService.getByUserAccountAuth0Id(auth0Id);
 
