@@ -1,12 +1,13 @@
 package com.spotit.backend.domain.employer.address;
 
 import static com.spotit.backend.domain.employer.address.AddressUtils.createAddress;
-import static com.spotit.backend.domain.employer.company.CompanyUtils.createCompany;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,19 +34,20 @@ class AddressServiceTest {
     CompanyService companyService;
 
     @Test
-    void shouldReturnCompanyAddress() {
+    void shouldReturnJobOfferById() {
         // given
-        var companytoCreate = createCompany(1);
-        var foundAddress = createAddress(1);
+        var addressId = 1;
+        var foundAddress = createAddress(addressId);
 
-        when(companyService.getById(1))
-                .thenReturn(companytoCreate);
+        when(addressRepository.findById(addressId))
+                .thenReturn(Optional.of(foundAddress));
 
         // when
-        var result = addressServiceImpl.getById(1);
+        var result = addressServiceImpl.getById(addressId);
 
         // then
-        verify(companyService, times(1)).getById(1);
+        verify(addressRepository, times(1)).findById(addressId);
+
         assertEquals(foundAddress, result);
     }
 
@@ -53,11 +55,11 @@ class AddressServiceTest {
     void shouldReturnModifiedAddress() {
         // given
         var addressToModifyId = 1;
-        var companytoCreate = createCompany(1);
+        var currentAddress = createAddress(addressToModifyId);
         var modifiedAddress = createAddress(2);
 
-        when(companyService.getById(1))
-                .thenReturn(companytoCreate);
+        when(addressRepository.findById(1))
+                .thenReturn(Optional.of(currentAddress));
         when(addressRepository.save(any()))
                 .thenAnswer(i -> i.getArguments()[0]);
 
@@ -65,7 +67,7 @@ class AddressServiceTest {
         var result = addressServiceImpl.updateById(addressToModifyId, modifiedAddress);
 
         // then
-        verify(companyService, times(1)).getById(1);
+        verify(addressRepository, times(1)).findById(addressToModifyId);
         verify(addressRepository, times(1)).save(any());
 
         assertEquals(modifiedAddress.getCountry(), result.getCountry());
@@ -76,12 +78,11 @@ class AddressServiceTest {
     void shouldReturnUnchangedAddressWhenNoChanges() {
         // given
         var addressToModifyId = 1;
-        var companytoCreate = createCompany(1);
         var currentAddress = createAddress(addressToModifyId);
         var modifiedAddress = new Address();
 
-        when(companyService.getById(1))
-                .thenReturn(companytoCreate);
+        when(addressRepository.findById(1))
+                .thenReturn(Optional.of(currentAddress));
         when(addressRepository.save(any()))
                 .thenAnswer(i -> i.getArguments()[0]);
 
@@ -89,7 +90,7 @@ class AddressServiceTest {
         var result = addressServiceImpl.updateById(addressToModifyId, modifiedAddress);
 
         // then
-        verify(companyService, times(1)).getById(1);
+        verify(addressRepository, times(1)).findById(addressToModifyId);
         verify(addressRepository, times(1)).save(any());
 
         assertEquals(currentAddress, result);
