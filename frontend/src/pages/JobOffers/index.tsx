@@ -14,7 +14,7 @@ function JobOffers() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const page = parseInt(params.get('page') || '1') - 1;
+    const page = Math.max(0, parseInt(params.get('page') || '1') - 1);
     const techSkillNameIds = params.getAll('techSkillNameIds');
     const foreignLanguageNameIds = params.getAll('foreignLanguageNameIds');
     const experienceNameIds = params.getAll('experienceNameIds');

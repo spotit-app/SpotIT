@@ -69,7 +69,7 @@ public class JobOfferController {
 
     @GetMapping("/jobOffer")
     public Page<JobOfferListReadDto> getJobOffers(
-            @PageableDefault(size = 20) Pageable pageable,
+            @PageableDefault(size = 5) Pageable pageable,
             JobOfferSearchCriteria jobOfferSearchCriteria) {
         jobOfferSearchCriteria.setMinDueDate(LocalDate.now());
 
@@ -85,7 +85,7 @@ public class JobOfferController {
     @GetMapping("/company/{companyId}/jobOffer")
     public Page<JobOfferReadDto> getJobOffersOfCompany(
             @PathVariable Integer companyId,
-            @PageableDefault(size = 20, sort = "dueDate", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 5, sort = "dueDate", direction = Sort.Direction.DESC) Pageable pageable) {
         Company company = companyService.getById(companyId);
 
         return jobOfferService.getAllByCompany(company, pageable)

@@ -14,12 +14,11 @@ function Employees() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const page = parseInt(params.get('page') || '1') - 1;
+    const page = Math.max(0, parseInt(params.get('page') || '1') - 1);
     const techSkillNameIds = params.getAll('techSkillNameIds');
     const foreignLanguageNameIds = params.getAll('foreignLanguageNameIds');
 
     setPage(page + 1);
-
     setQueryParams({ page, techSkillNameIds, foreignLanguageNameIds });
   }, [params]);
 

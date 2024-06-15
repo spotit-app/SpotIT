@@ -33,7 +33,7 @@ public class PortfolioController {
 
     @GetMapping("/portfolios")
     public Page<PortfolioListReadDto> getPortfolios(
-            @PageableDefault(size = 20) Pageable pageable,
+            @PageableDefault(size = 5) Pageable pageable,
             PortfolioSearchCriteria portfolioSearchCriteria) {
 
         return portfolioService.findByCriteria(portfolioSearchCriteria, pageable)
